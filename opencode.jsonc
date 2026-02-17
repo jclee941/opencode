@@ -1,0 +1,313 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "tron",
+  "default_agent": "sisyphus",
+  "username": "jclee",
+  "logLevel": "INFO",
+
+  "instructions": [
+    "/home/jclee/.config/opencode/rules/session-init.md"
+  ],
+
+  "plugin": [
+    "opencode-antigravity-auth",
+    "@franlol/opencode-md-table-formatter",
+    "open-trees",
+    "opencode-supermemory",
+    "oh-my-opencode",
+    "opencode-agent-skills",
+    "@mohak34/opencode-notifier",
+    "opencode-snippets",
+    "opencode-plugin-preload-skills",
+    "opencode-pilot"
+  ],
+
+  // ============================================================
+  // PROVIDERS — model definitions
+  // ============================================================
+  "provider": {
+    "google": {
+      "models": {
+        "antigravity-gemini-3-pro": {
+          "name": "Gemini 3 Pro (Antigravity)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": { "low": { "thinkingLevel": "low" }, "high": { "thinkingLevel": "high" } }
+        },
+        "antigravity-gemini-3-flash": {
+          "name": "Gemini 3 Flash (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": { "minimal": { "thinkingLevel": "minimal" }, "low": { "thinkingLevel": "low" }, "medium": { "thinkingLevel": "medium" }, "high": { "thinkingLevel": "high" } }
+        },
+        "antigravity-claude-sonnet-4-5": {
+          "name": "Claude Sonnet 4.5 (Antigravity)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        "antigravity-claude-sonnet-4-5-thinking": {
+          "name": "Claude Sonnet 4.5 Thinking (Antigravity)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
+        },
+        "antigravity-claude-opus-4-6-thinking": {
+          "name": "Claude Opus 4.6 Thinking (Antigravity)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
+        }
+      }
+    },
+    "github-copilot": {
+      "models": {
+        "claude-opus-4.6": {
+          "name": "Claude Opus 4.6 (GitHub Copilot)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
+        },
+        "claude-sonnet-4.5": {
+          "name": "Claude Sonnet 4.5 (GitHub Copilot)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
+        },
+        "claude-haiku-4.5": {
+          "name": "Claude Haiku 4.5 (GitHub Copilot)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        }
+      }
+    }
+  },
+
+  // ============================================================
+  // MCP — remote server
+  // ============================================================
+  "mcp": {
+    "mcphub": {
+      "type": "remote",
+      "url": "http://192.168.50.112:3000/mcp",
+      "timeout": 60000
+    }
+  },
+
+  "permission": { "*": "allow" },
+
+  // ============================================================
+  // EXPERIMENTAL — loop control & batch
+  // ============================================================
+  "experimental": {
+    "continue_loop_on_deny": true,
+    "batch_tool": true,
+    "mcp_timeout": 60000,
+    "primary_tools": ["bash", "edit", "write"]
+  },
+
+  // ============================================================
+  // COMPACTION — auto with threshold
+  // ============================================================
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 8000
+  },
+
+  // ============================================================
+  // SMALL MODEL — for lightweight tasks (title gen, summaries)
+  // ============================================================
+  "small_model": "anthropic/claude-haiku-4-5",
+  // ============================================================
+  // FORMATTER — per-extension formatting commands
+  // ============================================================
+  "formatter": {
+    ".ts": { "command": ["prettier", "--write"] },
+    ".tsx": { "command": ["prettier", "--write"] },
+    ".js": { "command": ["prettier", "--write"] },
+    ".jsx": { "command": ["prettier", "--write"] },
+    ".css": { "command": ["prettier", "--write"] },
+    ".html": { "command": ["prettier", "--write"] },
+    ".py": { "command": ["ruff", "format"] },
+    ".go": { "command": ["gofmt", "-w"] },
+    ".json": { "command": ["prettier", "--write"] },
+    ".yaml": { "command": ["prettier", "--write"] },
+    ".yml": { "command": ["prettier", "--write"] },
+    ".md": { "command": ["prettier", "--write"] },
+    ".tf": { "command": ["terraform", "fmt"] },
+    ".hcl": { "command": ["terraform", "fmt"] },
+    ".toml": { "command": ["taplo", "fmt"] }
+  },
+
+  // ============================================================
+  // WATCHER — ignore patterns
+  // ============================================================
+  "watcher": {
+    "ignore": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**",
+      "**/.next/**",
+      "**/.venv/**",
+      "**/coverage/**",
+      "**/.terraform/**",
+      "**/terraform.tfstate*",
+      "**/.cache/**",
+      "**/.sisyphus/**",
+      "antigravity-accounts.json",
+      "antigravity-signature-cache.json"
+    ]
+  },
+
+  // ============================================================
+  // TUI — terminal UI settings
+  // ============================================================
+  "tui": {
+    "scroll_speed": 3,
+    "scroll_acceleration": { "enabled": true },
+    "diff_style": "auto"
+  },
+
+  // ============================================================
+  // LSP — Language Server Protocol
+  // ============================================================
+  "lsp": {
+    "typescript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"],
+      "initialization": {
+        "preferences": {
+          "includeInlayParameterNameHints": "all",
+          "includeInlayFunctionParameterTypeHints": true,
+          "includeInlayVariableTypeHints": true,
+          "includeInlayPropertyDeclarationTypeHints": true
+        }
+      }
+    },
+    "python": {
+      "command": ["pylsp"],
+      "extensions": [".py"],
+      "initialization": {
+        "pylsp": {
+          "plugins": {
+            "pycodestyle": { "enabled": false },
+            "mccabe": { "enabled": false },
+            "pyflakes": { "enabled": true },
+            "rope_autoimport": { "enabled": true },
+            "rope_completion": { "enabled": true }
+          }
+        }
+      }
+    },
+    "go": {
+      "command": ["gopls"],
+      "extensions": [".go"],
+      "env": { "GO111MODULE": "on" },
+      "initialization": {
+        "gopls": {
+          "staticcheck": true,
+          "gofumpt": true,
+          "usePlaceholders": true,
+          "completeUnimported": true
+        }
+      }
+    },
+    "terraform": {
+      "command": ["terraform-ls", "serve"],
+      "extensions": [".tf", ".hcl"],
+      "initialization": {
+        "experimentalFeatures": { "validateOnSave": true }
+      }
+    },
+    "yaml": {
+      "command": ["yaml-language-server", "--stdio"],
+      "extensions": [".yaml", ".yml"],
+      "initialization": {
+        "yaml": {
+          "validate": true,
+          "hover": true,
+          "completion": true,
+          "schemas": {
+            "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml",
+            "https://json.schemastore.org/docker-compose.json": "docker-compose*.yml"
+          }
+        }
+      }
+    },
+    "json": {
+      "command": ["vscode-json-language-server", "--stdio"],
+      "extensions": [".json", ".jsonc"],
+      "initialization": {
+        "provideFormatter": true,
+        "json": {
+          "schemas": [
+            { "fileMatch": ["package.json"], "url": "https://json.schemastore.org/package.json" },
+            { "fileMatch": ["tsconfig*.json"], "url": "https://json.schemastore.org/tsconfig.json" }
+          ]
+        }
+      }
+    },
+    "css": {
+      "command": ["vscode-css-language-server", "--stdio"],
+      "extensions": [".css", ".scss", ".less"],
+      "initialization": {
+        "provideFormatter": false,
+        "css": { "validate": true },
+        "scss": { "validate": true },
+        "less": { "validate": true }
+      }
+    },
+    "html": {
+      "command": ["vscode-html-language-server", "--stdio"],
+      "extensions": [".html"],
+      "initialization": {
+        "provideFormatter": false
+      }
+    },
+    "bash": {
+      "command": ["bash-language-server", "start"],
+      "extensions": [".sh", ".bash"]
+    },
+    "toml": {
+      "command": ["taplo", "lsp", "stdio"],
+      "extensions": [".toml"]
+    },
+    "markdown": {
+      "command": ["marksman", "server"],
+      "extensions": [".md"]
+    }
+  },
+
+  // ============================================================
+  // SKILLS — custom skills paths
+  // ============================================================
+  "skills": {
+    "paths": ["~/.config/opencode/skills"],
+    "urls": []
+  },
+
+  // ============================================================
+  // COMMAND — custom commands (placeholder)
+  // ============================================================
+  "command": {},
+
+  // ============================================================
+  // SERVER — API server settings
+  // ============================================================
+
+  // ============================================================
+  // AUTO-UPDATE & SHARING
+  // ============================================================
+  "autoupdate": true,
+  "snapshot": true,
+  "share": "manual",
+
+  // ============================================================
+  // KEYBINDS
+  // ============================================================
+  "keybinds": { 
+    "leader": "ctrl+x", 
+    "tool_details": "<leader>d", 
+    "session_fork": "<leader>f" 
+  }
+}

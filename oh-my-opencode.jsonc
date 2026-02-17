@@ -1,0 +1,191 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "google_auth": false,
+
+  // ============================================================
+  // AGENTS — 15 agents with role-appropriate permissions
+  // ============================================================
+  "agents": {
+    // --- Primary orchestrator (YOU) ---
+    "sisyphus": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max"
+    },
+
+    // --- Planner / Strategist ---
+    "prometheus": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+      "permission": { "edit": "deny", "bash": "deny" }
+    },
+
+    // --- Pre-planning consultant ---
+    "metis": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+      "permission": { "edit": "deny", "bash": "deny" }
+    },
+
+    // --- READ-ONLY high-IQ consultant ---
+    "oracle": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+      "permission": { "edit": "deny", "bash": "deny", "webfetch": "deny" }
+    },
+
+    // --- Expert reviewer ---
+    "momus": {
+      "model": "openai/gpt-5.2",
+      "variant": "medium",
+      "permission": { "edit": "deny", "bash": "deny" }
+    },
+
+    // --- External reference search ---
+    "librarian": {
+      "model": "anthropic/claude-sonnet-4-5",
+      "permission": { "edit": "deny" }
+    },
+
+    // --- Contextual grep ---
+    "explore": {
+      "model": "anthropic/claude-haiku-4-5",
+      "permission": { "edit": "deny" }
+    },
+
+    // --- Visual analysis ---
+    "multimodal-looker": {
+      "model": "google/antigravity-gemini-3-flash",
+      "permission": { "edit": "deny", "bash": "deny" }
+    },
+
+    // --- Session/context manager ---
+    "atlas": {
+      "model": "anthropic/claude-sonnet-4-5"
+    },
+
+    // --- Delegated sub-agent (default for task() calls) ---
+    "sisyphus-junior": {
+      "model": "anthropic/claude-sonnet-4-5"
+    },
+
+    // --- Internal builders/planners ---
+    "build": {
+      "model": "anthropic/claude-sonnet-4-5"
+    },
+    "plan": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+      "permission": { "edit": "deny", "bash": "deny" }
+    },
+    "OpenCode-Builder": {
+      "model": "anthropic/claude-sonnet-4-5"
+    },
+
+    // --- Fallbacks ---
+    "unspecified-high": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max"
+    },
+    "unspecified-low": {
+      "model": "anthropic/claude-sonnet-4-5"
+    }
+  },
+
+  // ============================================================
+  // CATEGORIES — with thinking/reasoning tuning
+  // ============================================================
+  "categories": {
+    "visual-engineering": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "high",
+      "reasoningEffort": "high"
+    },
+    "ultrabrain": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "xhigh",
+      "reasoningEffort": "xhigh",
+      "thinking": { "type": "enabled", "budgetTokens": 32768 }
+    },
+    "deep": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
+      "reasoningEffort": "high",
+      "thinking": { "type": "enabled", "budgetTokens": 16384 }
+    },
+    "artistry": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "high",
+      "reasoningEffort": "high",
+      "temperature": 0.8
+    },
+    "quick": {
+      "model": "anthropic/claude-haiku-4-5",
+      "reasoningEffort": "low"
+    },
+    "unspecified-low": {
+      "model": "anthropic/claude-sonnet-4-5"
+    },
+    "unspecified-high": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+      "thinking": { "type": "enabled", "budgetTokens": 32768 }
+    },
+    "writing": {
+      "model": "google/antigravity-gemini-3-flash",
+      "variant": "medium",
+      "textVerbosity": "high",
+      "reasoningEffort": "medium"
+    }
+  },
+
+  // ============================================================
+  // SISYPHUS AGENT — planner & builder control
+  // ============================================================
+  "sisyphus_agent": {
+    "planner_enabled": true,
+    "default_builder_enabled": true
+  },
+
+  // ============================================================
+  // BACKGROUND TASK — parallel agent concurrency
+  // ============================================================
+  "background_task": {
+    "defaultConcurrency": 4,
+    "providerConcurrency": {
+      "openai": 5,
+      "google": 3
+    },
+    "staleTimeoutMs": 300000
+  },
+
+  // ============================================================
+  // EXPERIMENTAL — dynamic context pruning
+  // ============================================================
+  "experimental": {
+    "dynamic_context_pruning": {
+      "enabled": true,
+      "notification": "minimal",
+      "turn_protection": { "enabled": true, "turns": 3 },
+      "strategies": {
+        "deduplication": { "enabled": true },
+        "supersede_writes": { "enabled": true, "aggressive": false },
+        "purge_errors": { "enabled": true, "turns": 5 }
+      }
+    }
+  },
+
+  // ============================================================
+  // RALPH LOOP — iteration cap for cost control
+  // ============================================================
+  "ralph_loop": {
+    "default_max_iterations": 50
+  },
+
+  // ============================================================
+  // GIT MASTER — commit metadata
+  // ============================================================
+  "git_master": {
+    "commit_footer": true,
+    "include_co_authored_by": true
+  }
+}
