@@ -10,7 +10,7 @@
   // ],
 
   "plugin": [
-    "opencode-antigravity-auth@beta",
+    "opencode-antigravity-auth",
     "open-trees",
     "opencode-supermemory",
     "oh-my-opencode",
@@ -48,27 +48,6 @@
           "limit": { "context": 200000, "output": 64000 },
           "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
           "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
-        }
-      }
-    },
-    "github-copilot": {
-      "models": {
-        "claude-opus-4.6": {
-          "name": "Claude Opus 4.6 (GitHub Copilot)",
-          "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
-          "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
-        },
-        "claude-sonnet-4.6": {
-          "name": "Claude Sonnet 4.6 (GitHub Copilot)",
-          "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
-          "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
-        },
-        "claude-haiku-4.5": {
-          "name": "Claude Haiku 4.5 (GitHub Copilot)",
-          "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
         }
       }
     }
