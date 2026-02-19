@@ -128,8 +128,7 @@
     ".md": { "command": ["prettier", "--write"] },
     ".tf": { "command": ["terraform", "fmt"] },
     ".hcl": { "command": ["terraform", "fmt"] },
-    // DISABLED: taplo not installed
-    // ".toml": { "command": ["taplo", "fmt"] }
+    ".toml": { "command": ["/usr/local/bin/taplo", "fmt"] }
   },
 
   // ============================================================
@@ -178,36 +177,23 @@
         }
       }
     },
-    // DISABLED: pylsp not installed — install with: pip install python-lsp-server
-    // "python": {
-    //   "command": ["pylsp"],
-    //   "extensions": [".py"],
-    //   "initialization": {
-    //     "pylsp": {
-    //       "plugins": {
-    //         "pycodestyle": { "enabled": false },
-    //         "mccabe": { "enabled": false },
-    //         "pyflakes": { "enabled": true },
-    //         "rope_autoimport": { "enabled": true },
-    //         "rope_completion": { "enabled": true }
-    //       }
-    //     }
-    //   }
-    // },
-    // DISABLED: gopls not installed — install with: go install golang.org/x/tools/gopls@latest
-    // "go": {
-    //   "command": ["gopls"],
-    //   "extensions": [".go"],
-    //   "env": { "GO111MODULE": "on" },
-    //   "initialization": {
-    //     "gopls": {
-    //       "staticcheck": true,
-    //       "gofumpt": true,
-    //       "usePlaceholders": true,
-    //       "completeUnimported": true
-    //     }
-    //   }
-    // },
+    "python": {
+      "command": ["basedpyright-langserver", "--stdio"],
+      "extensions": [".py"]
+    },
+    "go": {
+      "command": ["/home/jclee/go/bin/gopls"],
+      "extensions": [".go"],
+      "env": { "GO111MODULE": "on" },
+      "initialization": {
+        "gopls": {
+          "staticcheck": true,
+          "gofumpt": true,
+          "usePlaceholders": true,
+          "completeUnimported": true
+        }
+      }
+    },
     "terraform": {
       "command": ["terraform-ls", "serve"],
       "extensions": [".tf", ".hcl"],
@@ -260,21 +246,18 @@
         "provideFormatter": false
       }
     },
-    // DISABLED: bash-language-server not installed — install with: npm i -g bash-language-server
-    // "bash": {
-    //   "command": ["bash-language-server", "start"],
-    //   "extensions": [".sh", ".bash"]
-    // },
-    // DISABLED: taplo not installed — install with: cargo install taplo-cli
-    // "toml": {
-    //   "command": ["taplo", "lsp", "stdio"],
-    //   "extensions": [".toml"]
-    // },
-    // DISABLED: marksman not installed — install from: https://github.com/artempyanykh/marksman/releases
-    // "markdown": {
-    //   "command": ["marksman", "server"],
-    //   "extensions": [".md"]
-    // }
+    "bash": {
+      "command": ["bash-language-server", "start"],
+      "extensions": [".sh", ".bash"]
+    },
+    "toml": {
+      "command": ["/usr/local/bin/taplo", "lsp", "stdio"],
+      "extensions": [".toml"]
+    },
+    "markdown": {
+      "command": ["marksman", "server"],
+      "extensions": [".md"]
+    }
   },
 
   // ============================================================
