@@ -6,22 +6,28 @@
   // AGENTS — 15 agents with role-appropriate permissions
   // ============================================================
   "agents": {
-    // --- Primary orchestrator (YOU) ---
+    // --- Primary orchestrator (Claude-native, NO GPT prompt exists) ---
     "sisyphus": {
-      "model": "anthropic/claude-opus-4-6",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max"
+    },
+
+    // --- Deep autonomous worker (GPT-native, built for Codex) ---
+    "hephaestus": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium"
     },
 
     // --- Planner / Strategist ---
     "prometheus": {
-      "model": "anthropic/claude-opus-4-6",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "permission": { "edit": "deny", "bash": "deny" }
     },
 
     // --- Pre-planning consultant ---
     "metis": {
-      "model": "anthropic/claude-opus-4-6",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "permission": { "edit": "deny", "bash": "deny" }
     },
@@ -42,11 +48,13 @@
 
     // --- External reference search ---
     "librarian": {
-      "model": "anthropic/claude-sonnet-4-5",
+      "model": "google/antigravity-claude-sonnet-4-6",
       "permission": { "edit": "deny" }
     },
 
     // --- Contextual grep ---
+    // NOTE: grok-code-fast-1 (official 1st priority) returns 400 invalid_request_body
+    // from api.githubcopilot.com — reverted to claude-haiku-4-5 (official 2nd fallback)
     "explore": {
       "model": "anthropic/claude-haiku-4-5",
       "permission": { "edit": "deny" }
@@ -60,35 +68,29 @@
 
     // --- Session/context manager ---
     "atlas": {
-      "model": "anthropic/claude-sonnet-4-5"
+      "model": "google/antigravity-claude-sonnet-4-6"
     },
 
     // --- Delegated sub-agent (default for task() calls) ---
     "sisyphus-junior": {
-      "model": "anthropic/claude-sonnet-4-5"
+      "model": "google/antigravity-claude-sonnet-4-6"
     },
 
     // --- Internal builders/planners ---
     "build": {
-      "model": "anthropic/claude-sonnet-4-5"
+      "model": "google/antigravity-claude-sonnet-4-6"
     },
     "plan": {
-      "model": "anthropic/claude-opus-4-6",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "permission": { "edit": "deny", "bash": "deny" }
     },
     "OpenCode-Builder": {
-      "model": "anthropic/claude-sonnet-4-5"
+      "model": "google/antigravity-claude-sonnet-4-6"
     },
 
-    // --- Fallbacks ---
-    "unspecified-high": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max"
-    },
-    "unspecified-low": {
-      "model": "anthropic/claude-sonnet-4-5"
-    }
+    // NOTE: unspecified-high / unspecified-low are CATEGORY names,
+    // NOT agent names. Removed from agents; kept in categories below.
   },
 
   // ============================================================
@@ -123,10 +125,10 @@
       "reasoningEffort": "low"
     },
     "unspecified-low": {
-      "model": "anthropic/claude-sonnet-4-5"
+      "model": "google/antigravity-claude-sonnet-4-6"
     },
     "unspecified-high": {
-      "model": "anthropic/claude-opus-4-6",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "thinking": { "type": "enabled", "budgetTokens": 32768 }
     },
@@ -150,12 +152,16 @@
   // BACKGROUND TASK — parallel agent concurrency
   // ============================================================
   "background_task": {
-    "defaultConcurrency": 4,
+    "defaultConcurrency": 10,
     "providerConcurrency": {
-      "openai": 5,
-      "google": 3
+      "openai": 100,
+      "google": 100
     },
-    "staleTimeoutMs": 300000
+    // Issue #1925 workaround — xhigh/deep models need longer timeouts
+    // Hephaestus (GPT-5.3-codex) thinks long without emitting tool calls,
+    // triggering stale detection. Maintainer-recommended values:
+    "staleTimeoutMs": 600000,            // 10 min (was 5 min, default 3 min)
+    "messageStalenessTimeoutMs": 1800000 // 30 min (was default 10 min)
   },
 
   // ============================================================

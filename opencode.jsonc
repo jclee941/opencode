@@ -1,22 +1,20 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "tron",
-  "default_agent": "sisyphus",
   "username": "jclee",
   "logLevel": "INFO",
 
-  "instructions": [
-    "/home/jclee/.config/opencode/rules/session-init.md"
-  ],
+  // DISABLED: rules/session-init.md does not exist
+  // "instructions": [
+  //   "/home/jclee/.config/opencode/rules/session-init.md"
+  // ],
 
   "plugin": [
-    "opencode-antigravity-auth",
-    "@franlol/opencode-md-table-formatter",
+    "opencode-antigravity-auth@beta",
     "open-trees",
     "opencode-supermemory",
     "oh-my-opencode",
     "opencode-agent-skills",
-    "@mohak34/opencode-notifier",
     "opencode-snippets",
     "opencode-plugin-preload-skills",
     "opencode-pilot"
@@ -40,16 +38,10 @@
           "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
           "variants": { "minimal": { "thinkingLevel": "minimal" }, "low": { "thinkingLevel": "low" }, "medium": { "thinkingLevel": "medium" }, "high": { "thinkingLevel": "high" } }
         },
-        "antigravity-claude-sonnet-4-5": {
-          "name": "Claude Sonnet 4.5 (Antigravity)",
+        "antigravity-claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6 (Antigravity)",
           "limit": { "context": 200000, "output": 64000 },
           "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
-        },
-        "antigravity-claude-sonnet-4-5-thinking": {
-          "name": "Claude Sonnet 4.5 Thinking (Antigravity)",
-          "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
-          "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
         },
         "antigravity-claude-opus-4-6-thinking": {
           "name": "Claude Opus 4.6 Thinking (Antigravity)",
@@ -67,8 +59,8 @@
           "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
           "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
         },
-        "claude-sonnet-4.5": {
-          "name": "Claude Sonnet 4.5 (GitHub Copilot)",
+        "claude-sonnet-4.6": {
+          "name": "Claude Sonnet 4.6 (GitHub Copilot)",
           "limit": { "context": 200000, "output": 64000 },
           "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
           "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
@@ -99,7 +91,7 @@
   // EXPERIMENTAL — loop control & batch
   // ============================================================
   "experimental": {
-    "continue_loop_on_deny": true,
+    "continue_loop_on_deny": false,
     "batch_tool": true,
     "mcp_timeout": 60000,
     "primary_tools": ["bash", "edit", "write"]
@@ -136,7 +128,8 @@
     ".md": { "command": ["prettier", "--write"] },
     ".tf": { "command": ["terraform", "fmt"] },
     ".hcl": { "command": ["terraform", "fmt"] },
-    ".toml": { "command": ["taplo", "fmt"] }
+    // DISABLED: taplo not installed
+    // ".toml": { "command": ["taplo", "fmt"] }
   },
 
   // ============================================================
@@ -155,7 +148,8 @@
       "**/.cache/**",
       "**/.sisyphus/**",
       "antigravity-accounts.json",
-      "antigravity-signature-cache.json"
+      "antigravity-signature-cache.json",
+      "telegram.env"
     ]
   },
 
@@ -184,34 +178,36 @@
         }
       }
     },
-    "python": {
-      "command": ["pylsp"],
-      "extensions": [".py"],
-      "initialization": {
-        "pylsp": {
-          "plugins": {
-            "pycodestyle": { "enabled": false },
-            "mccabe": { "enabled": false },
-            "pyflakes": { "enabled": true },
-            "rope_autoimport": { "enabled": true },
-            "rope_completion": { "enabled": true }
-          }
-        }
-      }
-    },
-    "go": {
-      "command": ["gopls"],
-      "extensions": [".go"],
-      "env": { "GO111MODULE": "on" },
-      "initialization": {
-        "gopls": {
-          "staticcheck": true,
-          "gofumpt": true,
-          "usePlaceholders": true,
-          "completeUnimported": true
-        }
-      }
-    },
+    // DISABLED: pylsp not installed — install with: pip install python-lsp-server
+    // "python": {
+    //   "command": ["pylsp"],
+    //   "extensions": [".py"],
+    //   "initialization": {
+    //     "pylsp": {
+    //       "plugins": {
+    //         "pycodestyle": { "enabled": false },
+    //         "mccabe": { "enabled": false },
+    //         "pyflakes": { "enabled": true },
+    //         "rope_autoimport": { "enabled": true },
+    //         "rope_completion": { "enabled": true }
+    //       }
+    //     }
+    //   }
+    // },
+    // DISABLED: gopls not installed — install with: go install golang.org/x/tools/gopls@latest
+    // "go": {
+    //   "command": ["gopls"],
+    //   "extensions": [".go"],
+    //   "env": { "GO111MODULE": "on" },
+    //   "initialization": {
+    //     "gopls": {
+    //       "staticcheck": true,
+    //       "gofumpt": true,
+    //       "usePlaceholders": true,
+    //       "completeUnimported": true
+    //     }
+    //   }
+    // },
     "terraform": {
       "command": ["terraform-ls", "serve"],
       "extensions": [".tf", ".hcl"],
@@ -264,18 +260,21 @@
         "provideFormatter": false
       }
     },
-    "bash": {
-      "command": ["bash-language-server", "start"],
-      "extensions": [".sh", ".bash"]
-    },
-    "toml": {
-      "command": ["taplo", "lsp", "stdio"],
-      "extensions": [".toml"]
-    },
-    "markdown": {
-      "command": ["marksman", "server"],
-      "extensions": [".md"]
-    }
+    // DISABLED: bash-language-server not installed — install with: npm i -g bash-language-server
+    // "bash": {
+    //   "command": ["bash-language-server", "start"],
+    //   "extensions": [".sh", ".bash"]
+    // },
+    // DISABLED: taplo not installed — install with: cargo install taplo-cli
+    // "toml": {
+    //   "command": ["taplo", "lsp", "stdio"],
+    //   "extensions": [".toml"]
+    // },
+    // DISABLED: marksman not installed — install from: https://github.com/artempyanykh/marksman/releases
+    // "markdown": {
+    //   "command": ["marksman", "server"],
+    //   "extensions": [".md"]
+    // }
   },
 
   // ============================================================
