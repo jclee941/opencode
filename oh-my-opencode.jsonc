@@ -3,12 +3,17 @@
 
   // ============================================================
   // PROVIDER CONTEXT (for reference — defined in opencode.jsonc)
-  // Available (google provider only):
-  //   google/antigravity-claude-opus-4-6-thinking  (variants: low, max)
-  //   google/antigravity-claude-sonnet-4-6
-  //   google/antigravity-gemini-3-pro               (variants: low, high)
-  //   google/antigravity-gemini-3-flash             (variants: minimal, low, medium, high)
-  // NOT available: openai, github-copilot, kimi-for-coding, zai-coding-plan
+  // Available providers:
+  //   openai (native):
+  //     openai/gpt-5.3-codex, openai/gpt-5.2-codex, openai/gpt-5.2,
+  //     openai/gpt-5.1-codex, openai/gpt-5-codex, openai/codex-mini-latest
+  //   google (antigravity gateway):
+  //     google/antigravity-claude-opus-4-6-thinking  (variants: low, max)
+  //     google/antigravity-claude-sonnet-4-6
+  //     google/antigravity-gemini-3-pro               (variants: low, high)
+  //     google/antigravity-gemini-3-flash             (variants: minimal, low, medium, high)
+  //   anthropic (native): claude-opus-4-6, claude-sonnet-4-6, claude-haiku-4-5
+  // NOT available: kimi-for-coding, zai-coding-plan
   // ============================================================
 
   // ============================================================
@@ -26,20 +31,20 @@
     },
 
     // --- Deep autonomous worker (Hephaestus) ---
-    // Canonical: openai/gpt-5.3-codex (medium) — NOT available on any provider
-    // requiresProvider: openai/github-copilot/opencode — hephaestus won't activate without them.
-    // Override with best available deep-coding model as safety net in case
-    // requiresProvider gate is bypassed or opencode provider activates.
+    // Canonical: openai/gpt-5.3-codex (medium) — MUST use GPT, Claude breaks it
+    // Source: model-requirements.ts L28 — single entry, no fallback
+    // requiresProvider: openai/github-copilot/opencode ✅ openai authenticated
     "hephaestus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max"
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium"
     },
 
     // --- Strategic consultant (READ-ONLY) ---
-    // Fallback chain: openai → google/gemini-3-pro → anthropic/claude-opus-4-6
-    // Best available: google/antigravity-gemini-3-pro (high thinking)
+    // Fallback chain: openai/gpt-5.2 (high) → gemini-3-pro → claude-opus-4-6
+    // Source: model-requirements.ts L34 — GPT-native agent
+    // ✅ openai/gpt-5.2 available natively
     "oracle": {
-      "model": "google/antigravity-gemini-3-pro",
+      "model": "openai/gpt-5.2",
       "variant": "high",
       "permission": { "edit": "deny", "bash": "deny", "webfetch": "deny" }
     },
@@ -82,11 +87,12 @@
     },
 
     // --- Plan critic / reviewer (READ-ONLY) ---
-    // Fallback chain: openai/gpt-5.2 (medium) → anthropic/claude-opus-4-6 → google/gemini-3-pro
-    // Best available: google/antigravity-claude-opus-4-6-thinking (low thinking budget)
+    // Fallback chain: openai/gpt-5.2 (medium) → claude-opus-4-6 → gemini-3-pro
+    // Source: model-requirements.ts L84 — GPT-native agent
+    // ✅ openai/gpt-5.2 available natively
     "momus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "low",
+      "model": "openai/gpt-5.2",
+      "variant": "medium",
       "permission": { "edit": "deny", "bash": "deny" }
     },
 
@@ -112,21 +118,19 @@
     },
 
     // Deep logical reasoning — primary: openai/gpt-5.3-codex (xhigh)
-    // Guide chain: GPT-5.3-codex → Gemini 3 Pro → Opus (Gemini Pro is 2nd choice)
-    // GPT unavailable → use Gemini Pro (high thinking)
+    // Source: model-requirements.ts L111 — GPT-native category
+    // ✅ openai/gpt-5.3-codex available natively
     "ultrabrain": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "high",
-      "thinking": { "type": "enabled", "budgetTokens": 32768 }
+      "model": "openai/gpt-5.3-codex",
+      "variant": "xhigh"
     },
 
     // Goal-oriented autonomous solving — primary: openai/gpt-5.3-codex (medium)
-    // requiresModel: gpt-5.3-codex → NOT available, category won't auto-activate
-    // Override with best available reasoning model
+    // Source: model-requirements.ts L118 — requiresModel: gpt-5.3-codex
+    // ✅ openai/gpt-5.3-codex available natively — category will auto-activate
     "deep": {
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max",
-      "thinking": { "type": "enabled", "budgetTokens": 16384 }
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium"
     },
 
     // Creative / artistic — primary: google/gemini-3-pro (high)
@@ -188,13 +192,16 @@
     // Official defaults restored (v3.7.4: src/config/schema/background-task.ts)
     "staleTimeoutMs": 180000,             // 3 min (official default)
     "messageStalenessTimeoutMs": 600000,  // 10 min (official default)
-    // Per-provider concurrency (google = antigravity quota, generous)
+    // Per-provider concurrency
     "providerConcurrency": {
-      "google": 10
+      "google": 10,
+      "openai": 5
     },
-    // Per-model: cap expensive thinking models to control cost
+    // Per-model: cap expensive thinking/reasoning models to control cost
     "modelConcurrency": {
-      "google/antigravity-claude-opus-4-6-thinking": 2
+      "google/antigravity-claude-opus-4-6-thinking": 2,
+      "openai/gpt-5.3-codex": 3,
+      "openai/gpt-5.2": 3
     }
   },
 
