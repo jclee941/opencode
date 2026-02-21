@@ -1,195 +1,104 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
-    // --- Session/context manager & task executor ---
-    // Fallback chain: kimi/k2p5 → opencode → anthropic/claude-sonnet-4-6 → openai → google
-    // Best available: google/antigravity-claude-sonnet-4-6
     "atlas": {
-      "model": "google/antigravity-claude-sonnet-4-6",
+      "model": "google/antigravity-claude-sonnet-4-6"
     },
-    // --- Fast codebase grep / exploration ---
-    // Canonical: github-copilot/grok-code-fast-1 → anthropic/claude-haiku-4-5
-    // ⚠️ gemini-3-flash caused retry loops (toolCalls:0) — reverted to haiku-4-5 (13/13 success in logs)
     "explore": {
-      "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+      "model": "minimax-coding-plan/MiniMax-M2.5-highspeed"
     },
-    // --- Deep autonomous worker (Hephaestus) ---
-    // Canonical: openai/gpt-5.3-codex (medium) — MUST use GPT, Claude breaks it
-    // Source: model-requirements.ts L28 — single entry, no fallback
-    // requiresProvider: openai/github-copilot/opencode ✅ openai authenticated
     "hephaestus": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "openai/gpt-5.3-codex"
     },
-    // --- Documentation/reference researcher (UTILITY — speed > intelligence) ---
-    // Guide: "Doc retrieval doesn't need deep reasoning"
-    // Default chain: MiniMax Free → Gemini Flash → Big Pickle
-    // ⚠️ gemini-3-flash caused retry loops (toolCalls:0) — reverted to sonnet-4-6 (100% success in logs)
     "librarian": {
-      "model": "google/antigravity-claude-sonnet-4-6",
+      "model": "openai/gpt-5.2"
     },
-    // --- Pre-planning consultant (READ-ONLY) ---
-    // Fallback chain: anthropic/claude-opus-4-6 (max) → kimi → openai → google
-    // Best available: google/antigravity-claude-opus-4-6-thinking (max)
     "metis": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max",
+      "variant": "max"
     },
-    // --- Plan critic / reviewer (READ-ONLY) ---
-    // Fallback chain: openai/gpt-5.2 (medium) → claude-opus-4-6 → gemini-3-pro
-    // Source: model-requirements.ts L84 — GPT-native agent
-    // ✅ openai/gpt-5.2 available natively
     "momus": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.2"
     },
-    // --- Visual / multimodal analysis ---
-    // Fallback chain: google/gemini-3-flash → openai → zai → kimi → anthropic
-    // Best available: google/antigravity-gemini-3-flash (medium thinking)
     "multimodal-looker": {
-      "model": "google/antigravity-gemini-3-flash",
+      "model": "google/antigravity-gemini-3-flash"
     },
-    // --- Strategic consultant (READ-ONLY) ---
-    // Fallback chain: openai/gpt-5.2 (high) → gemini-3-pro → claude-opus-4-6
-    // Source: model-requirements.ts L34 — GPT-native agent
-    // ✅ openai/gpt-5.2 available natively
     "oracle": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.2"
     },
-    // --- Primary orchestrator ---
-    // Canonical: anthropic/claude-opus-4-6 (max)
-    // Best available: google/antigravity-claude-opus-4-6-thinking (max)
     "sisyphus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-    },
+      "model": "google/antigravity-claude-opus-4-6-thinking"
+    }
   },
-  // ============================================================
-  // BACKGROUND TASK — parallel agent concurrency
-  // Source: src/config/schema/background-task.ts
-  // ============================================================
   "background_task": {
-    // Tuned to reduce false stale-aborts during heavy parallel analysis.
     "defaultConcurrency": 3,
     "messageStalenessTimeoutMs": 900000,
-    // Per-model: cap expensive thinking/reasoning models to control cost
     "modelConcurrency": {
-      "google/antigravity-claude-opus-4-6-thinking": 1,
+      "google/antigravity-claude-opus-4-6-thinking": 1
     },
-    "staleTimeoutMs": 300000,
+    "staleTimeoutMs": 300000
   },
-  // ============================================================
-  // CATEGORIES — ALL 8 must be explicit (⚠️ NO auto-defaults)
-  // Source: src/shared/model-requirements.ts CATEGORY_MODEL_REQUIREMENTS
-  // ============================================================
   "categories": {
-    // Creative / artistic — primary: google/gemini-3.1-pro (high)
-    // requiresModel: gemini-3.1-pro — "antigravity-gemini-3.1-pro" may or may not match
-    // Override explicitly to ensure it resolves
     "artistry": {
-      "model": "google/antigravity-gemini-3.1-pro",
+      "model": "google/antigravity-gemini-3.1-pro"
     },
-    // Goal-oriented autonomous solving — primary: openai/gpt-5.3-codex (medium)
-    // Source: model-requirements.ts L118 — requiresModel: gpt-5.3-codex
-    // ✅ openai/gpt-5.3-codex available natively — category will auto-activate
     "deep": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "openai/gpt-5.3-codex"
     },
-    // Trivial/fast tasks — primary: anthropic/claude-haiku-4-5
-    // Best available: google/antigravity-gemini-3-flash (minimal thinking)
     "quick": {
-      "model": "google/antigravity-gemini-3-flash",
+      "model": "google/antigravity-gemini-3-flash"
     },
-    // Deep logical reasoning — primary: openai/gpt-5.3-codex (xhigh)
-    // Source: model-requirements.ts L111 — GPT-native category
-    // ✅ openai/gpt-5.3-codex available natively
     "ultrabrain": {
       "model": "openai/gpt-5.3-codex",
-      "variant": "xhigh",
+      "variant": "xhigh"
     },
-    // General high-effort tasks — primary: anthropic/claude-opus-4-6 (max)
-    // Best available: google/antigravity-claude-opus-4-6-thinking (max)
     "unspecified-high": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max",
+      "variant": "max"
     },
-    // General low-effort tasks — primary: anthropic/claude-sonnet-4-6
-    // Best available: google/antigravity-claude-sonnet-4-6
     "unspecified-low": {
-      "model": "google/antigravity-claude-sonnet-4-6",
+      "model": "google/antigravity-claude-sonnet-4-6"
     },
-    // Frontend / UI / design — primary: google/gemini-3.1-pro (high)
-    // Best available: google/antigravity-gemini-3.1-pro (high)
     "visual-engineering": {
       "model": "google/antigravity-gemini-3.1-pro",
       "reasoningEffort": "high",
-      "variant": "high",
+      "variant": "high"
     },
-    // Documentation / prose / technical writing — primary: kimi/k2p5
-    // kimi not available → fallback: google/gemini-3-flash (good for writing)
     "writing": {
-      "model": "google/antigravity-gemini-3-flash",
-    },
+      "model": "google/antigravity-gemini-3-flash"
+    }
   },
-  // ============================================================
-  // EXPERIMENTAL — dynamic context pruning
-  // Source: docs/configurations.md#experimental
-  // ============================================================
   "experimental": {
     "dynamic_context_pruning": {
       "enabled": false,
       "strategies": {
         "deduplication": {
-          "enabled": true,
+          "enabled": true
         },
         "purge_errors": {
           "enabled": true,
-          "turns": 5,
+          "turns": 5
         },
         "supersede_writes": {
           "aggressive": false,
-          "enabled": true,
-        },
-      },
-    },
+          "enabled": true
+        }
+      }
+    }
   },
-  // ============================================================
-  // GIT MASTER — commit metadata
-  // Source: docs/configurations.md#git-master
-  // ============================================================
   "git_master": {
     "commit_footer": true,
-    "include_co_authored_by": true,
+    "include_co_authored_by": true
   },
-  // ============================================================
-  // PROVIDER CONTEXT (for reference — defined in opencode.jsonc)
-  // Available providers:
-  //   openai (native):
-  //     openai/gpt-5.3-codex, openai/gpt-5.2-codex, openai/gpt-5.2,
-  //     openai/gpt-5.1-codex, openai/gpt-5-codex, openai/codex-mini-latest
-  //   google (antigravity gateway):
-  //     google/antigravity-claude-opus-4-6-thinking  (variants: low, max)
-  //     google/antigravity-claude-sonnet-4-6
-  //     google/antigravity-gemini-3-pro               (variants: low, high)
-  //     google/antigravity-gemini-3-flash             (variants: minimal, low, medium, high)
-  //   anthropic (native): claude-opus-4-6, claude-sonnet-4-6, claude-haiku-4-5
-  // NOT available: kimi-for-coding, zai-coding-plan
-  // ============================================================
-  // ============================================================
-  // AGENTS — lowercase keys only (source: src/shared/agent-display-names.ts)
-  // Builtin agents: sisyphus, hephaestus, oracle, librarian, explore,
-  //                 multimodal-looker, metis, momus, atlas
-  // ============================================================
   "google_auth": false,
-  // ============================================================
-  // RALPH LOOP — iteration cap for cost control
-  // ============================================================
   "ralph_loop": {
-    "default_max_iterations": 50,
+    "default_max_iterations": 50
   },
-  // ============================================================
-  // SISYPHUS AGENT — orchestrator control
-  // Source: docs/configurations.md#sisyphus-agent
-  // ============================================================
   "sisyphus_agent": {
-    "default_builder_enabled": false, // OpenCode-Builder disabled (Sisyphus handles it)
-    "planner_enabled": true, // Reduce startup fan-out to lower cancellation pressure
+    "default_builder_enabled": false,
+    "planner_enabled": true
   },
+  "_migrations": [
+    "model-version:openai/gpt-5.2-codex->openai/gpt-5.3-codex"
+  ]
 }

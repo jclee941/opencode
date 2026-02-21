@@ -187,27 +187,32 @@
   // ============================================================
   "small_model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
   // ============================================================
-  // FORMATTER — per-extension formatting commands
+  // FORMATTER — name-keyed (official format, see opencode.ai/docs/formatters)
+  //   Built-in formatters (prettier, gofmt, ruff, terraform) auto-detect from
+  //   project config. Explicit entries here act as global fallback for projects
+  //   without local formatter config. taplo is not built-in — requires explicit entry.
   // ============================================================
   "formatter": {
-    ".ts": { "command": ["prettier", "--write"] },
-    ".tsx": { "command": ["prettier", "--write"] },
-    ".js": { "command": ["prettier", "--write"] },
-    ".mjs": { "command": ["prettier", "--write"] },
-    ".cjs": { "command": ["prettier", "--write"] },
-    ".jsx": { "command": ["prettier", "--write"] },
-    ".css": { "command": ["prettier", "--write"] },
-    ".html": { "command": ["prettier", "--write"] },
-    ".py": { "command": ["ruff", "format"] },
-    ".go": { "command": ["gofmt", "-w"] },
-    ".json": { "command": ["prettier", "--write"] },
-    ".jsonc": { "command": ["prettier", "--write"] },
-    ".yaml": { "command": ["prettier", "--write"] },
-    ".yml": { "command": ["prettier", "--write"] },
-    ".md": { "command": ["prettier", "--write"] },
-    ".tf": { "command": ["terraform", "fmt"] },
-    ".hcl": { "command": ["terraform", "fmt"] },
-    ".toml": { "command": ["taplo", "fmt"] },
+    "prettier": {
+      "command": ["prettier", "--write", "$FILE"],
+      "extensions": [".ts", ".tsx", ".js", ".mjs", ".cjs", ".jsx", ".css", ".html", ".json", ".jsonc", ".yaml", ".yml", ".md"],
+    },
+    "ruff": {
+      "command": ["ruff", "format", "$FILE"],
+      "extensions": [".py"],
+    },
+    "gofmt": {
+      "command": ["gofmt", "-w", "$FILE"],
+      "extensions": [".go"],
+    },
+    "terraform": {
+      "command": ["terraform", "fmt", "$FILE"],
+      "extensions": [".tf", ".hcl"],
+    },
+    "taplo": {
+      "command": ["taplo", "fmt", "$FILE"],
+      "extensions": [".toml"],
+    },
   },
 
   // ============================================================
@@ -445,10 +450,6 @@
         "provideFormatter": false,
       },
     },
-    "bash": {
-      "command": ["bash-language-server", "start"],
-      "extensions": [".sh", ".bash"],
-    },
     "toml": {
       "command": ["taplo", "lsp", "stdio"],
       "extensions": [".toml"],
@@ -473,10 +474,6 @@
   "command": {},
 
   // ============================================================
-  // SERVER — API server settings
-  // ============================================================
-
-  // ============================================================
   // AUTO-UPDATE & SHARING
   // ============================================================
   "autoupdate": "notify",
@@ -490,5 +487,6 @@
     "leader": "ctrl+x",
     "tool_details": "<leader>d",
     "session_fork": "<leader>f",
+    "display_thinking": "<leader>t",
   },
 }
