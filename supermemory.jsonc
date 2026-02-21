@@ -1,0 +1,6 @@
+{
+  "maxMemories": 3,
+  "maxProjectMemories": 5,
+  "maxProfileItems": 3,
+  "injectProfile": true
+}
