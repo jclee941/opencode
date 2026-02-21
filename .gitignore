@@ -1,0 +1,38 @@
+# ============================================================
+# SECRETS & CREDENTIALS — NEVER commit
+# ============================================================
+antigravity-accounts.json
+antigravity-accounts.json.*.tmp
+antigravity-signature-cache.json
+
+# ============================================================
+# RUNTIME & LOGS — ephemeral data
+# ============================================================
+antigravity-logs/
+logs/
+log/
+data/
+.opencode/data/
+pilot/pilot.pid
+tmp/
+profiles/
+
+# ============================================================
+# GENERATED & CACHE — auto-created
+# ============================================================
+node_modules/
+skills/*/node_modules/
+dist/
+coverage/
+.cache/
+
+# ============================================================
+# BINARIES — compiled artifacts
+# ============================================================
+server
+
+# ============================================================
+# BACKUPS — transient snapshots
+# ============================================================
+*.backup-*
+.gitignore

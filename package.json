@@ -1,5 +1,9 @@
 {
+  "scripts": {
+    "lint:naming": "node scripts/validate-monorepo-naming.mjs",
+    "lint:assistant-phrasing": "node scripts/lint-assistant-phrasing.mjs"
+  },
   "dependencies": {
-    "@opencode-ai/plugin": "1.2.6"
+    "@opencode-ai/plugin": "1.2.10"
   }
 }
