@@ -4,20 +4,23 @@
   "username": "jclee",
   "logLevel": "INFO",
 
-  // DISABLED: rules/session-init.md does not exist
-  // "instructions": [
-  //   "/home/jclee/.config/opencode/rules/session-init.md"
-  // ],
+  "instructions": [
+    // Tier 1 — Always-loaded baseline rules.
+    // Domain/task-specific rules (Tier 2/3) loaded from project-level opencode.jsonc.
+    "rules/hard-autonomy-no-questions.md",
+    "rules/session-init.md",
+    "rules/requirements-verification.md",
+    "rules/deployment-automation.md",
+    "rules/monorepo-standards.md",
+  ],
 
   "plugin": [
-    "opencode-antigravity-auth",
-    "open-trees",
-    "opencode-supermemory",
     "oh-my-opencode",
-    "opencode-agent-skills",
-    "opencode-snippets",
-    "opencode-plugin-preload-skills",
-    "opencode-pilot"
+    "opencode-antigravity-auth@latest",
+    "opencode-supermemory",
+    // "open-trees", // disabled: no clear recent usage evidence
+    // "opencode-snippets", // disabled: optional productivity add-on
+    "opencode-pilot",
   ],
 
   // ============================================================
@@ -25,32 +28,119 @@
   // ============================================================
   "provider": {
     "google": {
+      "options": {
+        "timeout": 600000,
+        "setCacheKey": true,
+      },
       "models": {
         "antigravity-gemini-3-pro": {
           "name": "Gemini 3 Pro (Antigravity)",
           "limit": { "context": 1048576, "output": 65535 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
-          "variants": { "low": { "thinkingLevel": "low" }, "high": { "thinkingLevel": "high" } }
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+          "variants": {
+            "low": { "thinkingLevel": "low" },
+            "high": { "thinkingLevel": "high" },
+          },
+        },
+        "antigravity-gemini-3.1-pro": {
+          "name": "Gemini 3.1 Pro (Antigravity)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+          "variants": {
+            "low": { "thinkingLevel": "low" },
+            "high": { "thinkingLevel": "high" },
+          },
         },
         "antigravity-gemini-3-flash": {
           "name": "Gemini 3 Flash (Antigravity)",
           "limit": { "context": 1048576, "output": 65536 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
-          "variants": { "minimal": { "thinkingLevel": "minimal" }, "low": { "thinkingLevel": "low" }, "medium": { "thinkingLevel": "medium" }, "high": { "thinkingLevel": "high" } }
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+          "variants": {
+            "minimal": { "thinkingLevel": "minimal" },
+            "low": { "thinkingLevel": "low" },
+            "medium": { "thinkingLevel": "medium" },
+            "high": { "thinkingLevel": "high" },
+          },
         },
         "antigravity-claude-sonnet-4-6": {
           "name": "Claude Sonnet 4.6 (Antigravity)",
           "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
         },
         "antigravity-claude-opus-4-6-thinking": {
           "name": "Claude Opus 4.6 Thinking (Antigravity)",
           "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
-          "variants": { "low": { "thinkingConfig": { "thinkingBudget": 8192 } }, "max": { "thinkingConfig": { "thinkingBudget": 32768 } } }
-        }
-      }
-    }
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+          "variants": {
+            "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
+            "max": { "thinkingConfig": { "thinkingBudget": 32768 } },
+          },
+        },
+        "gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "gemini-3-flash-preview": {
+          "name": "Gemini 3 Flash Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "gemini-3-pro-preview": {
+          "name": "Gemini 3 Pro Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "gemini-3.1-pro-preview": {
+          "name": "Gemini 3.1 Pro Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "gemini-3.1-pro-preview-customtools": {
+          "name": "Gemini 3.1 Pro Preview Custom Tools (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+      },
+    },
   },
 
   // ============================================================
@@ -60,11 +150,14 @@
     "mcphub": {
       "type": "remote",
       "url": "http://192.168.50.112:3000/mcp",
-      "timeout": 60000
-    }
+      "timeout": 30000,
+      "enabled": true,
+    },
   },
 
-  "permission": { "*": "allow" },
+  "permission": {
+    "*": "allow"
+  },
 
   // ============================================================
   // EXPERIMENTAL — loop control & batch
@@ -72,8 +165,8 @@
   "experimental": {
     "continue_loop_on_deny": false,
     "batch_tool": true,
-    "mcp_timeout": 60000,
-    "primary_tools": ["bash", "edit", "write"]
+    "mcp_timeout": 30000,
+    "primary_tools": ["read", "grep", "glob", "edit", "write", "bash"],
   },
 
   // ============================================================
@@ -82,13 +175,13 @@
   "compaction": {
     "auto": true,
     "prune": true,
-    "reserved": 8000
+    "reserved": 32000,
   },
 
   // ============================================================
   // SMALL MODEL — for lightweight tasks (title gen, summaries)
   // ============================================================
-  "small_model": "anthropic/claude-haiku-4-5",
+  "small_model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
   // ============================================================
   // FORMATTER — per-extension formatting commands
   // ============================================================
@@ -96,18 +189,21 @@
     ".ts": { "command": ["prettier", "--write"] },
     ".tsx": { "command": ["prettier", "--write"] },
     ".js": { "command": ["prettier", "--write"] },
+    ".mjs": { "command": ["prettier", "--write"] },
+    ".cjs": { "command": ["prettier", "--write"] },
     ".jsx": { "command": ["prettier", "--write"] },
     ".css": { "command": ["prettier", "--write"] },
     ".html": { "command": ["prettier", "--write"] },
     ".py": { "command": ["ruff", "format"] },
     ".go": { "command": ["gofmt", "-w"] },
     ".json": { "command": ["prettier", "--write"] },
+    ".jsonc": { "command": ["prettier", "--write"] },
     ".yaml": { "command": ["prettier", "--write"] },
     ".yml": { "command": ["prettier", "--write"] },
     ".md": { "command": ["prettier", "--write"] },
     ".tf": { "command": ["terraform", "fmt"] },
     ".hcl": { "command": ["terraform", "fmt"] },
-    ".toml": { "command": ["/usr/local/bin/taplo", "fmt"] }
+    ".toml": { "command": ["taplo", "fmt"] },
   },
 
   // ============================================================
@@ -125,10 +221,23 @@
       "**/terraform.tfstate*",
       "**/.cache/**",
       "**/.sisyphus/**",
+      "**/logs/**",
+      "**/log/**",
+      "**/data/**",
+      "**/profiles/**",
+      "**/tmp/**",
+      "**/*.log",
+      "**/*.db",
+      "**/*.pid",
+      "**/*.tmp",
+      "**/*.swp",
+      "**/*~",
+      "**/.DS_Store",
+      "**/*.bak.*",
+      "**/*.backup-*",
       "antigravity-accounts.json",
       "antigravity-signature-cache.json",
-      "telegram.env"
-    ]
+    ],
   },
 
   // ============================================================
@@ -137,7 +246,7 @@
   "tui": {
     "scroll_speed": 3,
     "scroll_acceleration": { "enabled": true },
-    "diff_style": "auto"
+    "diff_style": "auto",
   },
 
   // ============================================================
@@ -148,20 +257,57 @@
       "command": ["typescript-language-server", "--stdio"],
       "extensions": [".ts", ".tsx", ".js", ".jsx"],
       "initialization": {
+        "maxTsServerMemory": 6144,
+        "tsserver": {
+          "useSyntaxServer": "auto",
+          "trace": "off",
+        },
         "preferences": {
           "includeInlayParameterNameHints": "all",
+          "includeInlayParameterNameHintsWhenArgumentMatchesName": false,
           "includeInlayFunctionParameterTypeHints": true,
-          "includeInlayVariableTypeHints": true,
-          "includeInlayPropertyDeclarationTypeHints": true
-        }
-      }
+          "includeInlayVariableTypeHints": false,
+          "includeInlayVariableTypeHintsWhenTypeMatchesName": false,
+          "includeInlayPropertyDeclarationTypeHints": false,
+          "includeInlayFunctionLikeReturnTypeHints": true,
+          "includeInlayEnumMemberValueHints": true,
+          "interactiveInlayHints": true,
+          "includeCompletionsForModuleExports": true,
+          "includeCompletionsForImportStatements": true,
+          "includePackageJsonAutoImports": "on",
+          "importModuleSpecifierPreference": "project-relative",
+          "importModuleSpecifierEnding": "minimal",
+          "organizeImportsTypeOrder": "last",
+        },
+      },
     },
     "python": {
       "command": ["basedpyright-langserver", "--stdio"],
-      "extensions": [".py"]
+      "extensions": [".py"],
+      "initialization": {
+        "basedpyright": {
+          "analysis": {
+            "diagnosticMode": "workspace",
+            "typeCheckingMode": "recommended",
+            "autoImportCompletions": true,
+            "inlayHints": {
+              "variableTypes": true,
+              "callArgumentNames": true,
+              "functionReturnTypes": true,
+              "genericTypes": true,
+            },
+            "useLibraryCodeForTypes": true,
+            "autoSearchPaths": true,
+            "configFilePath": "${workspaceFolder}",
+            "diagnosticSeverityOverrides": {
+              "reportMissingTypeStubs": "none",
+            },
+          },
+        },
+      },
     },
     "go": {
-      "command": ["/home/jclee/go/bin/gopls"],
+      "command": ["gopls"],
       "extensions": [".go"],
       "env": { "GO111MODULE": "on" },
       "initialization": {
@@ -169,16 +315,78 @@
           "staticcheck": true,
           "gofumpt": true,
           "usePlaceholders": true,
-          "completeUnimported": true
-        }
-      }
+          "completeUnimported": true,
+          "directoryFilters": ["-node_modules", "-.git", "-.cache", "-tmp"],
+          "analyses": {
+            "unusedparams": true,
+            "nilness": true,
+            "shadow": true,
+          },
+        },
+      },
+    },
+    "rust": {
+      "command": ["rust-analyzer"],
+      "extensions": [".rs"],
+      "initialization": {
+        "cargo": {
+          "allTargets": true,
+          "features": "all",
+          "buildScripts": { "enable": true },
+        },
+        "checkOnSave": true,
+        "check": {
+          "command": "clippy",
+          "allTargets": true,
+          "extraArgs": ["--", "-Dwarnings"],
+        },
+        "procMacro": { "enable": true },
+        "files": {
+          "watcher": "client",
+          "exclude": [".git", "target", "node_modules", "tmp", ".cache"],
+        },
+        "inlayHints": {
+          "typeHints": { "enable": true },
+          "parameterHints": { "enable": true },
+          "chainingHints": { "enable": true },
+        },
+      },
+    },
+    "lua": {
+      "command": ["lua-language-server"],
+      "extensions": [".lua"],
+      "initialization": {
+        "Lua": {
+          "runtime": {
+            "version": "LuaJIT",
+            "path": ["lua/?.lua", "lua/?/init.lua"],
+            "pathStrict": false,
+          },
+          "workspace": {
+            "checkThirdParty": false,
+            "library": ["${workspaceFolder}"],
+          },
+          "diagnostics": {
+            "enable": true,
+            "globals": ["vim"],
+            "workspaceDelay": 3000,
+            "workspaceEvent": "OnSave",
+            "workspaceRate": 100,
+          },
+          "hint": {
+            "enable": true,
+            "paramName": "Disable",
+            "semicolon": "Disable",
+          },
+        },
+      },
     },
     "terraform": {
       "command": ["terraform-ls", "serve"],
       "extensions": [".tf", ".hcl"],
       "initialization": {
-        "experimentalFeatures": { "validateOnSave": true }
-      }
+        "experimentalFeatures": { "validateOnSave": true },
+      },
     },
     "yaml": {
       "command": ["yaml-language-server", "--stdio"],
@@ -188,12 +396,13 @@
           "validate": true,
           "hover": true,
           "completion": true,
+          "format": { "enable": false },
           "schemas": {
             "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml",
-            "https://json.schemastore.org/docker-compose.json": "docker-compose*.yml"
-          }
-        }
-      }
+            "https://json.schemastore.org/docker-compose.json": "docker-compose*.yml",
+          },
+        },
+      },
     },
     "json": {
       "command": ["vscode-json-language-server", "--stdio"],
@@ -201,12 +410,19 @@
       "initialization": {
         "provideFormatter": true,
         "json": {
+          "validate": { "enable": true },
           "schemas": [
-            { "fileMatch": ["package.json"], "url": "https://json.schemastore.org/package.json" },
-            { "fileMatch": ["tsconfig*.json"], "url": "https://json.schemastore.org/tsconfig.json" }
-          ]
-        }
-      }
+            {
+              "fileMatch": ["package.json"],
+              "url": "https://json.schemastore.org/package.json",
+            },
+            {
+              "fileMatch": ["tsconfig*.json"],
+              "url": "https://json.schemastore.org/tsconfig.json",
+            },
+          ],
+        },
+      },
     },
     "css": {
       "command": ["vscode-css-language-server", "--stdio"],
@@ -215,28 +431,28 @@
         "provideFormatter": false,
         "css": { "validate": true },
         "scss": { "validate": true },
-        "less": { "validate": true }
-      }
+        "less": { "validate": true },
+      },
     },
     "html": {
       "command": ["vscode-html-language-server", "--stdio"],
       "extensions": [".html"],
       "initialization": {
-        "provideFormatter": false
-      }
+        "provideFormatter": false,
+      },
     },
     "bash": {
       "command": ["bash-language-server", "start"],
-      "extensions": [".sh", ".bash"]
+      "extensions": [".sh", ".bash"],
     },
     "toml": {
-      "command": ["/usr/local/bin/taplo", "lsp", "stdio"],
-      "extensions": [".toml"]
+      "command": ["taplo", "lsp", "stdio"],
+      "extensions": [".toml"],
     },
     "markdown": {
       "command": ["marksman", "server"],
-      "extensions": [".md"]
-    }
+      "extensions": [".md"],
+    },
   },
 
   // ============================================================
@@ -244,7 +460,7 @@
   // ============================================================
   "skills": {
     "paths": ["~/.config/opencode/skills"],
-    "urls": []
+    "urls": [],
   },
 
   // ============================================================
@@ -259,16 +475,16 @@
   // ============================================================
   // AUTO-UPDATE & SHARING
   // ============================================================
-  "autoupdate": true,
+  "autoupdate": "notify",
   "snapshot": true,
   "share": "manual",
 
   // ============================================================
   // KEYBINDS
   // ============================================================
-  "keybinds": { 
-    "leader": "ctrl+x", 
-    "tool_details": "<leader>d", 
-    "session_fork": "<leader>f" 
-  }
+  "keybinds": {
+    "leader": "ctrl+x",
+    "tool_details": "<leader>d",
+    "session_fork": "<leader>f",
+  },
 }
