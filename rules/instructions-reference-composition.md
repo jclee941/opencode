@@ -6,7 +6,7 @@ This document defines a standard way to compose instruction references for tasks
 
 Two composition modes are used in this repository:
 
-1. Runtime baseline: `opencode.jsonc` uses `rules/*.md`.
+1. Runtime baseline: `opencode.jsonc` loads Tier 1 rules via explicit file paths (not glob). `AGENTS.md` is loaded natively by OpenCode and must not be duplicated in the instructions array.
 2. Task-time references: prompts/contracts cite only relevant files.
 
 Task-time composition order:

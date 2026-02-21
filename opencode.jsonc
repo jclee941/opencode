@@ -5,8 +5,12 @@
   "logLevel": "INFO",
 
   "instructions": [
-    // Tier 1 — Always-loaded baseline rules.
-    // Domain/task-specific rules (Tier 2/3) loaded from project-level opencode.jsonc.
+    // Tier 1 — Always-loaded baseline rules (explicit listing).
+    // Explicit paths chosen over glob ("rules/*.md") for determinism:
+    //   - Prevents Tier 2/3 domain rules (ELK, Proxmox) from consuming
+    //     context tokens in unrelated sessions.
+    //   - AGENTS.md is loaded natively by OpenCode — not duplicated here.
+    //   - Tier 2/3 rules loaded from project-level opencode.jsonc when in scope.
     "rules/hard-autonomy-no-questions.md",
     "rules/session-init.md",
     "rules/requirements-verification.md",

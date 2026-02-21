@@ -79,6 +79,8 @@ Canonical composition guide: `rules/instructions-reference-composition.md`.
 
 Runtime loading model in this repository:
 
-1. `opencode.jsonc` loads `rules/*.md` as the baseline instruction set.
-2. File-level ownership must stay single-source (no duplicated normative text).
-3. Task prompts still reference only the files needed for that task.
+1. `opencode.jsonc` loads Tier 1 rules via explicit file paths (not glob).
+2. `AGENTS.md` is loaded natively by OpenCode — it must not appear in the instructions array.
+3. Explicit listing is preferred over `rules/*.md` glob to prevent Tier 2/3 domain rules from consuming context tokens in unrelated sessions.
+4. File-level ownership must stay single-source (no duplicated normative text).
+5. Task prompts still reference only the files needed for that task.
