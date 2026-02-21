@@ -46,6 +46,6 @@ A checklist is complete only when:
 
 ## Reference composition
 
-1. Use `rules/instructions-reference-composition.md` as the canonical composition guide.
+1. Use `rules/README.md` as the canonical composition and architecture guide.
 2. Keep task-time references minimal: include this file only when requirement/checklist work is in scope.
 3. Resolve conflicts with this priority: `hard-autonomy-no-questions.md` -> domain rule -> `session-init.md` -> repository standards.

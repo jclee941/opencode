@@ -10,6 +10,14 @@ This file is the canonical source for shared ELK troubleshooting rules.
 2. Domain-specific files should define only deltas (environment, field mapping variants, scope translation, escalation specifics).
 3. Do not duplicate shared query guardrails/output contracts in specialization files unless the domain requires a documented exception.
 
+## Scope classification
+
+Error tracking spans three scopes:
+
+1. Application/runtime errors (service logs, agent/runtime logs, worker logs).
+2. Platform errors (node/container/system-level failures affecting workloads).
+3. Ingestion-path errors (shipper, pipeline, mapping, index routing failures).
+
 ## Core rule
 
 0. All related error-tracking signals must be enrolled and verifiable in ELK before deep troubleshooting.
@@ -34,33 +42,20 @@ This file is the canonical source for shared ELK troubleshooting rules.
 6. Propose minimum reversible remediation.
 7. Re-check ELK evidence after change (10-30m window).
 
-## ELK unlinked fallback (mandatory)
+## Enrollment and verification sequence
 
-When troubleshooting evidence is missing from ELK, execute this sequence before deep root-cause work:
-
-1. Confirm the target emits logs locally (service log file, journald, container logs, or app logger).
-2. Confirm ELK path health:
-   - Elasticsearch reachable
-   - index write path available
-   - ingestion agent/forwarder status healthy
-3. Verify index and mapping existence for the target workload.
-4. If ingestion is missing, perform minimum integration work:
-   - add or fix log shipper input for target logs
-   - ensure required metadata fields (`host`, `service/module`, timestamp, severity)
-   - route to a bounded index pattern
-5. Validate integration success by ingesting fresh events and querying them with bounded `queryBody`.
-6. Resume normal troubleshooting only after ELK visibility is confirmed.
-
-## Integration completion criteria
-
-1. At least one fresh event for the affected target is queryable in ELK.
-2. Events include usable correlation keys (time + host + service/module + severity).
-3. Troubleshooting response includes pre/post integration evidence snapshot.
-
-## Missing prerequisite handling
-
-1. If integration needs unavailable credentials/endpoints, complete all safe non-secret steps first.
-2. Then report exactly one missing value required to finish integration.
+1. Confirm local error emission exists at source (app log, journald, container log, runtime logger).
+2. Confirm ingestion path health (shipper/forwarder status and destination reachability).
+3. Ensure target index pattern is explicit and bounded.
+4. Ensure required fields are queryable:
+   - `@timestamp`
+   - `message`
+   - `level` or severity equivalent
+   - `service/module` or workload identifier
+   - `host/node` when applicable
+5. Query `now-10m` to `now`; require at least one fresh event.
+6. Query focused error window (`level:error` or equivalent) with small size (`20-100`).
+7. Re-check after 10-30 minutes to confirm ingestion continuity.
 
 ## Query guardrails
 
@@ -69,12 +64,65 @@ When troubleshooting evidence is missing from ELK, execute this sequence before 
 3. Do not run unfiltered wildcard scans first.
 4. Tighten dimensions before widening time range or size.
 
-## Required output format for troubleshooting responses
+## Query templates
 
-1. Root-cause hypothesis tied to concrete ELK evidence.
-2. Evidence snapshot:
+```json
+{
+  "size": 50,
+  "sort": [{ "@timestamp": { "order": "desc" } }],
+  "query": {
+    "bool": {
+      "filter": [
+        { "range": { "@timestamp": { "gte": "now-30m", "lte": "now" } } },
+        { "term": { "level.keyword": "error" } }
+      ]
+    }
+  }
+}
+```
+
+```json
+{
+  "size": 25,
+  "sort": [{ "@timestamp": { "order": "desc" } }],
+  "query": {
+    "bool": {
+      "filter": [
+        { "range": { "@timestamp": { "gte": "now-15m", "lte": "now" } } },
+        { "term": { "service.keyword": "<target-service>" } }
+      ]
+    }
+  }
+}
+```
+
+## Common false-negative traps
+
+1. Green/yellow cluster status without fresh ingest events.
+2. Index exists but mapping mismatch blocks useful filters.
+3. Timezone/time-window mismatch causing no hits.
+4. Index rollover moving recent data to a different backing index.
+5. Partial auth: list/health allowed but search denied.
+
+## Missing prerequisite handling
+
+1. If integration needs unavailable credentials/endpoints, complete all safe non-secret steps first.
+2. Then report exactly one missing value required to finish integration.
+
+## Completion criteria
+
+1. Fresh error-tracking events are queryable for the affected target.
+2. Events contain correlation keys needed for triage.
+3. Bounded error query reproduces symptom signal.
+4. Post-change recheck confirms continued ingestion.
+
+## Required output format
+
+1. Scope (`application` | `platform` | `ingestion-path`).
+2. Root-cause hypothesis tied to concrete ELK evidence.
+3. Evidence snapshot:
    - index
    - key fields used
    - time window
-3. Fix plan with rollback notes.
-4. Verification checklist for the next 10-30 minutes.
+4. Fix plan with rollback notes.
+5. Verification checklist for the next 10-30 minutes.

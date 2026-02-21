@@ -1,6 +1,6 @@
 # Ruleset Architecture
 
-This file defines how rule files in `rules/` are composed and resolved.
+This file defines how rule files in `rules/` are composed, resolved, and loaded.
 
 ## Priority order
 
@@ -8,7 +8,7 @@ Apply rules in this order when overlap exists:
 
 1. `hard-autonomy-no-questions.md` (execution posture, question policy, blocked-step handling)
 2. `requirements-verification.md` (always-check requirements spec before/after implementation)
-3. Domain rules (`elk-troubleshooting-global.md`, `elk-error-tracking-runbook.md`, `elk-opencode-troubleshooting.md`, `opencode-elk-triage-runbook.md`, `elk-proxmox-troubleshooting.md`, `proxmox-elk-triage-runbook.md`)
+3. Domain rules (`elk-troubleshooting-global.md`, `elk-opencode.md`, `elk-proxmox.md`)
 4. `session-init.md` (session checklist and verification baseline)
 5. `deployment-automation.md` (CI/CD policy, manual deploy prohibition)
 6. `monorepo-standards.md` (structure, naming, document normalization)
@@ -33,32 +33,36 @@ These are loaded into every session as baseline rules:
 Loaded only when the task touches the relevant domain:
 
 - ELK global: `elk-troubleshooting-global.md`
-- ELK error tracking: `elk-error-tracking-runbook.md`
-- ELK OpenCode delta: `elk-opencode-troubleshooting.md`
-- ELK OpenCode runbook: `opencode-elk-triage-runbook.md`
-- ELK Proxmox delta: `elk-proxmox-troubleshooting.md`
-- ELK Proxmox runbook: `proxmox-elk-triage-runbook.md`
+- ELK OpenCode: `elk-opencode.md`
+- ELK Proxmox: `elk-proxmox.md`
 
 ### Tier 3 — Process rules (loaded when specific process is in scope)
 
 - `requirements-modularization-checklist.md` — requirement authoring and checklist quality
 - `document-normalization-runbook.md` — document move/rename/dedup tasks
-- `instructions-reference-composition.md` — instruction composition guide
 
 ## Inheritance model
 
 1. `elk-troubleshooting-global.md` is the ELK troubleshooting source of truth.
-2. `elk-error-tracking-runbook.md` is the default execution checklist for cross-domain error tracking in ELK.
-3. `elk-opencode-troubleshooting.md` only adds OpenCode-specific constraints, fields, and scope translation.
-4. `opencode-elk-triage-runbook.md` is the execution checklist for OpenCode work; it must reference global policy for shared ELK rules instead of duplicating them.
-5. `elk-proxmox-troubleshooting.md` only adds Proxmox-specific constraints, fields, and scope translation.
-6. `proxmox-elk-triage-runbook.md` is the execution checklist for Proxmox work; it must reference global policy for shared ELK rules instead of duplicating them.
+2. `elk-opencode.md` adds only OpenCode-specific deltas (scope translation, evidence dimensions, blind spots).
+3. `elk-proxmox.md` adds only Proxmox-specific deltas (environment baseline, infrastructure remediation, data source prioritization).
 
 ## Conflict resolution rules
 
 1. Prefer stricter safety constraints when two rules differ.
 2. Do not duplicate the same normative rule text across multiple files; keep one canonical source and link to it.
 3. If a domain rule needs an exception, state the exception explicitly and bound it to that domain only.
+
+When conflicts appear, resolve and document in this order:
+
+1. `hard-autonomy-no-questions.md`
+2. domain rule
+3. `session-init.md`
+4. repository standards
+
+Write conflict decisions in one line:
+
+`applied: <base rule>, overridden by: <exception rule>, scope: <bounded scope>`
 
 ## High-risk operation policy
 
@@ -73,14 +77,33 @@ All high-risk and blocked-operation handling must reference that file instead of
 3. Validate with `npm run lint:naming` after changes.
 4. For reversible in-scope recommendations, prefer immediate application over optional suggestion text.
 
-## Instruction reference composition
-
-Canonical composition guide: `rules/instructions-reference-composition.md`.
-
-Runtime loading model in this repository:
+## Instruction loading model
 
 1. `opencode.jsonc` loads Tier 1 rules via explicit file paths (not glob).
 2. `AGENTS.md` is loaded natively by OpenCode — it must not appear in the instructions array.
 3. Explicit listing is preferred over `rules/*.md` glob to prevent Tier 2/3 domain rules from consuming context tokens in unrelated sessions.
 4. File-level ownership must stay single-source (no duplicated normative text).
 5. Task prompts still reference only the files needed for that task.
+
+## Task-time composition order
+
+1. Base execution rules (Tier 1 — always loaded):
+   - `rules/hard-autonomy-no-questions.md`
+   - `rules/session-init.md`
+   - `rules/requirements-verification.md`
+2. Domain rules (Tier 2 — only when relevant):
+   - global ELK: `rules/elk-troubleshooting-global.md`
+   - OpenCode ELK: `rules/elk-opencode.md`
+   - Proxmox ELK: `rules/elk-proxmox.md`
+3. Repository governance (Tier 1 baseline + Tier 3 process):
+   - `rules/deployment-automation.md` (Tier 1)
+   - `rules/monorepo-standards.md` (Tier 1)
+   - `rules/requirements-modularization-checklist.md` (Tier 3 — requirement/checklist tasks)
+   - `rules/document-normalization-runbook.md` (Tier 3 — document move/rename tasks)
+
+## Reference hygiene
+
+1. Use exact relative paths under `rules/`.
+2. Avoid duplicate references to equivalent rules.
+3. Keep the reference set minimal and task-specific.
+4. If a referenced file is canonical SSoT, point secondary rules to it instead of copying text.

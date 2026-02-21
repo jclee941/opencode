@@ -121,29 +121,6 @@ This file is the canonical source for deployment automation rules.
 3. Use `timeout-minutes` on all deploy jobs (10-15 min default).
 4. Use minimum required `permissions` per job — never `permissions: write-all`.
 
-## Anti-patterns (NEVER)
-
-1. Never run `wrangler deploy` from local machine.
-2. Never run `terraform apply` from local machine against production.
-3. Never push Docker images from local machine.
-4. Never create GitHub releases manually when automation exists.
-5. Never bypass CI by deploying from a non-protected branch.
-6. Never store deploy credentials in `.env` files committed to the repo.
-7. Never use `pull_request_target` for deploy triggers (security risk).
-
-## Known violations to remediate
-
-These existing manual deploy patterns should be migrated to CI/CD:
-
-| Project | File | Current Pattern | Target |
-|---------|------|-----------------|--------|
-| propose | `package.json` | `wrangler deploy --env production` | GitHub Actions or CF git-ref |
-| resume | `package.json` | CLI-based worker deploy | GitHub Actions |
-| resume | `tools/scripts/deployment/deploy.sh` | Shell script deploy | GitHub Actions |
-| youtube | `deploy/ffmpeg-worker/deploy.sh` | Shell script deploy | GitHub Actions |
-| splunk | `scripts/deploy/deploy.sh` | Shell script deploy | GitHub Actions |
-| terraform | `200-oc/opencode/deploy.sh` | Shell script deploy | GitHub Actions or Makefile CI |
-
 ## Exceptions and blocked operations
 
 1. If automated deployment cannot be set up (missing secrets, no CI access), complete all safe preparatory work first.
