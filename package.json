@@ -1,9 +1,25 @@
 {
   "scripts": {
+    "test": "vitest run",
+    "test:elk": "vitest run tests/elk",
+    "test:watch": "vitest",
+    "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/commit-msg .githooks/pre-push",
+    "commitlint": "commitlint --edit",
+    "prepush:check": "npm run gen:config:check && npm run lint:naming",
+    "gen:config": "go run scripts/gen-opencode-config.go",
+    "gen:config:check": "go run scripts/gen-opencode-config.go --check",
     "lint:naming": "node scripts/validate-monorepo-naming.mjs",
-    "lint:assistant-phrasing": "node scripts/lint-assistant-phrasing.mjs"
+    "lint:assistant-phrasing": "node scripts/lint-assistant-phrasing.mjs",
+    "kratos:sync": "go run scripts/kratos-project-sync.go sync",
+    "kratos:install": "go run scripts/kratos-project-sync.go install",
+    "kratos:uninstall": "go run scripts/kratos-project-sync.go uninstall"
   },
   "dependencies": {
-    "@opencode-ai/plugin": "1.2.10"
+    "@opencode-ai/plugin": "1.2.11"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
+    "vitest": "^4.0.18"
   }
 }

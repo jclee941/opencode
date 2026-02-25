@@ -1,0 +1,223 @@
+// Language Server Protocol configurations.
+// Merged into opencode.jsonc by: go run scripts/gen-opencode-config.go
+{
+  "lsp": {
+    "typescript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "extensions": [
+        ".ts",
+        ".tsx",
+        ".js",
+        ".jsx",
+        ".mjs",
+        ".mts",
+        ".cjs",
+        ".cts",
+      ],
+      "initialization": {
+        "maxTsServerMemory": 6144,
+        "tsserver": {
+          "useSyntaxServer": "auto",
+          "trace": "off",
+        },
+        "preferences": {
+          "includeInlayParameterNameHints": "all",
+          "includeInlayParameterNameHintsWhenArgumentMatchesName": false,
+          "includeInlayFunctionParameterTypeHints": true,
+          "includeInlayVariableTypeHints": false,
+          "includeInlayVariableTypeHintsWhenTypeMatchesName": false,
+          "includeInlayPropertyDeclarationTypeHints": false,
+          "includeInlayFunctionLikeReturnTypeHints": true,
+          "includeInlayEnumMemberValueHints": true,
+          "interactiveInlayHints": true,
+          "includeCompletionsForModuleExports": true,
+          "includeCompletionsForImportStatements": true,
+          "includePackageJsonAutoImports": "on",
+          "importModuleSpecifierPreference": "project-relative",
+          "importModuleSpecifierEnding": "minimal",
+          "organizeImportsTypeOrder": "last",
+        },
+      },
+    },
+    "python": {
+      "command": ["basedpyright-langserver", "--stdio"],
+      "extensions": [".py"],
+      "initialization": {
+        "basedpyright": {
+          "analysis": {
+            "diagnosticMode": "workspace",
+            "typeCheckingMode": "recommended",
+            "autoImportCompletions": true,
+            "inlayHints": {
+              "variableTypes": true,
+              "callArgumentNames": true,
+              "functionReturnTypes": true,
+              "genericTypes": true,
+            },
+            "useLibraryCodeForTypes": true,
+            "autoSearchPaths": true,
+            "configFilePath": "${workspaceFolder}",
+            "diagnosticSeverityOverrides": {
+              "reportMissingTypeStubs": "none",
+            },
+          },
+        },
+      },
+    },
+    "go": {
+      "command": ["gopls"],
+      "extensions": [".go"],
+      "env": { "GO111MODULE": "on" },
+      "initialization": {
+        "gopls": {
+          "staticcheck": true,
+          "gofumpt": true,
+          "usePlaceholders": true,
+          "completeUnimported": true,
+          "directoryFilters": ["-node_modules", "-.git", "-.cache", "-tmp"],
+          "analyses": {
+            "unusedparams": true,
+            "nilness": true,
+            "shadow": true,
+          },
+        },
+      },
+    },
+    "rust": {
+      "command": ["rust-analyzer"],
+      "extensions": [".rs"],
+      "initialization": {
+        "cargo": {
+          "allTargets": true,
+          "features": "all",
+          "buildScripts": { "enable": true },
+        },
+        "checkOnSave": true,
+        "check": {
+          "command": "clippy",
+          "allTargets": true,
+          "extraArgs": ["--", "-Dwarnings"],
+        },
+        "procMacro": { "enable": true },
+        "files": {
+          "watcher": "client",
+          "exclude": [".git", "target", "node_modules", "tmp", ".cache"],
+        },
+        "inlayHints": {
+          "typeHints": { "enable": true },
+          "parameterHints": { "enable": true },
+          "chainingHints": { "enable": true },
+        },
+      },
+    },
+    "lua": {
+      "command": ["lua-language-server"],
+      "extensions": [".lua"],
+      "initialization": {
+        "Lua": {
+          "runtime": {
+            "version": "LuaJIT",
+            "path": ["lua/?.lua", "lua/?/init.lua"],
+            "pathStrict": false,
+          },
+          "workspace": {
+            "checkThirdParty": false,
+            "library": ["${workspaceFolder}"],
+          },
+          "diagnostics": {
+            "enable": true,
+            "globals": ["vim"],
+            "workspaceDelay": 3000,
+            "workspaceEvent": "OnSave",
+            "workspaceRate": 100,
+          },
+          "hint": {
+            "enable": true,
+            "paramName": "Disable",
+            "semicolon": "Disable",
+          },
+        },
+      },
+    },
+    "terraform": {
+      "command": ["terraform-ls", "serve"],
+      "extensions": [".tf", ".hcl", ".tfvars"],
+      "initialization": {
+        "experimentalFeatures": { "validateOnSave": true },
+      },
+    },
+    "yaml": {
+      "command": ["yaml-language-server", "--stdio"],
+      "extensions": [".yaml", ".yml"],
+      "initialization": {
+        "yaml": {
+          "validate": true,
+          "hover": true,
+          "completion": true,
+          "format": { "enable": false },
+          "schemas": {
+            "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml",
+            "https://json.schemastore.org/github-action.json": "action.yml",
+            "https://json.schemastore.org/dependabot-2.0.json": ".github/dependabot.yml",
+            "https://json.schemastore.org/docker-compose.json": "docker-compose*.yml",
+            "https://json.schemastore.org/kustomization.json": "kustomization.yaml",
+            "https://json.schemastore.org/chart.json": "Chart.yaml",
+          },
+        },
+      },
+    },
+    "json": {
+      "command": ["vscode-json-language-server", "--stdio"],
+      "extensions": [".json", ".jsonc"],
+      "initialization": {
+        "provideFormatter": true,
+        "json": {
+          "validate": { "enable": true },
+          "schemas": [
+            {
+              "fileMatch": ["package.json"],
+              "url": "https://json.schemastore.org/package.json",
+            },
+            {
+              "fileMatch": ["tsconfig*.json"],
+              "url": "https://json.schemastore.org/tsconfig.json",
+            },
+            {
+              "fileMatch": [".eslintrc", ".eslintrc.json"],
+              "url": "https://json.schemastore.org/eslintrc.json",
+            },
+            {
+              "fileMatch": [".prettierrc", ".prettierrc.json"],
+              "url": "https://json.schemastore.org/prettierrc.json",
+            },
+          ],
+        },
+      },
+    },
+    "css": {
+      "command": ["vscode-css-language-server", "--stdio"],
+      "extensions": [".css", ".scss", ".less"],
+      "initialization": {
+        "provideFormatter": false,
+        "css": { "validate": true },
+        "scss": { "validate": true },
+        "less": { "validate": true },
+      },
+    },
+    "html": {
+      "command": ["vscode-html-language-server", "--stdio"],
+      "extensions": [".html"],
+      "initialization": {
+        "provideFormatter": false,
+      },
+    },
+    "toml": {
+      "command": ["taplo", "lsp", "stdio"],
+      "extensions": [".toml"],
+    },
+    "markdown": {
+      "command": ["marksman", "server"],
+      "extensions": [".md", ".mdx"],
+    },
+  },
+}

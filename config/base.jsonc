@@ -1,0 +1,170 @@
+// Base configuration for OpenCode.
+// Merged with config/providers.jsonc and config/lsp.jsonc by:
+//   go run scripts/gen-opencode-config.go
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "tron",
+  "username": "jclee",
+  "logLevel": "INFO",
+
+  "instructions": [
+    // Tier 1 — Always-loaded baseline rules (explicit listing).
+    // Absolute paths for cross-project global referenceability.
+    // Explicit paths chosen over glob ("rules/*.md") for determinism:
+    //   - Prevents Tier 2/3 domain rules (ELK, Proxmox) from consuming
+    //     context tokens in unrelated sessions.
+    //   - AGENTS.md is loaded natively by OpenCode — not duplicated here.
+    //   - Tier 2/3 rules loaded from project-level opencode.jsonc when in scope.
+    "~/.config/opencode/rules/hard-autonomy-no-questions.md",
+    "~/.config/opencode/rules/session-init.md",
+    "~/.config/opencode/rules/requirements-verification.md",
+    "~/.config/opencode/rules/monorepo-standards.md",
+    "~/.config/opencode/rules/deployment-automation.md",
+    "~/.config/opencode/rules/mcp-schema-hygiene.md",
+    "~/.config/opencode/rules/code-modularization.md",
+  ],
+
+  "plugin": [
+    "@tarquinen/opencode-dcp", // token savings: prunes obsolete tool outputs from context
+    "opencode-antigravity-auth@latest",
+    "oh-my-opencode",
+    "opencode-supermemory",
+    "opencode-pilot",
+    "opencode-wakatime", // tracks AI coding activity with WakaTime
+    "open-trees",
+    "opencode-snippets",
+  ],
+
+  "mcp": {
+    "mcphub": {
+      "type": "remote",
+      "url": "http://192.168.50.112:3000/mcp",
+      "timeout": 30000,
+      "enabled": true,
+    },
+  },
+
+  "permission": {
+    "*": "allow",
+  },
+
+  "experimental": {
+    "continue_loop_on_deny": false,
+    "batch_tool": true,
+    "openTelemetry": true,
+    "mcp_timeout": 30000,
+    "primary_tools": ["read", "grep", "glob", "edit", "write", "bash"],
+  },
+
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 32000,
+  },
+
+  "small_model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+
+  "formatter": {
+    "prettier": {
+      "command": ["prettier", "--write", "$FILE"],
+      "extensions": [
+        ".ts",
+        ".tsx",
+        ".js",
+        ".mjs",
+        ".mts",
+        ".cjs",
+        ".cts",
+        ".jsx",
+        ".css",
+        ".scss",
+        ".less",
+        ".html",
+        ".json",
+        ".jsonc",
+        ".yaml",
+        ".yml",
+        ".md",
+        ".mdx",
+        ".graphql",
+        ".gql",
+      ],
+    },
+    "ruff": {
+      "command": ["ruff", "format", "$FILE"],
+      "extensions": [".py"],
+    },
+    "gofmt": {
+      "command": ["gofmt", "-w", "$FILE"],
+      "extensions": [".go"],
+    },
+    "terraform": {
+      "command": ["terraform", "fmt", "$FILE"],
+      "extensions": [".tf", ".hcl", ".tfvars"],
+    },
+    "taplo": {
+      "command": ["taplo", "fmt", "$FILE"],
+      "extensions": [".toml"],
+    },
+    "shfmt": {
+      "command": ["shfmt", "-w", "$FILE"],
+      "extensions": [".sh", ".bash", ".zsh", ".ksh"],
+    },
+  },
+
+  "watcher": {
+    "ignore": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**",
+      "**/.next/**",
+      "**/.venv/**",
+      "**/coverage/**",
+      "**/.terraform/**",
+      "**/terraform.tfstate*",
+      "**/.cache/**",
+      "**/.sisyphus/**",
+      "**/logs/**",
+      "**/log/**",
+      "**/data/**",
+      "**/profiles/**",
+      "**/tmp/**",
+      "**/*.log",
+      "**/*.db",
+      "**/*.pid",
+      "**/*.tmp",
+      "**/*.swp",
+      "**/*~",
+      "**/.DS_Store",
+      "**/*.bak.*",
+      "**/*.backup-*",
+      "antigravity-accounts.json",
+      "antigravity-signature-cache.json",
+    ],
+  },
+
+  "tui": {
+    "scroll_speed": 3,
+    "scroll_acceleration": { "enabled": true },
+    "diff_style": "auto",
+  },
+
+  "skills": {
+    // Auto-discovery finds ~/.config/opencode/skills/ by default.
+    // Explicit paths listing removed to eliminate duplicate skill warnings.
+    "urls": [],
+  },
+
+  "command": {},
+
+  "autoupdate": "notify",
+  "snapshot": true,
+  "share": "manual",
+
+  "keybinds": {
+    "leader": "ctrl+x",
+    "tool_details": "<leader>d",
+    "session_fork": "<leader>f",
+    "display_thinking": "<leader>t",
+  },
+}

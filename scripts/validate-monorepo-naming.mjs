@@ -19,6 +19,7 @@ const ignoreDirs = new Set([
   "coverage",
   ".next",
   ".venv",
+  ".ruff_cache",
 ]);
 
 const allowedUppercaseFiles = new Set([

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+  "enabled": true,
+  "debug": false,
+  "pruneNotification": "minimal",
+  "pruneNotificationType": "chat",
+  "protectedFilePatterns": [
+    "config/*.jsonc",
+    "oh-my-opencode.jsonc",
+    "opencode.jsonc",
+  ],
+  "commands": {
+    "enabled": true,
+    "protectedTools": [
+      "task",
+      "todowrite",
+      "todoread",
+      "distill",
+      "compress",
+      "prune",
+      "batch",
+      "plan_enter",
+      "plan_exit",
+      "write",
+      "edit",
+    ],
+  },
+  "manualMode": {
+    "enabled": false,
+    "automaticStrategies": true,
+  },
+  "turnProtection": {
+    "enabled": true,
+    "turns": 2,
+  },
+  "tools": {
+    "settings": {
+      "nudgeEnabled": true,
+      "nudgeFrequency": 5,
+      "contextLimit": "75%",
+      "protectedTools": ["task", "todowrite", "write", "edit"],
+    },
+    "distill": {
+      "permission": "allow",
+      "showDistillation": true,
+    },
+    "compress": {
+      "permission": "allow",
+      "showCompression": true,
+    },
+    "prune": {
+      "permission": "allow",
+    },
+  },
+  "strategies": {
+    "deduplication": {
+      "enabled": true,
+      "protectedTools": ["task", "write", "edit"],
+    },
+    "supersedeWrites": {
+      "enabled": true,
+    },
+    "purgeErrors": {
+      "enabled": true,
+      "turns": 5,
+      "protectedTools": ["task", "edit"],
+    },
+  },
+}
