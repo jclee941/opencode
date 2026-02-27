@@ -34,12 +34,20 @@ const allowedUppercaseFiles = new Set([
   "WORKSPACE.bazel",
   "MODULE.bazel",
   "OWNERS",
+  "CODEOWNERS",
+  "CODE_OF_CONDUCT.md",
+  "CONTRIBUTING.md",
+  "FUNDING.yml",
+  "PULL_REQUEST_TEMPLATE.md",
+  "SECURITY.md",
+  "SUPPORT.md",
 ]);
 
 const allowedSpecialDirs = new Set([
   "__tests__",
   "__snapshots__",
   "__fixtures__",
+  "ISSUE_TEMPLATE",
 ]);
 
 const dirNamePattern = /^[a-z0-9][a-z0-9_-]*$/;
