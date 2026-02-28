@@ -123,18 +123,6 @@
     "~/.config/opencode/rules/bmad-integration.md",
     "~/.config/opencode/rules/auto-build-pipeline.md"
   ],
-  "keybinds": {
-    "display_thinking": "\u003cleader\u003et",
-    "input_clear": "ctrl+u",
-    "input_newline": "shift+return,ctrl+j",
-    "leader": "ctrl+x",
-    "messages_page_down": "ctrl+f",
-    "messages_page_up": "ctrl+b",
-    "session_compact": "\u003cleader\u003ec",
-    "session_fork": "\u003cleader\u003ef",
-    "session_share": "\u003cleader\u003ex",
-    "tool_details": "\u003cleader\u003ed"
-  },
   "logLevel": "INFO",
   "lsp": {
     "css": {

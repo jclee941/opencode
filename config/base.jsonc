@@ -178,17 +178,4 @@
   "autoupdate": "notify",
   "snapshot": true,
   "share": "manual",
-
-  "keybinds": {
-    "leader": "ctrl+x",
-    "tool_details": "<leader>d",
-    "session_fork": "<leader>f",
-    "session_compact": "<leader>c",
-    "session_share": "<leader>x",
-    "display_thinking": "<leader>t",
-    "input_newline": "shift+return,ctrl+j",
-    "input_clear": "ctrl+u",
-    "messages_page_up": "ctrl+b",
-    "messages_page_down": "ctrl+f",
-  },
 }
