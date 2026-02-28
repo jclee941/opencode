@@ -1,8 +1,0 @@
-{
-  "maxMemories": 3,
-  "maxProjectMemories": 5,
-  "maxProfileItems": 3,
-  "injectProfile": true,
-  "similarityThreshold": 0.65,
-  "compactionThreshold": 0.75,
-}

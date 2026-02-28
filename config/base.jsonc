@@ -33,7 +33,6 @@
     "@tarquinen/opencode-dcp", // token savings: prunes obsolete tool outputs from context
     "opencode-antigravity-auth@beta",
     "oh-my-opencode",
-    "opencode-supermemory",
     "opencode-pilot",
     "opencode-wakatime", // tracks AI coding activity with WakaTime
     "open-trees",
