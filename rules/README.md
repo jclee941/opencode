@@ -7,13 +7,16 @@ This file defines how rule files in `rules/` are composed, resolved, and loaded.
 Apply rules in this order when overlap exists:
 
 1. `hard-autonomy-no-questions.md` (execution posture, question policy, blocked-step handling)
-2. `requirements-verification.md` (always-check requirements spec before/after implementation)
-3. Domain rules (`elk-troubleshooting.md`)
-4. `session-init.md` (session checklist and verification baseline)
-5. `deployment-automation.md` (CI/CD policy, manual deploy prohibition)
-6. `monorepo-standards.md` (structure, naming, document normalization)
-7. `mcp-schema-hygiene.md` (MCP tool call schema validation, -32602 prevention)
-8. `code-modularization.md` (file size governance, split strategies, modularization verification)
+2. `archon-workflow.md` (Archon task management, RAG workflow, project organization)
+3. `requirements-verification.md` (always-check requirements spec before/after implementation)
+4. Domain rules (`elk-troubleshooting.md`)
+5. `session-init.md` (session checklist and verification baseline)
+6. `deployment-automation.md` (CI/CD policy, manual deploy prohibition)
+7. `monorepo-standards.md` (structure, naming)
+8. `mcp-schema-hygiene.md` (MCP tool call schema validation, -32602 prevention)
+9. `code-modularization.md` (file size governance, modularization verification)
+10. `bmad-integration.md` (BMAD artifact consumption, story implementation automation)
+11. `auto-build-pipeline.md` (spec-to-PR autonomous pipeline orchestration)
 
 ## Tier model
 
@@ -24,12 +27,15 @@ Rules are grouped into tiers by loading scope:
 These are loaded into every session as baseline rules:
 
 - `hard-autonomy-no-questions.md` — execution posture, zero-question policy
+- `archon-workflow.md` — Archon task management, RAG workflow, project organization
 - `session-init.md` — session startup checklist
 - `requirements-verification.md` — requirements check and verification gate
 - `deployment-automation.md` — CI/CD policy
 - `monorepo-standards.md` — structure and naming
 - `mcp-schema-hygiene.md` — MCP tool call schema validation
-- `code-modularization.md` — file size governance and split strategies
+- `code-modularization.md` — file size governance and modularization verification
+- `bmad-integration.md` — BMAD artifact consumption, story implementation automation
+- `auto-build-pipeline.md` — spec-to-PR autonomous pipeline orchestration
 
 ### Tier 2 — Domain rules (loaded when domain is in scope)
 
@@ -39,8 +45,8 @@ Loaded only when the task touches the relevant domain:
 
 ### Tier 3 — Process rules (loaded when specific process is in scope)
 
-Currently no Tier 3 rules. Content from deleted `requirements-modularization-checklist.md`
-and `document-normalization-runbook.md` was merged into parent Tier 1 rules.
+Currently no Tier 3 rules. Reference content was extracted to `docs/` files;
+Tier 1 rules contain executive policy only.
 
 ## Inheritance model
 
@@ -89,6 +95,7 @@ All high-risk and blocked-operation handling must reference that file instead of
 
 1. Base execution rules (Tier 1 — always loaded):
    - `rules/hard-autonomy-no-questions.md`
+   - `rules/archon-workflow.md`
    - `rules/session-init.md`
    - `rules/requirements-verification.md`
 2. Domain rules (Tier 2 — only when relevant):
@@ -98,6 +105,8 @@ All high-risk and blocked-operation handling must reference that file instead of
    - `rules/monorepo-standards.md` (Tier 1)
    - `rules/mcp-schema-hygiene.md` (Tier 1)
    - `rules/code-modularization.md` (Tier 1)
+   - `rules/bmad-integration.md` (Tier 1)
+   - `rules/auto-build-pipeline.md` (Tier 1)
 
 
 ## Reference hygiene

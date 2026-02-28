@@ -15,10 +15,33 @@ Run these steps at session start to establish project context before any task wo
 
 ### Tool call constraints
 
-- MCP server tools (`kratos.*`, `git.*`, `archon.*`) are **external tools** and cannot be called via the `batch` tool.
+- MCP server tools (`mcphub_*`) are **external tools** and cannot be called via the `batch` tool.
 - Call each MCP tool directly as a separate tool invocation.
 - Multiple MCP calls that have no dependency on each other can be issued in the same response as parallel direct calls — but never inside a `batch` block.
 - Non-MCP tools (`supermemory`, `bash`, `read`, `grep`, etc.) can be batched normally.
+
+### MCP server inventory
+
+All MCP servers are accessed via `mcphub` (remote at `192.168.50.112:3000`).
+
+| Server       | Init Required     | Init Tool                        | Purpose                              |
+| ------------ | ----------------- | -------------------------------- | ------------------------------------ |
+| `git`        | Yes (per-session) | `mcphub_git-git_set_working_dir` | Git operations                       |
+| `kratos`     | Yes (per-session) | `mcphub_kratos-project_switch`   | Project-scoped persistent memory     |
+| `github`     | No                | —                                | GitHub API (repos, issues, PRs)      |
+| `elk`        | No                | —                                | Elasticsearch queries and management |
+| `glitchtip`  | No                | —                                | Error tracking (issues, events)      |
+| `proxmox`    | No                | —                                | VM/LXC/cluster management            |
+| `supabase`   | No                | —                                | Database, edge functions, branches   |
+| `terraform`  | No                | —                                | Provider/resource/module registry    |
+| `slack`      | No                | —                                | Channel messaging, user search       |
+| `playwright` | No                | —                                | Browser automation, screenshots      |
+
+Non-MCP memory tools (built-in plugins, batchable):
+
+| Tool          | Init Required | Purpose                                   |
+| ------------- | ------------- | ----------------------------------------- |
+| `supermemory` | No            | Cross-session memory (user/project scope) |
 
 ### CWD resolution
 
@@ -31,17 +54,16 @@ The placeholder `<cwd>` always refers to the **project directory the user opened
 ### Step 1: Project context (sequential — must complete before memory queries)
 
 1. Switch Kratos to current working directory.
-   - `kratos.project_switch(project_path=<cwd>)`
+   - `mcphub_kratos-project_switch(project_path=<cwd>)`
    - Activates project-scoped memory for all subsequent `memory_search`/`memory_save` calls.
    - On failure (unknown project): **auto-create** the project, then retry:
-     1. Run `kratos.memory_save(summary="Project initialized: <project_name>", text="Auto-created project entry for <cwd>. CWD: <cwd>", tags=["project-init"])`
-     2. Retry `kratos.project_switch(project_path=<cwd>)`
+     1. Run `mcphub_kratos-memory_save(summary="Project initialized: <project_name>", text="Auto-created project entry for <cwd>. CWD: <cwd>", tags=["project-init"])`
+     2. Retry `mcphub_kratos-project_switch(project_path=<cwd>)`
      3. If retry also fails: proceed without Kratos — do not block session.
-   - Auto-sync: systemd path unit watches `~/dev/` and runs kratos-sync on directory changes. Install via `npm run kratos:install`.
 
 2. Set Git working directory for the session.
-   - `git.git_set_working_dir(path=<cwd>, validateGitRepo=true)`
-   - Enables all subsequent `git_*` calls without explicit `path` parameter.
+   - `mcphub_git-git_set_working_dir(path=<cwd>, validateGitRepo=true)`
+   - Enables all subsequent `mcphub_git-*` calls without explicit `path` parameter.
    - Do not set `initializeIfNotPresent=true` — never auto-init a git repo.
    - If CWD is not a git repo: skip silently and note that GitHub Actions check (step 3) is also skipped.
 
@@ -65,19 +87,8 @@ Fire these as parallel direct tool calls in a single response. Do not use the `b
    - Retrieves past architectural decisions, resolved issues, and learned patterns.
 
 5. Search Kratos memory for project-specific context.
-   - `kratos.memory_search(q=<task keywords or module name>)`
+   - `mcphub_kratos-memory_search(q=<task keywords or module name>)`
    - Retrieves project-scoped memories (architecture notes, error solutions, conventions).
-
-6. Check Archon for active tasks and project state.
-   - `archon.find_projects(query=<project_name>)` — search for existing project.
-   - If project found: store `<archon_project_id>` from the result for subsequent calls.
-   - If no project found: **auto-create** the project:
-     1. Derive `<github_repo>` from `git remote get-url origin` (if available).
-     2. Run `archon.manage_project(action="create", title=<project_name>, description="Auto-created during session init for <cwd>", github_repo=<github_repo or omit>)`
-     3. Store the returned `<archon_project_id>`.
-     4. If creation fails: proceed without Archon — do not block session.
-   - With `<archon_project_id>`, query active work:
-     - `archon.find_tasks(filter_by="status", filter_value="doing", project_id=<archon_project_id>)`
 
 ### Failure policy
 
@@ -89,9 +100,8 @@ Fire these as parallel direct tool calls in a single response. Do not use the `b
 
 After completing significant work, persist key findings back to MCP:
 
-- `kratos.memory_save(summary=..., text=..., tags=[...])` — project-scoped knowledge.
+- `mcphub_kratos-memory_save(summary=..., text=..., tags=[...])` — project-scoped knowledge.
 - `supermemory(mode="add", content=..., type="learned-pattern", scope="project")` — cross-session patterns.
-- `archon.manage_task(action="update", task_id=..., status="done")` — update tracked task status when completing Archon-tracked work.
 - Do not persist trivial or ephemeral information (single typo fixes, temp file paths).
 
 General guardrails:

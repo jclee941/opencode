@@ -15,7 +15,7 @@
     "kratos:uninstall": "go run scripts/kratos-project-sync.go uninstall"
   },
   "dependencies": {
-    "@opencode-ai/plugin": "1.2.11"
+    "@opencode-ai/plugin": "1.2.15"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.4.2",

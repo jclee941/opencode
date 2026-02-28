@@ -3,6 +3,9 @@
 Apply these rules as default monorepo standards across projects unless a
 project-level policy explicitly overrides them.
 
+For detailed structure guidance, Bazel compatibility, and document normalization procedures,
+see `docs/monorepo-structure-and-naming.md`.
+
 ## Structure
 
 1. Keep top-level domains stable and purpose-driven:
@@ -25,20 +28,7 @@ project-level policy explicitly overrides them.
 6. Use standardized backup naming:
    - `<filename>.backup-YYYYMMDD-HHMMSS[-mmmZ]`
 
-## Google3/Bazel style compatibility profile
-
-Use this profile when a subtree is managed with Bazel/google3-style conventions.
-
-1. Keep Bazel package paths stable and reviewable; prefer small package directories with explicit ownership.
-2. Allow `lower_snake_case` for Bazel-oriented directories in addition to default `kebab-case`.
-3. Allow canonical Bazel control files:
-   - `BUILD`, `BUILD.bazel`, `WORKSPACE`, `WORKSPACE.bazel`, `MODULE.bazel`
-4. Allow ownership contract file used in google3-style workflows:
-   - `OWNERS`
-5. Keep Starlark file names lowercase and descriptive (`*.bzl`, prefer `lower_snake_case`).
-6. Do not mix unrelated package concerns in one Bazel package; split by clear build/runtime boundaries.
-
-## Enforcement Source of Truth
+## Enforcement source of truth
 
 1. Naming validation behavior is defined by `scripts/validate-monorepo-naming.mjs`.
 2. If you change naming exceptions in docs, update this file and `scripts/validate-monorepo-naming.mjs` together in the same change.
@@ -61,38 +51,8 @@ Use this profile when a subtree is managed with Bazel/google3-style conventions.
 3. After migration, update direct references in docs/config/scripts and remove
    the superseded shell script.
 
-## Document normalization policy
+## Reference composition
 
-Use this when reorganizing existing documents to comply with repository structure and naming rules.
-
-### Execution checklist
-
-1. Inventory current documents and classify each as:
-   - runtime instruction (`rules/`)
-   - standards/reference (`docs/`)
-   - skill contract (`skills/**/AGENTS.md`, `skills/**/SKILL.md`)
-   - root contract (`README.md`, `AGENTS.md`, `CHANGELOG.md`, `LICENSE`)
-2. Choose canonical targets:
-   - one canonical file per policy/topic
-   - mark duplicates for deletion or redirect
-3. Apply structure moves:
-   - standards/guides/runbooks → `docs/`
-   - operational instructions → `rules/`
-4. Apply naming normalization:
-   - directories: `kebab-case`
-   - regular files: lowercase with dots/hyphens
-   - contract files: uppercase only when standard
-5. Update references in the same change (markdown links, config/script references, rule cross-references).
-6. Verify: run `npm run lint:naming` and spot-check moved/renamed links.
-
-### Safety rules
-
-1. Preserve document meaning during rename/move.
-2. Remove stale duplicate documents to avoid policy drift.
-3. Do not place runtime artifacts in source domains.
-
-### Output contract
-
-1. List files moved/renamed/deleted.
-2. List references updated.
-3. Report naming lint result.
+1. Loaded as Tier 1 baseline rule via `opencode.jsonc`.
+2. Defers to `hard-autonomy-no-questions.md` on execution posture.
+3. Detailed structure guidance and Bazel profile: `docs/monorepo-structure-and-naming.md`.

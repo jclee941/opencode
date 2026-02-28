@@ -112,12 +112,15 @@
   },
   "instructions": [
     "~/.config/opencode/rules/hard-autonomy-no-questions.md",
+    "~/.config/opencode/rules/archon-workflow.md",
     "~/.config/opencode/rules/session-init.md",
     "~/.config/opencode/rules/requirements-verification.md",
     "~/.config/opencode/rules/monorepo-standards.md",
     "~/.config/opencode/rules/deployment-automation.md",
     "~/.config/opencode/rules/mcp-schema-hygiene.md",
-    "~/.config/opencode/rules/code-modularization.md"
+    "~/.config/opencode/rules/code-modularization.md",
+    "~/.config/opencode/rules/bmad-integration.md",
+    "~/.config/opencode/rules/auto-build-pipeline.md"
   ],
   "keybinds": {
     "display_thinking": "\u003cleader\u003et",
@@ -471,18 +474,24 @@
       "url": "http://192.168.50.112:3000/mcp"
     }
   },
+  "model": "google/antigravity-claude-opus-4-6-thinking",
   "permission": {
     "*": "allow"
   },
   "plugin": [
     "@tarquinen/opencode-dcp",
-    "opencode-antigravity-auth@latest",
+    "opencode-antigravity-auth@beta",
     "oh-my-opencode",
     "opencode-supermemory",
     "opencode-pilot",
     "opencode-wakatime",
     "open-trees",
-    "opencode-snippets"
+    "opencode-snippets",
+    "opencode-todo-reminder",
+    "@ramtinj95/opencode-tokenscope",
+    "opencode-type-inject",
+    "opencode-shell-strategy",
+    "opencode-pty"
   ],
   "provider": {
     "google": {
@@ -751,40 +760,6 @@
       "options": {
         "setCacheKey": true,
         "timeout": 600000
-      }
-    },
-    "minimax-coding-plan": {
-      "models": {
-        "MiniMax-M2.5": {
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "MiniMax M2.5 (Coding Plan)"
-        },
-        "MiniMax-M2.5-highspeed": {
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "MiniMax M2.5 Highspeed (Coding Plan)"
-        }
       }
     }
   },

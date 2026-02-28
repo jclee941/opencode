@@ -1,8 +1,9 @@
-# Monorepo Structure and Naming Rules
+# Monorepo Structure and Naming Reference
 
-This document defines the default structure and naming conventions for this repository.
+This document provides detailed structure guidance, compatibility profiles, and
+procedures that supplement the executive rules in `rules/monorepo-standards.md`.
 
-## 1) Top-level structure
+## Top-level structure
 
 - `skills/`: Skill packages and skill-specific references.
 - `scripts/`: Operational scripts only.
@@ -13,7 +14,7 @@ This document defines the default structure and naming conventions for this repo
 
 Do not place runtime artifacts (logs, caches, temp files) inside source directories.
 
-## 1.1) Google-style monorepo layout principles
+## Google-style monorepo layout principles
 
 Use these principles when adding new packages or restructuring modules:
 
@@ -31,12 +32,27 @@ For this repository, existing domains map as follows:
 
 This mapping is intentionally non-breaking; no forced directory moves are required immediately.
 
-## 2) Directory naming
+## Google3/Bazel style compatibility profile
+
+Use this profile when a subtree is managed with Bazel/google3-style conventions.
+
+1. Keep Bazel package paths stable and reviewable; prefer small package directories with explicit ownership.
+2. Allow `lower_snake_case` for Bazel-oriented directories in addition to default `kebab-case`.
+3. Allow canonical Bazel control files:
+   - `BUILD`, `BUILD.bazel`, `WORKSPACE`, `WORKSPACE.bazel`, `MODULE.bazel`
+4. Allow ownership contract file used in google3-style workflows:
+   - `OWNERS`
+5. Keep Starlark file names lowercase and descriptive (`*.bzl`, prefer `lower_snake_case`).
+6. Do not mix unrelated package concerns in one Bazel package; split by clear build/runtime boundaries.
+
+## Naming details
+
+### Directory naming
 
 - Use `kebab-case` for directories (`^[a-z0-9][a-z0-9-]*$`).
 - Keep domain-first grouping (`dev-browser`, `agent-browser`).
 
-## 3) File naming
+### File naming
 
 - Default file style: lowercase with dots/hyphens (`^[a-z0-9][a-z0-9.-]*$`).
 - Keep extension-specific conventions:
@@ -47,7 +63,7 @@ This mapping is intentionally non-breaking; no forced directory moves are requir
   - `AGENTS.md`, `SKILL.md`, `README.md`, `CHANGELOG.md`, `LICENSE`
 - Avoid ambiguous/temporary names at root (for example single-symbol filenames).
 
-### 3.1 Backup naming (standard)
+### Backup naming (standard)
 
 Use one backup format consistently:
 
@@ -58,7 +74,43 @@ Examples:
 - `opencode.jsonc.backup-20260217-111649`
 - `oh-my-opencode.jsonc.backup-20260219-111047-824Z`
 
-## 4) Refactoring policy for renames
+## Document normalization procedure
+
+Use this when reorganizing existing documents to comply with repository structure and naming rules.
+
+### Execution checklist
+
+1. Inventory current documents and classify each as:
+   - runtime instruction (`rules/`)
+   - standards/reference (`docs/`)
+   - skill contract (`skills/**/AGENTS.md`, `skills/**/SKILL.md`)
+   - root contract (`README.md`, `AGENTS.md`, `CHANGELOG.md`, `LICENSE`)
+2. Choose canonical targets:
+   - one canonical file per policy/topic
+   - mark duplicates for deletion or redirect
+3. Apply structure moves:
+   - standards/guides/runbooks → `docs/`
+   - operational instructions → `rules/`
+4. Apply naming normalization:
+   - directories: `kebab-case`
+   - regular files: lowercase with dots/hyphens
+   - contract files: uppercase only when standard
+5. Update references in the same change (markdown links, config/script references, rule cross-references).
+6. Verify: run `npm run lint:naming` and spot-check moved/renamed links.
+
+### Safety rules
+
+1. Preserve document meaning during rename/move.
+2. Remove stale duplicate documents to avoid policy drift.
+3. Do not place runtime artifacts in source domains.
+
+### Output contract
+
+1. List files moved/renamed/deleted.
+2. List references updated.
+3. Report naming lint result.
+
+## Refactoring policy for renames
 
 When renaming files/directories:
 
@@ -67,33 +119,15 @@ When renaming files/directories:
 3. Run validation (`grep`, diagnostics, formatter checks).
 4. Keep behavior unchanged; rename only unless explicitly requested.
 
-## 5) Scope guardrails
+## Scope guardrails
 
 - Do not rename files under `node_modules/`, `data/`, `logs/`, `log/`, `tmp/`, `profiles/`.
 - Do not rename generated lock files unless toolchain explicitly requires it.
 - Prioritize low-risk, high-value normalization first (typos, backup formats, ambiguous filenames).
 
-## 6) Phased refactor plan
-
-Phase 1 (now):
-
-- Normalize ambiguous and typo-prone filenames.
-- Standardize backup filename format.
-- Add automated naming validation.
-
-Phase 2 (planned):
-
-- Introduce virtual domain docs (`apps/`, `packages/`, `tools/`) and migration map.
-- Add package-level ownership metadata and README index.
-
-Phase 3 (optional):
-
-- Physically migrate directories to `apps/`, `packages/`, `tools/` if operationally beneficial.
-- Add CI checks for naming and structure policy.
-
-## 7) Enforcement source of truth
+## Enforcement source of truth
 
 - Naming validation behavior is implemented in `scripts/validate-monorepo-naming.mjs`.
 - Keep docs policy and validator exceptions synchronized in the same change.
 - Ignore/runtime directories excluded from checks:
-  - `.git/`, `node_modules/`, `data/`, `log/`, `logs/`, `tmp/`, `profiles/`, `.sisyphus/`, `.cache/`, `dist/`, `coverage/`, `.next/`, `.venv/`
+  - `.git/`, `node_modules/`, `data/`, `log/`, `logs/`, `tmp/`, `profiles/`, `.sisyphus/`, `.cache/`, `dist/`, `coverage/`, `.next/`, `.venv/`, `.ruff_cache/`

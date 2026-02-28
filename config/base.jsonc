@@ -7,6 +7,8 @@
   "username": "jclee",
   "logLevel": "INFO",
 
+  "model": "google/antigravity-claude-opus-4-6-thinking",
+
   "instructions": [
     // Tier 1 — Always-loaded baseline rules (explicit listing).
     // Absolute paths for cross-project global referenceability.
@@ -16,23 +18,31 @@
     //   - AGENTS.md is loaded natively by OpenCode — not duplicated here.
     //   - Tier 2/3 rules loaded from project-level opencode.jsonc when in scope.
     "~/.config/opencode/rules/hard-autonomy-no-questions.md",
+    "~/.config/opencode/rules/archon-workflow.md",
     "~/.config/opencode/rules/session-init.md",
     "~/.config/opencode/rules/requirements-verification.md",
     "~/.config/opencode/rules/monorepo-standards.md",
     "~/.config/opencode/rules/deployment-automation.md",
     "~/.config/opencode/rules/mcp-schema-hygiene.md",
     "~/.config/opencode/rules/code-modularization.md",
+    "~/.config/opencode/rules/bmad-integration.md",
+    "~/.config/opencode/rules/auto-build-pipeline.md",
   ],
 
   "plugin": [
     "@tarquinen/opencode-dcp", // token savings: prunes obsolete tool outputs from context
-    "opencode-antigravity-auth@latest",
+    "opencode-antigravity-auth@beta",
     "oh-my-opencode",
     "opencode-supermemory",
     "opencode-pilot",
     "opencode-wakatime", // tracks AI coding activity with WakaTime
     "open-trees",
     "opencode-snippets",
+    "opencode-todo-reminder", // enforces todo completion across session continuations
+    "@ramtinj95/opencode-tokenscope", // token usage analysis + cost tracking per subagent
+    "opencode-type-inject", // auto-inject TypeScript/Svelte types into file reads
+    "opencode-shell-strategy", // non-interactive shell strategy, prevents TTY hangs
+    "opencode-pty", // PTY background process management
   ],
 
   "mcp": {

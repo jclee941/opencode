@@ -37,7 +37,7 @@
     "settings": {
       "nudgeEnabled": true,
       "nudgeFrequency": 5,
-      "contextLimit": "75%",
+      "contextLimit": 150000,
       "protectedTools": ["task", "todowrite", "write", "edit"],
     },
     "distill": {
