@@ -1,15 +1,39 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/dev/assets/oh-my-opencode.schema.json",
+  "auto_update": true,
   "background_task": {
     "defaultConcurrency": 3,
     "messageStalenessTimeoutMs": 900000,
     "modelConcurrency": {
       "google/antigravity-claude-opus-4-6-thinking": 3,
       "minimax-coding-plan/MiniMax-M2.5": 3,
-      "minimax-coding-plan/MiniMax-M2.5-highspeed": 5
+      "minimax-coding-plan/MiniMax-M2.5-highspeed": 5,
     },
     "staleTimeoutMs": 300000,
   },
+  "runtime_fallback": {
+    "enabled": true,
+    "max_fallback_attempts": 2,
+    "cooldown_seconds": 10,
+    "timeout_seconds": 30,
+    "retry_on_errors": [429, 503, 408],
+    "notify_on_fallback": true,
+  },
+  "model_fallback": true,
+  "hashline_edit": true,
+  "notification": {
+    "force_enable": true,
+  },
+  "websearch": {
+    "provider": "exa",
+  },
+  "browser_automation_engine": {
+    "provider": "playwright",
+  },
+  "babysitting": {
+    "timeout_ms": 180000,
+  },
+  "disabled_hooks": ["startup-toast", "tips_toggle"],
   "categories": {
     "artistry": {
       "model": "google/antigravity-gemini-3.1-pro",
@@ -35,16 +59,12 @@
     "ultrabrain": {
       "model": "openai/gpt-5.3-codex",
       "variant": "xhigh",
-      "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
-      ],
+      "fallback_models": ["google/antigravity-claude-opus-4-6-thinking"],
     },
     "unspecified-high": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": [
-        "google/antigravity-gemini-3.1-pro",
-      ],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
     },
     "unspecified-low": {
       "model": "google/antigravity-claude-sonnet-4-6",
@@ -71,6 +91,9 @@
     },
   },
   "experimental": {
+    "safe_hook_creation": true,
+    "model_fallback_title": true,
+    "plugin_load_timeout_ms": 15000,
     "dynamic_context_pruning": {
       "enabled": true, // reactive deduplication recovery on API error; complements @tarquinen/opencode-dcp proactive nudges
       "strategies": {
@@ -100,23 +123,17 @@
     "sisyphus": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": [
-        "google/antigravity-gemini-3.1-pro",
-      ],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
     },
     "prometheus": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": [
-        "google/antigravity-gemini-3.1-pro",
-      ],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
     },
     "metis": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": [
-        "google/antigravity-gemini-3.1-pro",
-      ],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
     },
     "explore": {
       "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
@@ -124,6 +141,10 @@
         "google/antigravity-gemini-3.1-flash",
         "minimax-coding-plan/MiniMax-M2.5",
       ],
+      "compaction": {
+        "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+      },
+      "prompt_append": "Focus on file paths, symbol names, and pattern descriptions. Skip test files unless explicitly asked. Return grep-style results with line context.",
     },
     "librarian": {
       "model": "minimax-coding-plan/MiniMax-M2.5",
@@ -131,6 +152,10 @@
         "minimax-coding-plan/MiniMax-M2.5-highspeed",
         "google/antigravity-gemini-3.1-flash",
       ],
+      "compaction": {
+        "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+      },
+      "prompt_append": "Prefer official documentation and well-maintained repositories over blog posts and tutorials. Return file paths, function signatures, and concrete code examples.",
     },
     "oracle": {
       "model": "openai/gpt-5.2",
@@ -172,5 +197,5 @@
   "sisyphus_agent": {
     "default_builder_enabled": false,
     "planner_enabled": true,
-  }
+  },
 }

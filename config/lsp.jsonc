@@ -39,6 +39,31 @@
         },
       },
     },
+    "eslint": {
+      "command": ["vscode-eslint-language-server", "--stdio"],
+      "extensions": [
+        ".js",
+        ".ts",
+        ".jsx",
+        ".tsx",
+        ".mjs",
+        ".mts",
+        ".cjs",
+        ".cts",
+      ],
+      "initialization": {
+        "eslint": {
+          "codeAction": {
+            "disableRuleComment": { "enable": true },
+            "showDocumentation": { "enable": true },
+          },
+          "format": { "enable": false },
+          "quiet": false,
+          "validate": "on",
+          "run": "onType",
+        },
+      },
+    },
     "python": {
       "command": ["basedpyright-langserver", "--stdio"],
       "extensions": [".py"],
@@ -186,10 +211,6 @@
               "fileMatch": [".eslintrc", ".eslintrc.json"],
               "url": "https://json.schemastore.org/eslintrc.json",
             },
-            {
-              "fileMatch": [".prettierrc", ".prettierrc.json"],
-              "url": "https://json.schemastore.org/prettierrc.json",
-            },
           ],
         },
       },
@@ -214,6 +235,42 @@
     "toml": {
       "command": ["taplo", "lsp", "stdio"],
       "extensions": [".toml"],
+    },
+    "dockerfile": {
+      "command": ["docker-langserver", "--stdio"],
+      "extensions": ["Dockerfile"],
+      "initialization": {
+        "docker": {
+          "languageserver": {
+            "diagnostics": {
+              "deprecatedMaintainer": "warning",
+              "instructionWorkdirRelative": "warning",
+              "directiveCasing": "warning",
+            },
+          },
+        },
+      },
+    },
+    "tailwindcss": {
+      "command": ["tailwindcss-language-server", "--stdio"],
+      "extensions": [".html", ".css", ".scss", ".jsx", ".tsx", ".vue", ".svelte"],
+      "initialization": {
+        "tailwindCSS": {
+          "validate": true,
+          "hovers": true,
+          "suggestions": true,
+          "codeActions": true,
+          "lint": {
+            "cssConflict": "warning",
+            "invalidApply": "error",
+            "invalidScreen": "error",
+            "invalidVariant": "error",
+            "invalidConfigPath": "error",
+            "invalidTailwindDirective": "error",
+            "recommendedVariantOrder": "warning",
+          },
+        },
+      },
     },
     "markdown": {
       "command": ["marksman", "server"],

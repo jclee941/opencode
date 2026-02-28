@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/tui.json",
+  "theme": "tron",
+  "keybinds": {
+    "display_thinking": "<leader>t",
+    "leader": "ctrl+x",
+    "session_fork": "<leader>f",
+    "tool_details": "<leader>d"
+  },
+  "scroll_speed": 3,
+  "scroll_acceleration": {
+    "enabled": true
+  },
+  "diff_style": "auto"
+}

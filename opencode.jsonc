@@ -35,10 +35,9 @@
         ".go"
       ]
     },
-    "prettier": {
+    "oxfmt": {
       "command": [
-        "prettier",
-        "--write",
+        "oxfmt",
         "$FILE"
       ],
       "extensions": [
@@ -54,8 +53,10 @@
         ".scss",
         ".less",
         ".html",
+        ".vue",
         ".json",
         ".jsonc",
+        ".json5",
         ".yaml",
         ".yml",
         ".md",
@@ -124,8 +125,14 @@
   ],
   "keybinds": {
     "display_thinking": "\u003cleader\u003et",
+    "input_clear": "ctrl+u",
+    "input_newline": "shift+return,ctrl+j",
     "leader": "ctrl+x",
+    "messages_page_down": "ctrl+f",
+    "messages_page_up": "ctrl+b",
+    "session_compact": "\u003cleader\u003ec",
     "session_fork": "\u003cleader\u003ef",
+    "session_share": "\u003cleader\u003ex",
     "tool_details": "\u003cleader\u003ed"
   },
   "logLevel": "INFO",
@@ -150,6 +157,60 @@
         "provideFormatter": false,
         "scss": {
           "validate": true
+        }
+      }
+    },
+    "dockerfile": {
+      "command": [
+        "docker-langserver",
+        "--stdio"
+      ],
+      "extensions": [
+        "Dockerfile"
+      ],
+      "initialization": {
+        "docker": {
+          "languageserver": {
+            "diagnostics": {
+              "deprecatedMaintainer": "warning",
+              "directiveCasing": "warning",
+              "instructionWorkdirRelative": "warning"
+            }
+          }
+        }
+      }
+    },
+    "eslint": {
+      "command": [
+        "vscode-eslint-language-server",
+        "--stdio"
+      ],
+      "extensions": [
+        ".js",
+        ".ts",
+        ".jsx",
+        ".tsx",
+        ".mjs",
+        ".mts",
+        ".cjs",
+        ".cts"
+      ],
+      "initialization": {
+        "eslint": {
+          "codeAction": {
+            "disableRuleComment": {
+              "enable": true
+            },
+            "showDocumentation": {
+              "enable": true
+            }
+          },
+          "format": {
+            "enable": false
+          },
+          "quiet": false,
+          "run": "onType",
+          "validate": "on"
         }
       }
     },
@@ -225,13 +286,6 @@
                 ".eslintrc.json"
               ],
               "url": "https://json.schemastore.org/eslintrc.json"
-            },
-            {
-              "fileMatch": [
-                ".prettierrc",
-                ".prettierrc.json"
-              ],
-              "url": "https://json.schemastore.org/prettierrc.json"
             }
           ],
           "validate": {
@@ -368,6 +422,38 @@
         },
         "procMacro": {
           "enable": true
+        }
+      }
+    },
+    "tailwindcss": {
+      "command": [
+        "tailwindcss-language-server",
+        "--stdio"
+      ],
+      "extensions": [
+        ".html",
+        ".css",
+        ".scss",
+        ".jsx",
+        ".tsx",
+        ".vue",
+        ".svelte"
+      ],
+      "initialization": {
+        "tailwindCSS": {
+          "codeActions": true,
+          "hovers": true,
+          "lint": {
+            "cssConflict": "warning",
+            "invalidApply": "error",
+            "invalidConfigPath": "error",
+            "invalidScreen": "error",
+            "invalidTailwindDirective": "error",
+            "invalidVariant": "error",
+            "recommendedVariantOrder": "warning"
+          },
+          "suggestions": true,
+          "validate": true
         }
       }
     },
@@ -795,7 +881,13 @@
       "**/data/**",
       "**/profiles/**",
       "**/tmp/**",
+      "**/build/**",
+      "**/__pycache__/**",
+      "**/.mypy_cache/**",
+      "**/.ruff_cache/**",
+      "**/.pytest_cache/**",
       "**/*.log",
+      "**/*.pyc",
       "**/*.db",
       "**/*.pid",
       "**/*.tmp",
