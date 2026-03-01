@@ -30,18 +30,14 @@
   ],
 
   "plugin": [
-    "@tarquinen/opencode-dcp", // token savings: prunes obsolete tool outputs from context
+    "@tarquinen/opencode-dcp@latest",
+    "opencode-mem",
+    "opencode-pty",
     "opencode-antigravity-auth@beta",
+    "@nick-vi/opencode-type-inject",
+    "micode@latest",
+    // OMO must be last:
     "oh-my-opencode",
-    "opencode-pilot",
-    "opencode-wakatime", // tracks AI coding activity with WakaTime
-    "open-trees",
-    "opencode-snippets",
-    "opencode-todo-reminder", // enforces todo completion across session continuations
-    "@ramtinj95/opencode-tokenscope", // token usage analysis + cost tracking per subagent
-    "opencode-type-inject", // auto-inject TypeScript/Svelte types into file reads
-    "opencode-shell-strategy", // non-interactive shell strategy, prevents TTY hangs
-    "opencode-pty", // PTY background process management
   ],
 
   "mcp": {

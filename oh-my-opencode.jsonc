@@ -7,9 +7,9 @@
     "modelConcurrency": {
       "google/antigravity-claude-opus-4-6-thinking": 3,
       "minimax-coding-plan/MiniMax-M2.5": 3,
-      "minimax-coding-plan/MiniMax-M2.5-highspeed": 5,
+      "minimax-coding-plan/MiniMax-M2.5-highspeed": 5
     },
-    "staleTimeoutMs": 300000,
+    "staleTimeoutMs": 300000
   },
   "runtime_fallback": {
     "enabled": true,
@@ -17,21 +17,21 @@
     "cooldown_seconds": 10,
     "timeout_seconds": 30,
     "retry_on_errors": [429, 503, 408],
-    "notify_on_fallback": true,
+    "notify_on_fallback": true
   },
   "model_fallback": true,
   "hashline_edit": true,
   "notification": {
-    "force_enable": true,
+    "force_enable": true
   },
   "websearch": {
-    "provider": "exa",
+    "provider": "exa"
   },
   "browser_automation_engine": {
-    "provider": "playwright",
+    "provider": "playwright"
   },
   "babysitting": {
-    "timeout_ms": 180000,
+    "timeout_ms": 180000
   },
   "disabled_hooks": ["startup-toast", "tips_toggle"],
   "categories": {
@@ -39,39 +39,39 @@
       "model": "google/antigravity-gemini-3.1-pro",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
-        "google/gemini-3.1-pro-preview",
-      ],
+        "google/gemini-3.1-pro-preview"
+      ]
     },
     "deep": {
       "model": "openai/gpt-5.3-codex",
       "fallback_models": [
         "google/antigravity-claude-opus-4-6-thinking",
-        "google/antigravity-gemini-3.1-pro",
-      ],
+        "google/antigravity-gemini-3.1-pro"
+      ]
     },
     "quick": {
       "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
       "fallback_models": [
         "google/antigravity-gemini-3.1-flash",
-        "minimax-coding-plan/MiniMax-M2.5",
-      ],
+        "minimax-coding-plan/MiniMax-M2.5"
+      ]
     },
     "ultrabrain": {
       "model": "openai/gpt-5.3-codex",
       "variant": "xhigh",
-      "fallback_models": ["google/antigravity-claude-opus-4-6-thinking"],
+      "fallback_models": ["google/antigravity-claude-opus-4-6-thinking"]
     },
     "unspecified-high": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"]
     },
     "unspecified-low": {
       "model": "google/antigravity-claude-sonnet-4-6",
       "fallback_models": [
         "google/antigravity-gemini-3.1-pro",
-        "minimax-coding-plan/MiniMax-M2.5",
-      ],
+        "minimax-coding-plan/MiniMax-M2.5"
+      ]
     },
     "visual-engineering": {
       "model": "google/antigravity-gemini-3.1-pro",
@@ -79,16 +79,16 @@
       "variant": "high",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
-        "google/gemini-3.1-pro-preview",
-      ],
+        "google/gemini-3.1-pro-preview"
+      ]
     },
     "writing": {
       "model": "minimax-coding-plan/MiniMax-M2.5",
       "fallback_models": [
         "minimax-coding-plan/MiniMax-M2.5-highspeed",
-        "google/antigravity-gemini-3.1-flash",
-      ],
-    },
+        "google/antigravity-gemini-3.1-flash"
+      ]
+    }
   },
   "experimental": {
     "safe_hook_creation": true,
@@ -98,104 +98,103 @@
       "enabled": true, // reactive deduplication recovery on API error; complements @tarquinen/opencode-dcp proactive nudges
       "strategies": {
         "deduplication": {
-          "enabled": true,
+          "enabled": true
         },
         "purge_errors": {
           "enabled": true,
-          "turns": 5,
+          "turns": 5
         },
         "supersede_writes": {
           "aggressive": false,
-          "enabled": true,
-        },
-      },
-    },
+          "enabled": true
+        }
+      }
+    }
   },
   "git_master": {
     "commit_footer": true,
-    "include_co_authored_by": true,
+    "include_co_authored_by": true
   },
-  "google_auth": false,
   "ralph_loop": {
-    "default_max_iterations": 50,
+    "default_max_iterations": 50
   },
   "agents": {
     "sisyphus": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"]
     },
     "prometheus": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"]
     },
     "metis": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"]
     },
     "explore": {
       "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
       "fallback_models": [
         "google/antigravity-gemini-3.1-flash",
-        "minimax-coding-plan/MiniMax-M2.5",
+        "minimax-coding-plan/MiniMax-M2.5"
       ],
       "compaction": {
-        "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+        "model": "minimax-coding-plan/MiniMax-M2.5-highspeed"
       },
-      "prompt_append": "Focus on file paths, symbol names, and pattern descriptions. Skip test files unless explicitly asked. Return grep-style results with line context.",
+      "prompt_append": "Focus on file paths, symbol names, and pattern descriptions. Skip test files unless explicitly asked. Return grep-style results with line context."
     },
     "librarian": {
       "model": "minimax-coding-plan/MiniMax-M2.5",
       "fallback_models": [
         "minimax-coding-plan/MiniMax-M2.5-highspeed",
-        "google/antigravity-gemini-3.1-flash",
+        "google/antigravity-gemini-3.1-flash"
       ],
       "compaction": {
-        "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+        "model": "minimax-coding-plan/MiniMax-M2.5-highspeed"
       },
-      "prompt_append": "Prefer official documentation and well-maintained repositories over blog posts and tutorials. Return file paths, function signatures, and concrete code examples.",
+      "prompt_append": "Prefer official documentation and well-maintained repositories over blog posts and tutorials. Return file paths, function signatures, and concrete code examples."
     },
     "oracle": {
       "model": "openai/gpt-5.2",
       "reasoningEffort": "high",
       "fallback_models": [
         "google/antigravity-claude-opus-4-6-thinking",
-        "google/antigravity-gemini-3.1-pro",
-      ],
+        "google/antigravity-gemini-3.1-pro"
+      ]
     },
     "momus": {
       "model": "google/antigravity-gemini-3.1-pro",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
-        "google/gemini-3.1-pro-preview",
-      ],
+        "google/gemini-3.1-pro-preview"
+      ]
     },
     "multimodal-looker": {
       "model": "google/antigravity-gemini-3-flash",
       "fallback_models": [
         "google/antigravity-gemini-3.1-flash",
-        "google/gemini-2.5-flash",
-      ],
+        "google/gemini-2.5-flash"
+      ]
     },
     "hephaestus": {
       "model": "openai/gpt-5.3-codex",
       "fallback_models": [
         "google/antigravity-gemini-3.1-pro",
-        "google/antigravity-claude-sonnet-4-6",
-      ],
+        "google/antigravity-claude-sonnet-4-6"
+      ]
     },
     "atlas": {
       "model": "google/antigravity-claude-sonnet-4-6",
       "fallback_models": [
         "google/antigravity-gemini-3.1-pro",
-        "minimax-coding-plan/MiniMax-M2.5",
-      ],
-    },
+        "minimax-coding-plan/MiniMax-M2.5"
+      ]
+    }
   },
   "sisyphus_agent": {
     "default_builder_enabled": false,
-    "planner_enabled": true,
-  },
+    "planner_enabled": true
+  }
 }

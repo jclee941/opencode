@@ -88,6 +88,74 @@ func deepMerge(dst, src map[string]interface{}) map[string]interface{} {
 	return dst
 }
 
+// omoConflicts lists plugins that silently fail when loaded alongside
+// oh-my-opencode due to OpenCode's ESM plugin resolution bug.
+// See: compressed session b2 — toggle test results.
+var omoConflicts = map[string]bool{
+	"opencode-pilot":            true,
+	"opencode-morph-fast-apply": true,
+	"opencode-smart-title":      true,
+	"opencode-convodump":        true,
+	"octto":                     true,
+	"opencode-supermemory":      true,
+	"opencode-scheduler":        true,
+	"micode":                    true,
+	"opencode-notify":           true,
+	"opencode-websearch-cited":  true,
+	"opencode-wakatime":         true,
+	"@plannotator/opencode":     true,
+	"@openspoon/subtask2":       true,
+	"opencode-worktree":                true,
+	"opencode-zellij-namer":            true,
+	"opencode-devcontainers":           true,
+	"opencode-daytona":                 true,
+	"opencode-helicone-session":        true,
+	"opencode-openai-codex-auth":       true,
+	"opencode-gemini-auth":             true,
+
+}
+
+// resolvePluginConflicts removes plugins that conflict with oh-my-opencode.
+// If OMO is not in the list, all plugins are kept as-is.
+func resolvePluginConflicts(merged map[string]interface{}) {
+	raw, ok := merged["plugin"]
+	if !ok {
+		return
+	}
+	plugins, ok := raw.([]interface{})
+	if !ok {
+		return
+	}
+
+	// Check if OMO is present.
+	hasOMO := false
+	for _, p := range plugins {
+		if s, ok := p.(string); ok && s == "oh-my-opencode" {
+			hasOMO = true
+			break
+		}
+	}
+	if !hasOMO {
+		return
+	}
+
+	// Filter out conflicting plugins.
+	var kept []interface{}
+	var removed []string
+	for _, p := range plugins {
+		s, ok := p.(string)
+		if ok && omoConflicts[s] {
+			removed = append(removed, s)
+			continue
+		}
+		kept = append(kept, p)
+	}
+	if len(removed) > 0 {
+		merged["plugin"] = kept
+		fmt.Fprintf(os.Stderr, "OMO conflict resolver: removed %v (ESM resolution conflict)\n", removed)
+	}
+}
+
 func main() {
 	check := len(os.Args) > 1 && os.Args[1] == "--check"
 
@@ -122,6 +190,9 @@ func main() {
 		}
 		merged = deepMerge(merged, obj)
 	}
+
+	// Resolve OMO plugin conflicts before output.
+	resolvePluginConflicts(merged)
 
 	out, err := json.MarshalIndent(merged, "", "  ")
 	if err != nil {

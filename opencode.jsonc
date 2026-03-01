@@ -553,18 +553,13 @@
     "*": "allow"
   },
   "plugin": [
-    "@tarquinen/opencode-dcp",
+    "@tarquinen/opencode-dcp@latest",
+    "opencode-mem",
+    "opencode-pty",
     "opencode-antigravity-auth@beta",
-    "oh-my-opencode",
-    "opencode-pilot",
-    "opencode-wakatime",
-    "open-trees",
-    "opencode-snippets",
-    "opencode-todo-reminder",
-    "@ramtinj95/opencode-tokenscope",
-    "opencode-type-inject",
-    "opencode-shell-strategy",
-    "opencode-pty"
+    "@nick-vi/opencode-type-inject",
+    "micode@latest",
+    "oh-my-opencode"
   ],
   "provider": {
     "google": {
