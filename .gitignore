@@ -35,4 +35,5 @@ server
 # BACKUPS — transient snapshots
 # ============================================================
 *.backup-*
+package-lock.json
 .gitignore
