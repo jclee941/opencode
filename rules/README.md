@@ -1,117 +1,64 @@
 # Ruleset Architecture
 
-This file defines how rule files in `rules/` are composed, resolved, and loaded.
+How rule files in `rules/` are composed, resolved, and loaded.
 
 ## Priority order
 
-Apply rules in this order when overlap exists:
+Conflict resolution priority (1 = highest). Priority is independent of tier:
 
-1. `hard-autonomy-no-questions.md` (execution posture, question policy, blocked-step handling)
-2. `archon-workflow.md` (Archon task management, RAG workflow, project organization)
-3. `requirements-verification.md` (always-check requirements spec before/after implementation)
-4. Domain rules (`elk-troubleshooting.md`)
-5. `session-init.md` (session checklist and verification baseline)
-6. `deployment-automation.md` (CI/CD policy, manual deploy prohibition)
-7. `monorepo-standards.md` (structure, naming)
-8. `mcp-schema-hygiene.md` (MCP tool call schema validation, -32602 prevention)
-9. `code-modularization.md` (file size governance, modularization verification)
-10. `bmad-integration.md` (BMAD artifact consumption, story implementation automation)
-11. `auto-build-pipeline.md` (spec-to-PR autonomous pipeline orchestration)
+| # | File | Tier | Domain |
+|---|------|------|--------|
+| 1 | `hard-autonomy-no-questions.md` | 0 | Execution posture, blocked-step handling |
+| 2 | `archon-workflow.md` | 0 | Archon task management, RAG workflow |
+| 3 | `requirements-verification.md` | 0 | Requirements check before/after implementation |
+| 4 | Domain rules (`elk-troubleshooting.md`) | 2 | Domain-specific |
+| 5 | `session-init.md` | 0 | Session bootstrap, MCP schema hygiene |
+| 6 | `deployment-automation.md` | 1 | CI/CD policy |
+| 7 | `monorepo-standards.md` | 0 | Structure, naming |
+| 8 | `code-modularization.md` | 1 | File size governance |
+| 9 | `bmad-integration.md` | 1 | BMAD artifact consumption |
+| 10 | `auto-build-pipeline.md` | 1 | Spec-to-PR pipeline |
 
 ## Tier model
 
-Rules are grouped into tiers by loading scope:
+### Tier 0 — Always loaded (via `config/base.jsonc` instructions)
 
-### Tier 1 — Always loaded (via `opencode.jsonc` instructions)
-
-These are loaded into every session as baseline rules:
+Minimal set loaded every session (~1,500 tokens total):
 
 - `hard-autonomy-no-questions.md` — execution posture, zero-question policy
-- `archon-workflow.md` — Archon task management, RAG workflow, project organization
-- `session-init.md` — session startup checklist
-- `requirements-verification.md` — requirements check and verification gate
-- `deployment-automation.md` — CI/CD policy
+- `archon-workflow.md` — Archon task management, RAG workflow
+- `session-init.md` — session bootstrap + MCP schema hygiene (merged)
+- `requirements-verification.md` — requirements check gate
 - `monorepo-standards.md` — structure and naming
-- `mcp-schema-hygiene.md` — MCP tool call schema validation
-- `code-modularization.md` — file size governance and modularization verification
-- `bmad-integration.md` — BMAD artifact consumption, story implementation automation
-- `auto-build-pipeline.md` — spec-to-PR autonomous pipeline orchestration
 
-### Tier 2 — Domain rules (loaded when domain is in scope)
+### Tier 1 — On-demand (agent reads when task domain matches)
 
-Loaded only when the task touches the relevant domain:
+Files remain in `rules/` but are NOT in the instructions array:
 
-- ELK (all domains): `elk-troubleshooting.md`
+- `deployment-automation.md` — read when: deploy/CI task
+- `code-modularization.md` — read when: refactor/split, or file >300 LOC touched
+- `bmad-integration.md` — read when: `_bmad-output/` detected
+- `auto-build-pipeline.md` — read when: `/start-work` or auto-build triggered
 
-### Tier 3 — Process rules (loaded when specific process is in scope)
+### Tier 2 — Domain-specific (loaded when domain in scope)
 
-Currently no Tier 3 rules. Reference content was extracted to `docs/` files;
-Tier 1 rules contain executive policy only.
+- `elk-troubleshooting.md` — ELK troubleshooting (all domains)
 
-## Inheritance model
+## Deleted / merged files
 
-1. `elk-troubleshooting.md` is the single ELK troubleshooting source of truth.
-2. Domain-specific sections (OpenCode, Proxmox) are embedded within the same file, activated by target scope.
+- `mcp-schema-hygiene.md` → merged into `session-init.md`
+- `AGENTS.md` (rules/) → deleted (duplicate of root AGENTS.md)
 
-## Conflict resolution rules
+## Conflict resolution
 
-1. Prefer stricter safety constraints when two rules differ.
-2. Do not duplicate the same normative rule text across multiple files; keep one canonical source and link to it.
-3. If a domain rule needs an exception, state the exception explicitly and bound it to that domain only.
+1. `hard-autonomy-no-questions.md` overrides all.
+2. Prefer stricter safety constraints.
+3. One canonical source per rule — no duplication.
+4. Format: `applied: <base>, overridden by: <exception>, scope: <bounded>`
 
-When conflicts appear, resolve and document in this order:
+## Instruction loading
 
-1. `hard-autonomy-no-questions.md`
-2. domain rule
-3. `session-init.md`
-4. repository standards
-
-Write conflict decisions in one line:
-
-`applied: <base rule>, overridden by: <exception rule>, scope: <bounded scope>`
-
-## High-risk operation policy
-
-Canonical source: `rules/hard-autonomy-no-questions.md`.
-
-All high-risk and blocked-operation handling must reference that file instead of repeating the same normative text.
-
-## Change hygiene for rules
-
-1. Keep each rule file focused on one responsibility.
-2. When moving normative content, update inbound references in the same change.
-3. Validate with `npm run lint:naming` after changes.
-4. For reversible in-scope recommendations, prefer immediate application over optional suggestion text.
-
-## Instruction loading model
-
-1. `opencode.jsonc` loads Tier 1 rules via explicit file paths (not glob).
-2. `AGENTS.md` is loaded natively by OpenCode — it must not appear in the instructions array.
-3. Explicit listing is preferred over `rules/*.md` glob to prevent Tier 2/3 domain rules from consuming context tokens in unrelated sessions.
-4. File-level ownership must stay single-source (no duplicated normative text).
-5. Task prompts still reference only the files needed for that task.
-
-## Task-time composition order
-
-1. Base execution rules (Tier 1 — always loaded):
-   - `rules/hard-autonomy-no-questions.md`
-   - `rules/archon-workflow.md`
-   - `rules/session-init.md`
-   - `rules/requirements-verification.md`
-2. Domain rules (Tier 2 — only when relevant):
-   - ELK: `rules/elk-troubleshooting.md`
-3. Repository governance (Tier 1 baseline):
-   - `rules/deployment-automation.md` (Tier 1)
-   - `rules/monorepo-standards.md` (Tier 1)
-   - `rules/mcp-schema-hygiene.md` (Tier 1)
-   - `rules/code-modularization.md` (Tier 1)
-   - `rules/bmad-integration.md` (Tier 1)
-   - `rules/auto-build-pipeline.md` (Tier 1)
-
-
-## Reference hygiene
-
-1. Use exact relative paths under `rules/`.
-2. Avoid duplicate references to equivalent rules.
-3. Keep the reference set minimal and task-specific.
-4. If a referenced file is canonical SSoT, point secondary rules to it instead of copying text.
+1. `config/base.jsonc` loads Tier 0 via explicit paths (not glob).
+2. Root `AGENTS.md` loaded natively by OpenCode — never in instructions array.
+3. Tier 1 rules read on-demand, not pre-loaded.
+4. Reduces baseline from ~35K to ~2K tokens.
