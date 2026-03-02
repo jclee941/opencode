@@ -54,6 +54,38 @@ see `docs/monorepo-structure-and-naming.md`.
    that depend on the Node.js ecosystem (e.g., `commitlint`, AST parsing) are
    exempt from Go migration.
 
+### Shell-to-Go migration checklist
+
+When migrating a `.sh` script to Go, follow this sequence in a single change:
+
+1. **Create Go entrypoint** in the same directory as the original script.
+   - File name: match the original minus extension (`deploy.sh` → `deploy.go`).
+   - Package: `main` with `func main()`.
+   - Use `os/exec` for subprocess calls, `flag` for CLI arguments.
+2. **Preserve behavior exactly**:
+   - Same CLI flags and positional arguments.
+   - Same exit codes (0 = success, non-zero = failure).
+   - Same stdout/stderr output format.
+   - Same environment variable consumption (`os.Getenv`).
+3. **Prefer stdlib over dependencies**:
+   - `os/exec` over third-party command runners.
+   - `path/filepath` over string manipulation for paths.
+   - `encoding/json` for JSON parsing (replace `jq`).
+   - `regexp` for pattern matching (replace `grep`/`sed`/`awk`).
+4. **Update all references** in the same commit:
+   - `package.json` scripts.
+   - `config/*.jsonc` (formatters, watchers).
+   - `.githooks/*` hook scripts.
+   - `.github/workflows/*.yml` CI steps.
+   - `docs/` and `rules/` prose references.
+   - `AGENTS.md` structure tree.
+5. **Delete the original `.sh` file** in the same commit.
+6. **Verify**:
+   - `go build scripts/<name>.go` succeeds.
+   - `go vet scripts/<name>.go` clean.
+   - `npm run lint:naming` passes.
+   - Manual smoke test: run the new Go script with the same args.
+
 ## Reference composition
 
 1. Loaded as Tier 0 rule via `opencode.jsonc`.
