@@ -50,9 +50,12 @@ see `docs/monorepo-structure-and-naming.md`.
    a Go entrypoint in the same change.
 3. After migration, update direct references in docs/config/scripts and remove
    the superseded shell script.
+4. Exception: Node.js scripts (`*.mjs`) used as git hooks, linters, or validators
+   that depend on the Node.js ecosystem (e.g., `commitlint`, AST parsing) are
+   exempt from Go migration.
 
 ## Reference composition
 
-1. Loaded as Tier 1 baseline rule via `opencode.jsonc`.
+1. Loaded as Tier 0 rule via `opencode.jsonc`.
 2. Defers to `hard-autonomy-no-questions.md` on execution posture.
 3. Detailed structure guidance and Bazel profile: `docs/monorepo-structure-and-naming.md`.
