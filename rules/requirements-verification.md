@@ -15,7 +15,7 @@ specifications are always checked before work starts and verified after work com
    - `docs/` directory for specification or design documents.
    - `rules/` directory for applicable policy constraints.
    - Kratos project memory (`mcphub_kratos-memory_search` for prior decisions and task context).
-   - Supermemory (`supermemory` search for prior decisions and context).
+   - Cross-session memory (`memory(mode="search")` for prior decisions and context).
    - Issue tracker (GitHub Issues / PR descriptions).
 2. If found, extract acceptance criteria and hard constraints before writing code.
 3. If not found, document the inferred requirements as assumptions in the task output.
@@ -87,5 +87,5 @@ If a section is not applicable, state `N/A` explicitly.
 
 ## Reference composition
 
-1. This rule is loaded as a Tier 1 baseline rule via `opencode.jsonc`.
+1. This rule is loaded as a Tier 0 rule via `opencode.jsonc`.
 2. For conflict resolution, follow priority order in `rules/README.md`.
