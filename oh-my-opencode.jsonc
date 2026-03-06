@@ -1,13 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/dev/assets/oh-my-opencode.schema.json",
   "auto_update": true,
+  "new_task_system_enabled": true,
   "background_task": {
-    "defaultConcurrency": 3,
+    "defaultConcurrency": 99,
     "messageStalenessTimeoutMs": 900000,
     "modelConcurrency": {
-      "google/antigravity-claude-opus-4-6-thinking": 3,
-      "minimax-coding-plan/MiniMax-M2.5": 3,
-      "minimax-coding-plan/MiniMax-M2.5-highspeed": 5
+      "google/antigravity-claude-opus-4-6-thinking": 99,
+      "minimax-coding-plan/MiniMax-M2.5": 99,
+      "minimax-coding-plan/MiniMax-M2.5-highspeed": 99,
+      "openai/gpt-5.3-codex": 99,
+      "openai/gpt-5.4-pro": 99
     },
     "staleTimeoutMs": 300000
   },
@@ -36,13 +39,15 @@
   "disabled_hooks": ["startup-toast", "tips_toggle"],
   "categories": {
     "artistry": {
+      "description": "Complex problem-solving with unconventional, creative approaches beyond standard patterns",
       "model": "google/antigravity-gemini-3.1-pro",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
-        "google/gemini-3.1-pro-preview"
+        "google/antigravity-gemini-3.1-pro-preview"
       ]
     },
     "deep": {
+      "description": "Goal-oriented autonomous problem-solving requiring thorough research before action",
       "model": "openai/gpt-5.3-codex",
       "fallback_models": [
         "google/antigravity-claude-opus-4-6-thinking",
@@ -50,6 +55,7 @@
       ]
     },
     "quick": {
+      "description": "Trivial tasks — single file changes, typo fixes, simple modifications",
       "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
       "fallback_models": [
         "google/antigravity-gemini-3.1-flash",
@@ -57,16 +63,19 @@
       ]
     },
     "ultrabrain": {
+      "description": "Genuinely hard logic-heavy tasks requiring maximum reasoning depth",
       "model": "openai/gpt-5.3-codex",
       "variant": "xhigh",
       "fallback_models": ["google/antigravity-claude-opus-4-6-thinking"]
     },
     "unspecified-high": {
+      "description": "High-effort tasks that do not fit specialized categories",
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "fallback_models": ["google/antigravity-gemini-3.1-pro"]
     },
     "unspecified-low": {
+      "description": "Low-effort tasks that do not fit specialized categories",
       "model": "google/antigravity-claude-sonnet-4-6",
       "fallback_models": [
         "google/antigravity-gemini-3.1-pro",
@@ -74,15 +83,17 @@
       ]
     },
     "visual-engineering": {
+      "description": "Frontend, UI/UX, design, styling, animation, and visual implementation",
       "model": "google/antigravity-gemini-3.1-pro",
       "reasoningEffort": "high",
       "variant": "high",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
-        "google/gemini-3.1-pro-preview"
+        "google/antigravity-gemini-3.1-pro-preview"
       ]
     },
     "writing": {
+      "description": "Documentation, prose, technical writing, and content generation",
       "model": "minimax-coding-plan/MiniMax-M2.5",
       "fallback_models": [
         "minimax-coding-plan/MiniMax-M2.5-highspeed",
@@ -95,14 +106,19 @@
     "model_fallback_title": true,
     "plugin_load_timeout_ms": 15000,
     "dynamic_context_pruning": {
-      "enabled": true, // reactive deduplication recovery on API error; complements @tarquinen/opencode-dcp proactive nudges
+      // Reactive deduplication — fires on API context-overflow errors.
+      // Complements @tarquinen/opencode-dcp proactive nudges.
+      // protectedTools mirrors DCP strategy-level lists for consistency.
+      "enabled": true,
       "strategies": {
         "deduplication": {
-          "enabled": true
+          "enabled": true,
+          "protected_tools": ["task", "write", "edit"]
         },
         "purge_errors": {
           "enabled": true,
-          "turns": 5
+          "turns": 5,
+          "protected_tools": ["task", "edit"]
         },
         "supersede_writes": {
           "aggressive": false,
@@ -116,26 +132,69 @@
     "include_co_authored_by": true
   },
   "ralph_loop": {
-    "default_max_iterations": 50
+    "enabled": true,
+    "default_max_iterations": 50,
+    "default_strategy": "continue"
   },
   "agents": {
     "sisyphus": {
+      "description": "Primary orchestrator — routes tasks, delegates to specialists, manages parallel execution",
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"]
+      "textVerbosity": "medium",
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "thinking": {
+        "type": "enabled",
+        "budgetTokens": 32768
+      }
+    },
+    "sisyphus-junior": {
+      "description": "Lightweight task executor for category-delegated work with domain-specific skills",
+      "model": "google/antigravity-claude-sonnet-4-6",
+      "textVerbosity": "low",
+      "fallback_models": [
+        "google/antigravity-gemini-3.1-pro",
+        "minimax-coding-plan/MiniMax-M2.5"
+      ]
+    },
+    "build": {
+      "description": "Autonomous code builder — implements features end-to-end with verification",
+      "model": "google/antigravity-claude-sonnet-4-6",
+      "textVerbosity": "low",
+      "fallback_models": [
+        "google/antigravity-gemini-3.1-pro",
+        "minimax-coding-plan/MiniMax-M2.5"
+      ],
+      "prompt_append": "MANDATORY: Follow existing codebase patterns exactly. Run lsp_diagnostics on every changed file. Never suppress type errors. Run tests if they exist."
     },
     "prometheus": {
+      "description": "Strategic planner — generates structured implementation plans with dependency ordering",
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"]
+      "textVerbosity": "high",
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "thinking": {
+        "type": "enabled",
+        "budgetTokens": 32768
+      },
+      "prompt_append": "MANDATORY: Output a structured implementation plan with numbered phases, explicit file paths, dependency ordering, and acceptance criteria for each task. Every plan must include: scope boundary, parallelizable vs sequential tasks, risk assessment, and verification steps. Never produce vague or incomplete plans."
     },
     "metis": {
+      "description": "Pre-planning analyst — identifies hidden intentions, ambiguities, and AI failure points",
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"]
+      "textVerbosity": "high",
+      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "thinking": {
+        "type": "enabled",
+        "budgetTokens": 32768
+      },
+      "prompt_append": "MANDATORY: Analyze every request for hidden intentions, implicit requirements, scope ambiguities, and common AI failure points. Output structured analysis with: stated vs implied requirements, ambiguity catalog, risk matrix, and recommended clarifications. Never rubber-stamp a request without critical analysis."
     },
     "explore": {
+      "description": "Contextual grep agent — fast codebase search across multiple files and patterns",
       "model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+      "textVerbosity": "low",
       "fallback_models": [
         "google/antigravity-gemini-3.1-flash",
         "minimax-coding-plan/MiniMax-M2.5"
@@ -143,10 +202,16 @@
       "compaction": {
         "model": "minimax-coding-plan/MiniMax-M2.5-highspeed"
       },
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      },
       "prompt_append": "Focus on file paths, symbol names, and pattern descriptions. Skip test files unless explicitly asked. Return grep-style results with line context."
     },
     "librarian": {
+      "description": "Reference grep agent — searches external docs, OSS repos, and official API references",
       "model": "minimax-coding-plan/MiniMax-M2.5",
+      "textVerbosity": "low",
       "fallback_models": [
         "minimax-coding-plan/MiniMax-M2.5-highspeed",
         "google/antigravity-gemini-3.1-flash"
@@ -154,47 +219,81 @@
       "compaction": {
         "model": "minimax-coding-plan/MiniMax-M2.5-highspeed"
       },
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      },
       "prompt_append": "Prefer official documentation and well-maintained repositories over blog posts and tutorials. Return file paths, function signatures, and concrete code examples."
     },
     "oracle": {
-      "model": "openai/gpt-5.2",
+      "description": "Read-only high-IQ consultant — architecture review, debugging, and multi-system tradeoff analysis",
+      "model": "openai/gpt-5.4-pro",
       "reasoningEffort": "high",
+      "textVerbosity": "high",
       "fallback_models": [
         "google/antigravity-claude-opus-4-6-thinking",
         "google/antigravity-gemini-3.1-pro"
-      ]
+      ],
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      },
+      "prompt_append": "MANDATORY: Provide structured advisory output with: problem analysis, tradeoff matrix (pros/cons for each option), concrete recommendation with rationale, implementation guidance with specific file paths and code patterns, and risk mitigation steps. Never give vague advice — be specific and actionable."
     },
     "momus": {
+      "description": "Expert reviewer — evaluates plans and implementations for completeness, clarity, and correctness",
       "model": "google/antigravity-gemini-3.1-pro",
+      "textVerbosity": "medium",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
-        "google/gemini-3.1-pro-preview"
-      ]
+        "google/antigravity-gemini-3.1-pro-preview"
+      ],
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      },
+      "prompt_append": "MANDATORY: Review every plan and implementation against these criteria: completeness (all requirements addressed), verifiability (each item has testable acceptance criteria), clarity (no ambiguous language), correctness (no logical errors), and risk coverage (failure modes identified). Output structured review with pass/fail per criterion and actionable fixes for failures."
     },
     "multimodal-looker": {
-      "model": "google/antigravity-gemini-3-flash",
+      "description": "Vision specialist — analyzes images, PDFs, screenshots, and visual content",
+      "model": "google/antigravity-gemini-3.1-flash",
+      "textVerbosity": "low",
       "fallback_models": [
-        "google/antigravity-gemini-3.1-flash",
-        "google/gemini-2.5-flash"
-      ]
+        "google/antigravity-gemini-3.1-pro-preview"
+      ],
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
     },
     "hephaestus": {
+      "description": "Deep autonomous worker — extended implementation sessions with full tool access",
       "model": "openai/gpt-5.3-codex",
+      "allow_non_gpt_model": true,
       "fallback_models": [
         "google/antigravity-gemini-3.1-pro",
         "google/antigravity-claude-sonnet-4-6"
-      ]
+      ],
+      "prompt_append": "MANDATORY: Follow existing codebase patterns exactly. Run lsp_diagnostics on every changed file before reporting completion. Never suppress type errors. Never leave code in a broken state. If tests exist, run them and report results."
     },
     "atlas": {
+      "description": "Context mapper — comprehensive dependency analysis, impact assessment, and file inventory",
       "model": "google/antigravity-claude-sonnet-4-6",
+      "textVerbosity": "medium",
       "fallback_models": [
         "google/antigravity-gemini-3.1-pro",
         "minimax-coding-plan/MiniMax-M2.5"
-      ]
+      ],
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      },
+      "prompt_append": "MANDATORY: Map context comprehensively — identify all affected files, modules, dependencies, and cross-cutting concerns. Output structured context map with: file inventory, dependency graph, impact analysis, and integration points. Never provide partial context."
     }
   },
   "sisyphus_agent": {
-    "default_builder_enabled": false,
-    "planner_enabled": true
+    "default_builder_enabled": true,
+    "planner_enabled": true,
+    "replace_plan": true
   }
 }

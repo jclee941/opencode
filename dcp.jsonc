@@ -13,6 +13,8 @@
   ],
   "commands": {
     "enabled": true,
+    // Broadest scope: tools exempt from ALL DCP command-driven pruning.
+    // Superset of strategy-level protectedTools below.
     "protectedTools": [
       "task",
       "todowrite",
@@ -38,16 +40,24 @@
   "tools": {
     "settings": {
       "nudgeEnabled": true,
-      "nudgeFrequency": 5,
-      "contextLimit": 150000,
+      "nudgeFrequency": 4,
+      // Soft token budget for nudge triggers. Not a hard cap.
+      // Relationship: contextLimit < modelLimits < provider context.
+      "contextLimit": 140000,
+      // Tools exempt from automatic context-management nudges.
       "protectedTools": ["task", "todowrite", "write", "edit"],
+      // Per-model hard limits. Values: absolute tokens or "%" of provider context.
+      // Provider context (providers.jsonc): claude=200000, gemini=1048576.
       "modelLimits": {
-        "google/antigravity-claude-opus-4-6-thinking": 180000,
-        "google/antigravity-claude-sonnet-4-6": 180000,
+        "google/antigravity-claude-opus-4-6-thinking": 160000,
+        "google/antigravity-claude-sonnet-4-6": 160000,
         "google/antigravity-gemini-3.1-pro": "95%",
         "google/antigravity-gemini-3.1-flash": "95%",
         "minimax-coding-plan/MiniMax-M2.5": "90%",
         "minimax-coding-plan/MiniMax-M2.5-highspeed": "90%",
+        "openai/gpt-5.3-codex": 160000,
+        "openai/gpt-5.4-pro": 250000,
+        "google/antigravity-gemini-3.1-pro-preview": "95%",
       },
     },
     "distill": {
@@ -65,6 +75,7 @@
   "strategies": {
     "deduplication": {
       "enabled": true,
+      // Strategy-level: tools whose outputs must never be deduplicated.
       "protectedTools": ["task", "write", "edit"],
     },
     "supersedeWrites": {
@@ -73,6 +84,7 @@
     "purgeErrors": {
       "enabled": true,
       "turns": 5,
+      // Strategy-level: tools whose errors must not be purged.
       "protectedTools": ["task", "edit"],
     },
   },

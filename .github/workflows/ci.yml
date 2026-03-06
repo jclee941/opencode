@@ -40,3 +40,6 @@ jobs:
 
       - name: Validate naming
         run: npm run lint:naming
+
+      - name: Validate config references
+        run: npm run lint:config-refs

@@ -33,7 +33,7 @@ see `docs/monorepo-structure-and-naming.md`.
 1. Naming validation behavior is defined by `scripts/validate-monorepo-naming.mjs`.
 2. If you change naming exceptions in docs, update this file and `scripts/validate-monorepo-naming.mjs` together in the same change.
 3. Ignore/runtime directories are excluded from naming checks by policy and validator:
-   - `.git/`, `node_modules/`, `data/`, `log/`, `logs/`, `tmp/`, `profiles/`, `.sisyphus/`, `.cache/`, `dist/`, `coverage/`, `.next/`, `.venv/`, `.ruff_cache/`
+   - `.git/`, `node_modules/`, `data/`, `log/`, `logs/`, `tmp/`, `profiles/`, `.sisyphus/`, `.cache/`, `dist/`, `coverage/`, `.next/`, `.venv/`, `.ruff_cache/`, `thoughts/`
 
 ## Refactoring policy
 
@@ -45,14 +45,29 @@ see `docs/monorepo-structure-and-naming.md`.
 
 ## Script migration policy
 
+### Definitions
+
+- **Shell script**: any file with a `*.sh` extension OR a `#!/bin/sh` / `#!/usr/bin/env sh` / `#!/usr/bin/env bash` shebang.
+- **Operational script**: a standalone script in `scripts/`, project root, or CI directories used for build, deploy, setup, or automation tasks. Does NOT include minimal shell stubs (≤5 lines) in `.githooks/` that only delegate to `npm`/`npx`.
+
+### Rules
+
 1. Operational script files are enforced as Go (`*.go`) by default.
-2. When touching an existing shell operational script (`*.sh`), migrate it to
-   a Go entrypoint in the same change.
+2. When touching OR working in a directory containing a shell operational script,
+   migrate it to a Go entrypoint in the same change.
+   - **Priority override**: this migration obligation takes precedence over the
+     "smallest safe change" principle in `session-init.md`. The migration IS the
+     smallest safe change when a shell operational script is involved.
 3. After migration, update direct references in docs/config/scripts and remove
    the superseded shell script.
-4. Exception: Node.js scripts (`*.mjs`) used as git hooks, linters, or validators
-   that depend on the Node.js ecosystem (e.g., `commitlint`, AST parsing) are
-   exempt from Go migration.
+4. Exceptions (exempt from Go migration):
+   - Node.js scripts (`*.mjs`) used as git hooks, linters, or validators that
+     depend on the Node.js ecosystem (e.g., `commitlint`, AST parsing).
+   - Minimal shell stubs in `.githooks/` (≤5 lines) that only delegate to
+     `npm`/`npx`/`node` commands — these are Node.js ecosystem wrappers,
+     not operational scripts.
+5. `scripts/validate-monorepo-naming.mjs` enforces `*.sh` file detection
+   automatically. Any `*.sh` file in tracked directories causes a lint error.
 
 ### Shell-to-Go migration checklist
 

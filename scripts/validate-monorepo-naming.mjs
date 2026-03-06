@@ -20,6 +20,7 @@ const ignoreDirs = new Set([
   ".next",
   ".venv",
   ".ruff_cache",
+  "thoughts",
 ]);
 
 const allowedUppercaseFiles = new Set([
@@ -100,6 +101,11 @@ async function walk(currentDir) {
 
       if (!fileNamePattern.test(entry.name)) {
         violations.push(`FILE ${relPath}`);
+      }
+
+      // Shell script migration policy: *.sh files are not allowed
+      if (entry.name.endsWith(".sh")) {
+        violations.push(`SHELL ${relPath}  (migrate to Go per monorepo-standards.md §Script migration policy)`);
       }
     }
   }

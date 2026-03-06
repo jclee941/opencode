@@ -116,12 +116,7 @@
     "~/.config/opencode/rules/archon-workflow.md",
     "~/.config/opencode/rules/session-init.md",
     "~/.config/opencode/rules/requirements-verification.md",
-    "~/.config/opencode/rules/monorepo-standards.md",
-    "~/.config/opencode/rules/deployment-automation.md",
-    "~/.config/opencode/rules/mcp-schema-hygiene.md",
-    "~/.config/opencode/rules/code-modularization.md",
-    "~/.config/opencode/rules/bmad-integration.md",
-    "~/.config/opencode/rules/auto-build-pipeline.md"
+    "~/.config/opencode/rules/monorepo-standards.md"
   ],
   "logLevel": "INFO",
   "lsp": {
@@ -558,7 +553,7 @@
     "opencode-pty",
     "opencode-antigravity-auth@beta",
     "@nick-vi/opencode-type-inject",
-    "micode@latest",
+    "opencode-pilot",
     "oh-my-opencode"
   ],
   "provider": {
@@ -644,7 +639,7 @@
         "antigravity-gemini-3-pro": {
           "limit": {
             "context": 1048576,
-            "output": 65535
+            "output": 65536
           },
           "modalities": {
             "input": [
@@ -700,7 +695,7 @@
         "antigravity-gemini-3.1-pro": {
           "limit": {
             "context": 1048576,
-            "output": 65535
+            "output": 65536
           },
           "modalities": {
             "input": [
@@ -722,7 +717,7 @@
             }
           }
         },
-        "gemini-2.5-flash": {
+        "antigravity-gemini-3.1-pro-preview": {
           "limit": {
             "context": 1048576,
             "output": 65536
@@ -737,92 +732,7 @@
               "text"
             ]
           },
-          "name": "Gemini 2.5 Flash (Gemini CLI)"
-        },
-        "gemini-2.5-pro": {
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 2.5 Pro (Gemini CLI)"
-        },
-        "gemini-3-flash-preview": {
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3 Flash Preview (Gemini CLI)"
-        },
-        "gemini-3-pro-preview": {
-          "limit": {
-            "context": 1048576,
-            "output": 65535
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3 Pro Preview (Gemini CLI)"
-        },
-        "gemini-3.1-pro-preview": {
-          "limit": {
-            "context": 1048576,
-            "output": 65535
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3.1 Pro Preview (Gemini CLI)"
-        },
-        "gemini-3.1-pro-preview-customtools": {
-          "limit": {
-            "context": 1048576,
-            "output": 65535
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3.1 Pro Preview Custom Tools (Gemini CLI)"
+          "name": "Gemini 3.1 Pro Preview (Antigravity)"
         }
       },
       "options": {
@@ -868,6 +778,7 @@
       "**/.mypy_cache/**",
       "**/.ruff_cache/**",
       "**/.pytest_cache/**",
+      "**/.turbo/**",
       "**/*.log",
       "**/*.pyc",
       "**/*.db",
