@@ -1,81 +1,30 @@
 # opencode-pilot config
 # Polls GitHub for new work and auto-creates OpenCode sessions
 
-# OpenCode server port (match opencode.jsonc server port if set)
-# server_port: 4096
-
-# Wait 15s after OpenCode starts before first poll
 startup_delay: 15000
 
-# Root directory for git repos — pilot auto-discovers repos by scanning remotes
+# Auto-discovers repos by scanning git remotes under this directory
 repos_dir: ~/dev
 
 defaults:
-  # Agent to use for issue work (sisyphus = main orchestrator)
   agent: sisyphus
-  # Prompt template to use by default
   prompt: default
-  # Reuse existing session if one already exists for this repo
   reuse_active_session: true
-  # Reuse existing worktree/sandbox with same name
   prefer_existing_sandbox: true
 
 sources:
   - preset: github/my-issues
-    repos:
-      - qws941/safework2
-      - qws941/splunk
-      - qws941/youtube
-      - qws941/terraform
-      - qws941/propose
-      - qws941/blacklist
-      - qws941/tmux
-      - qws941/resume
-      - qws941/hycu_fsds
-      - qws941/github
     prompt: default
 
   - preset: github/review-requests
-    agent: sisyphus
     prompt: review
 
   - preset: github/my-prs-attention
-    repos:
-      - qws941/safework2
-      - qws941/splunk
-      - qws941/youtube
-      - qws941/terraform
-      - qws941/propose
-      - qws941/blacklist
-      - qws941/tmux
-      - qws941/resume
-      - qws941/hycu_fsds
-      - qws941/github
-    agent: sisyphus
     prompt: review-feedback
 
+# Override only when local dir name != GitHub repo name
 repos:
-  qws941/safework2:
-    path: ~/dev/safework2
-  qws941/splunk:
-    path: ~/dev/splunk
-  qws941/youtube:
-    path: ~/dev/youtube
-  qws941/terraform:
-    path: ~/dev/terraform
-  qws941/propose:
-    path: ~/dev/propose
-  qws941/blacklist:
-    path: ~/dev/blacklist
-  qws941/tmux:
-    path: ~/dev/tmux
-  qws941/resume:
-    path: ~/dev/resume
-  qws941/hycu_fsds:
-    path: ~/dev/hycu_fsds
-  qws941/github:
-    path: ~/dev/github
+  qws941/aimo3-prize: { path: ~/dev/prize }
 
-# Cleanup: archive processed sessions after 30 days
 cleanup:
   ttl_days: 30

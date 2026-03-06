@@ -4,7 +4,7 @@ Apply this policy to every MCP tool invocation. This rule prevents JSON-RPC -326
 (Invalid params) errors caused by schema contract violations between the caller and
 the MCP server.
 
-Priority: Tier 1 baseline. Loaded globally via `opencode.jsonc` instructions.
+Priority: Tier 1 on-demand. Read when MCP -32602 errors occur or new MCP tool integration.
 
 ## Root cause
 

@@ -92,7 +92,6 @@ func deepMerge(dst, src map[string]interface{}) map[string]interface{} {
 // oh-my-opencode due to OpenCode's ESM plugin resolution bug.
 // See: compressed session b2 — toggle test results.
 var omoConflicts = map[string]bool{
-	"opencode-pilot":            true,
 	"opencode-morph-fast-apply": true,
 	"opencode-smart-title":      true,
 	"opencode-convodump":        true,
@@ -144,7 +143,16 @@ func resolvePluginConflicts(merged map[string]interface{}) {
 	var removed []string
 	for _, p := range plugins {
 		s, ok := p.(string)
-		if ok && omoConflicts[s] {
+		if !ok {
+			kept = append(kept, p)
+			continue
+		}
+		// Strip version suffix (e.g., "micode@latest" → "micode")
+		name := s
+		if idx := strings.Index(s, "@"); idx >= 0 {
+			name = s[:idx]
+		}
+		if omoConflicts[name] {
 			removed = append(removed, s)
 			continue
 		}

@@ -10,7 +10,7 @@
   "model": "google/antigravity-claude-opus-4-6-thinking",
 
   "instructions": [
-    // Tier 1 — Always-loaded baseline rules (explicit listing).
+    // Tier 0 — Always-loaded baseline rules (explicit listing).
     // Absolute paths for cross-project global referenceability.
     // Explicit paths chosen over glob ("rules/*.md") for determinism:
     //   - Prevents Tier 2/3 domain rules (ELK, Proxmox) from consuming
@@ -22,11 +22,6 @@
     "~/.config/opencode/rules/session-init.md",
     "~/.config/opencode/rules/requirements-verification.md",
     "~/.config/opencode/rules/monorepo-standards.md",
-    "~/.config/opencode/rules/deployment-automation.md",
-    "~/.config/opencode/rules/mcp-schema-hygiene.md",
-    "~/.config/opencode/rules/code-modularization.md",
-    "~/.config/opencode/rules/bmad-integration.md",
-    "~/.config/opencode/rules/auto-build-pipeline.md",
   ],
 
   "plugin": [
@@ -35,7 +30,7 @@
     "opencode-pty",
     "opencode-antigravity-auth@beta",
     "@nick-vi/opencode-type-inject",
-    "micode@latest",
+    "opencode-pilot",
     // OMO must be last:
     "oh-my-opencode",
   ],
@@ -141,6 +136,7 @@
       "**/.mypy_cache/**",
       "**/.ruff_cache/**",
       "**/.pytest_cache/**",
+      "**/.turbo/**",
       "**/*.log",
       "**/*.pyc",
       "**/*.db",

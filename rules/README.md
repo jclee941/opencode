@@ -18,6 +18,7 @@ Conflict resolution priority (1 = highest). Priority is independent of tier:
 | 8 | `code-modularization.md` | 1 | File size governance |
 | 9 | `bmad-integration.md` | 1 | BMAD artifact consumption |
 | 10 | `auto-build-pipeline.md` | 1 | Spec-to-PR pipeline |
+| 11 | `mcp-schema-hygiene.md` | 1 | MCP tool call schema validation |
 
 ## Tier model
 
@@ -39,6 +40,7 @@ Files remain in `rules/` but are NOT in the instructions array:
 - `code-modularization.md` — read when: refactor/split, or file >300 LOC touched
 - `bmad-integration.md` — read when: `_bmad-output/` detected
 - `auto-build-pipeline.md` — read when: `/start-work` or auto-build triggered
+- `mcp-schema-hygiene.md` — read when: MCP -32602 errors or new MCP tool integration
 
 ### Tier 2 — Domain-specific (loaded when domain in scope)
 
@@ -46,7 +48,6 @@ Files remain in `rules/` but are NOT in the instructions array:
 
 ## Deleted / merged files
 
-- `mcp-schema-hygiene.md` → merged into `session-init.md`
 - `AGENTS.md` (rules/) → deleted (duplicate of root AGENTS.md)
 
 ## Conflict resolution
