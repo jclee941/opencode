@@ -4,6 +4,8 @@
 antigravity-accounts.json
 antigravity-accounts.json.*.tmp
 antigravity-signature-cache.json
+.env
+.env.*
 
 # ============================================================
 # RUNTIME & LOGS — ephemeral data

@@ -1,4 +1,6 @@
 export const ES_URL = process.env.ES_URL ?? "http://192.168.50.105:9200";
+const ES_USER = process.env.ES_USER ?? "elastic";
+const ES_PASSWORD = process.env.ES_PASSWORD ?? "";
 
 type EsRequestOptions = {
   method?: string;
@@ -12,9 +14,17 @@ export async function esRequest<T = unknown>(
   const hasBody = options.body !== undefined;
   const method = options.method ?? (hasBody ? "POST" : "GET");
 
+  const headers: Record<string, string> = {};
+  if (ES_PASSWORD) {
+    headers.authorization = `Basic ${Buffer.from(`${ES_USER}:${ES_PASSWORD}`).toString("base64")}`;
+  }
+  if (hasBody) {
+    headers["content-type"] = "application/json";
+  }
+
   const response = await fetch(`${ES_URL}${path}`, {
     method,
-    headers: hasBody ? { "content-type": "application/json" } : undefined,
+    headers,
     body: hasBody ? JSON.stringify(options.body) : undefined,
   });
 
