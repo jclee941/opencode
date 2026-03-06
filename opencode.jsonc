@@ -605,62 +605,6 @@
           },
           "name": "Claude Sonnet 4.6 (Antigravity)"
         },
-        "antigravity-gemini-3-flash": {
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3 Flash (Antigravity)",
-          "variants": {
-            "high": {
-              "thinkingLevel": "high"
-            },
-            "low": {
-              "thinkingLevel": "low"
-            },
-            "medium": {
-              "thinkingLevel": "medium"
-            },
-            "minimal": {
-              "thinkingLevel": "minimal"
-            }
-          }
-        },
-        "antigravity-gemini-3-pro": {
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3 Pro (Antigravity)",
-          "variants": {
-            "high": {
-              "thinkingLevel": "high"
-            },
-            "low": {
-              "thinkingLevel": "low"
-            }
-          }
-        },
         "antigravity-gemini-3.1-flash": {
           "limit": {
             "context": 1048576,

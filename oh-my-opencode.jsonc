@@ -10,7 +10,10 @@
       "minimax-coding-plan/MiniMax-M2.5": 99,
       "minimax-coding-plan/MiniMax-M2.5-highspeed": 99,
       "openai/gpt-5.3-codex": 99,
-      "openai/gpt-5.4-pro": 99
+      "openai/gpt-5.4-pro": 99,
+      "opencode-go/kimi-k2.5": 99,
+      "opencode-go/glm-5": 99,
+      "opencode-go/minimax-m2.5": 99
     },
     "staleTimeoutMs": 300000
   },
@@ -41,14 +44,17 @@
     "artistry": {
       "description": "Complex problem-solving with unconventional, creative approaches beyond standard patterns",
       "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "high",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
-        "google/antigravity-gemini-3.1-pro-preview"
+        "google/antigravity-gemini-3.1-pro-preview",
+        "openai/gpt-5.3-codex"
       ]
     },
     "deep": {
       "description": "Goal-oriented autonomous problem-solving requiring thorough research before action",
       "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
       "fallback_models": [
         "google/antigravity-claude-opus-4-6-thinking",
         "google/antigravity-gemini-3.1-pro"
@@ -70,14 +76,15 @@
     },
     "unspecified-high": {
       "description": "High-effort tasks that do not fit specialized categories",
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"]
+      "model": "openai/gpt-5.4-pro",
+      "variant": "high",
+      "fallback_models": ["google/antigravity-claude-opus-4-6-thinking", "google/antigravity-gemini-3.1-pro"]
     },
     "unspecified-low": {
       "description": "Low-effort tasks that do not fit specialized categories",
       "model": "google/antigravity-claude-sonnet-4-6",
       "fallback_models": [
+        "openai/gpt-5.3-codex",
         "google/antigravity-gemini-3.1-pro",
         "minimax-coding-plan/MiniMax-M2.5"
       ]
@@ -89,15 +96,16 @@
       "variant": "high",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
-        "google/antigravity-gemini-3.1-pro-preview"
+        "google/antigravity-gemini-3.1-pro-preview",
+        "openai/gpt-5.3-codex"
       ]
     },
     "writing": {
       "description": "Documentation, prose, technical writing, and content generation",
-      "model": "minimax-coding-plan/MiniMax-M2.5",
+      "model": "google/antigravity-gemini-3.1-flash",
       "fallback_models": [
-        "minimax-coding-plan/MiniMax-M2.5-highspeed",
-        "google/antigravity-gemini-3.1-flash"
+        "minimax-coding-plan/MiniMax-M2.5",
+        "google/antigravity-claude-sonnet-4-6"
       ]
     }
   },
@@ -142,7 +150,7 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "textVerbosity": "medium",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "fallback_models": ["google/antigravity-gemini-3.1-pro", "google/antigravity-claude-sonnet-4-6", "opencode-go/kimi-k2.5", "opencode-go/glm-5"],
       "thinking": {
         "type": "enabled",
         "budgetTokens": 32768
@@ -153,6 +161,8 @@
       "model": "google/antigravity-claude-sonnet-4-6",
       "textVerbosity": "low",
       "fallback_models": [
+        "google/antigravity-claude-sonnet-4-6",
+        "opencode-go/kimi-k2.5",
         "google/antigravity-gemini-3.1-pro",
         "minimax-coding-plan/MiniMax-M2.5"
       ]
@@ -162,6 +172,8 @@
       "model": "google/antigravity-claude-sonnet-4-6",
       "textVerbosity": "low",
       "fallback_models": [
+        "google/antigravity-claude-sonnet-4-6",
+        "opencode-go/kimi-k2.5",
         "google/antigravity-gemini-3.1-pro",
         "minimax-coding-plan/MiniMax-M2.5"
       ],
@@ -172,7 +184,7 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "textVerbosity": "high",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "fallback_models": ["openai/gpt-5.4-pro", "google/antigravity-gemini-3.1-pro"],
       "thinking": {
         "type": "enabled",
         "budgetTokens": 32768
@@ -184,7 +196,7 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "textVerbosity": "high",
-      "fallback_models": ["google/antigravity-gemini-3.1-pro"],
+      "fallback_models": ["openai/gpt-5.4-pro", "google/antigravity-claude-sonnet-4-6", "google/antigravity-gemini-3.1-pro"],
       "thinking": {
         "type": "enabled",
         "budgetTokens": 32768
@@ -197,6 +209,7 @@
       "textVerbosity": "low",
       "fallback_models": [
         "google/antigravity-gemini-3.1-flash",
+        "opencode-go/minimax-m2.5",
         "minimax-coding-plan/MiniMax-M2.5"
       ],
       "compaction": {
@@ -210,11 +223,12 @@
     },
     "librarian": {
       "description": "Reference grep agent — searches external docs, OSS repos, and official API references",
-      "model": "minimax-coding-plan/MiniMax-M2.5",
+      "model": "google/antigravity-gemini-3.1-flash",
       "textVerbosity": "low",
       "fallback_models": [
-        "minimax-coding-plan/MiniMax-M2.5-highspeed",
-        "google/antigravity-gemini-3.1-flash"
+        "minimax-coding-plan/MiniMax-M2.5",
+        "opencode-go/minimax-m2.5",
+        "minimax-coding-plan/MiniMax-M2.5-highspeed"
       ],
       "compaction": {
         "model": "minimax-coding-plan/MiniMax-M2.5-highspeed"
@@ -231,8 +245,8 @@
       "reasoningEffort": "high",
       "textVerbosity": "high",
       "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
-        "google/antigravity-gemini-3.1-pro"
+        "google/antigravity-gemini-3.1-pro",
+        "google/antigravity-claude-opus-4-6-thinking"
       ],
       "permission": {
         "edit": "deny",
@@ -242,11 +256,11 @@
     },
     "momus": {
       "description": "Expert reviewer — evaluates plans and implementations for completeness, clarity, and correctness",
-      "model": "google/antigravity-gemini-3.1-pro",
-      "textVerbosity": "medium",
+      "model": "openai/gpt-5.4-pro",
+      "reasoningEffort": "xhigh",
       "fallback_models": [
-        "google/antigravity-claude-sonnet-4-6",
-        "google/antigravity-gemini-3.1-pro-preview"
+        "google/antigravity-claude-opus-4-6-thinking",
+        "google/antigravity-gemini-3.1-pro"
       ],
       "permission": {
         "edit": "deny",
@@ -256,9 +270,10 @@
     },
     "multimodal-looker": {
       "description": "Vision specialist — analyzes images, PDFs, screenshots, and visual content",
-      "model": "google/antigravity-gemini-3.1-flash",
+      "model": "openai/gpt-5.3-codex",
       "textVerbosity": "low",
       "fallback_models": [
+        "google/antigravity-gemini-3.1-flash",
         "google/antigravity-gemini-3.1-pro-preview"
       ],
       "permission": {
@@ -269,6 +284,7 @@
     "hephaestus": {
       "description": "Deep autonomous worker — extended implementation sessions with full tool access",
       "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
       "allow_non_gpt_model": true,
       "fallback_models": [
         "google/antigravity-gemini-3.1-pro",
@@ -281,6 +297,8 @@
       "model": "google/antigravity-claude-sonnet-4-6",
       "textVerbosity": "medium",
       "fallback_models": [
+        "opencode-go/kimi-k2.5",
+        "openai/gpt-5.4-pro",
         "google/antigravity-gemini-3.1-pro",
         "minimax-coding-plan/MiniMax-M2.5"
       ],
