@@ -49,15 +49,18 @@
       // Per-model hard limits. Values: absolute tokens or "%" of provider context.
       // Provider context (providers.jsonc): claude=200000, gemini=1048576.
       "modelLimits": {
-        "google/antigravity-claude-opus-4-6-thinking": 160000,
-        "google/antigravity-claude-sonnet-4-6": 160000,
-        "google/antigravity-gemini-3.1-pro": "95%",
-        "google/antigravity-gemini-3.1-flash": "95%",
-        "minimax-coding-plan/MiniMax-M2.5": "90%",
-        "minimax-coding-plan/MiniMax-M2.5-highspeed": "90%",
-        "openai/gpt-5.3-codex": 160000,
-        "openai/gpt-5.4-pro": 250000,
-        "google/antigravity-gemini-3.1-pro-preview": "95%",
+        "google/antigravity-claude-opus-4-6-thinking": "80%",
+        "google/antigravity-claude-sonnet-4-6": "80%",
+        "google/antigravity-gemini-3.1-pro": "80%",
+        "google/antigravity-gemini-3.1-flash": "80%",
+        "minimax-coding-plan/MiniMax-M2.5": "80%",
+        "minimax-coding-plan/MiniMax-M2.5-highspeed": "80%",
+        "openai/gpt-5.3-codex": "80%",
+        "openai/gpt-5.4-pro": "80%",
+        "google/antigravity-gemini-3.1-pro-preview": "80%",
+        "opencode-go/kimi-k2.5": "80%",
+        "opencode-go/glm-5": "80%",
+        "opencode-go/minimax-m2.5": "80%",
       },
     },
     "distill": {
