@@ -13,7 +13,8 @@
     "lint:assistant-phrasing": "node scripts/lint-assistant-phrasing.mjs",
     "kratos:sync": "go run scripts/kratos-project-sync.go sync",
     "kratos:install": "go run scripts/kratos-project-sync.go install",
-    "kratos:uninstall": "go run scripts/kratos-project-sync.go uninstall"
+    "kratos:uninstall": "go run scripts/kratos-project-sync.go uninstall",
+    "telegram:bot": "go run scripts/antigravity-telegram-bot.go"
   },
   "dependencies": {
     "@nick-vi/opencode-type-inject": "^1.5.1",
