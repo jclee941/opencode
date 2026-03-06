@@ -33,6 +33,7 @@ MCP server integration, and plugin management for all `qws941` projects.
 │   ├── lint-assistant-phrasing.mjs     # Assistant phrasing linter
 │   ├── claude-hook-autonomy-guard.mjs  # Autonomy guard git hook
 │   └── validate-config-refs.go         # Config cross-reference validator
+│   ├── antigravity-telegram-bot.go     # Telegram bot for antigravity account management
 ├── .githooks/                  # Git hook scripts (commitlint, pre-push)
 ├── .github/                    # GitHub Actions workflows
 ├── tests/                      # Vitest test suites (ELK integration)
@@ -61,6 +62,7 @@ MCP server integration, and plugin management for all `qws941` projects.
 | ELK integration tests       | `tests/`                                       |
 | Slash commands              | `command/`                                     |
 | Config cross-ref validator  | `scripts/validate-config-refs.go`              |
+| Antigravity Telegram bot  | `scripts/antigravity-telegram-bot.go`              |
 
 ## COMMANDS
 
@@ -74,6 +76,7 @@ npm run hooks:install           # install git hooks from .githooks/
 npm run prepush:check           # pre-push gate (config + naming + config-refs)
 npm run lint:config-refs        # validate config cross-references
 npm run kratos:sync             # sync Kratos project memory
+npm run telegram:bot             # run antigravity Telegram auth bot
 ```
 
 ## CONVENTIONS
