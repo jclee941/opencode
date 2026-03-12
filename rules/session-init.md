@@ -2,6 +2,22 @@
 
 Use this checklist at the start of every coding task.
 
+## Scope
+
+This rule applies to coding-session startup, repository context bootstrapping,
+and initial verification before implementation begins.
+
+## Inputs/constraints
+
+- The active working directory determines the project context and must be resolved before project-scoped memory queries.
+- MCP bootstrap steps are independent and should not block safe local work when a server is unavailable.
+- Relevant files should be inspected before editing, and changes should stay scoped to the user request.
+
+## Decision/rules
+
+The mandatory startup behavior is defined by the checklist, MCP session bootstrap, failure policy,
+and context persistence sections below.
+
 1. Infer the request and expected output from available context, then execute.
 2. Inspect relevant files before editing.
 3. Follow existing project patterns and naming conventions.
@@ -30,7 +46,6 @@ All MCP servers are accessed via `mcphub` (remote at `192.168.50.112:3000`).
 | `kratos`     | Yes (per-session) | `mcphub_kratos-project_switch`   | Project-scoped persistent memory     |
 | `github`     | No                | —                                | GitHub API (repos, issues, PRs)      |
 | `elk`        | No                | —                                | Elasticsearch queries and management |
-| `glitchtip`  | No                | —                                | Error tracking (issues, events)      |
 | `proxmox`    | No                | —                                | VM/LXC/cluster management            |
 | `supabase`   | No                | —                                | Database, edge functions, branches   |
 | `terraform`  | No                | —                                | Provider/resource/module registry    |
@@ -103,6 +118,18 @@ After completing significant work, persist key findings back to MCP:
 - `mcphub_kratos-memory_save(summary=..., text=..., tags=[...])` — project-scoped knowledge.
 - `supermemory(mode="add", content=..., type="learned-pattern", scope="project")` — cross-session patterns.
 - Do not persist trivial or ephemeral information (single typo fixes, temp file paths).
+
+## Verification
+
+1. Verify project context is resolved before project-scoped memory queries run.
+2. Verify relevant files are inspected before editing.
+3. Verify targeted diagnostics, tests, or build checks run after significant changes.
+
+## Rollback/safety
+
+1. If an MCP bootstrap step fails, skip that step and continue without blocking safe local work.
+2. Do not expose secrets or credentials in session output.
+3. Keep edits focused on the requested scope so unexpected changes remain easy to revert.
 
 General guardrails:
 Do not expose secrets or credentials in output.
