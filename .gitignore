@@ -27,11 +27,19 @@ skills/*/node_modules/
 dist/
 coverage/
 .cache/
+/opencode.jsonc2
 
 # ============================================================
 # BINARIES — compiled artifacts
 # ============================================================
-server
+bin/
+/server
+scripts/opencode-agent-gateway/opencode-agent-gateway
+
+# ============================================================
+# LOCAL NOTES & RUNTIME WORKDIRS — transient workspace state
+# ============================================================
+/thoughts/
 
 # ============================================================
 # BACKUPS — transient snapshots
