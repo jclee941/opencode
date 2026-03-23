@@ -4,7 +4,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": "notify",
-  "command": {},
   "compaction": {
     "auto": true,
     "prune": true,
@@ -73,19 +72,6 @@
       ],
       "extensions": [
         ".py"
-      ]
-    },
-    "shfmt": {
-      "command": [
-        "shfmt",
-        "-w",
-        "$FILE"
-      ],
-      "extensions": [
-        ".sh",
-        ".bash",
-        ".zsh",
-        ".ksh"
       ]
     },
     "taplo": {
@@ -192,7 +178,7 @@
             "enable": false
           },
           "quiet": false,
-          "run": "onType",
+          "run": "onSave",
           "validate": "on"
         }
       }
@@ -212,7 +198,9 @@
           "analyses": {
             "nilness": true,
             "shadow": true,
-            "unusedparams": true
+            "unusedparams": true,
+            "unusedwrite": true,
+            "useany": true
           },
           "completeUnimported": true,
           "directoryFilters": [
@@ -275,7 +263,7 @@
             "enable": true
           }
         },
-        "provideFormatter": true
+        "provideFormatter": false
       }
     },
     "lua": {
@@ -342,7 +330,7 @@
             "autoImportCompletions": true,
             "autoSearchPaths": true,
             "configFilePath": "${workspaceFolder}",
-            "diagnosticMode": "workspace",
+            "diagnosticMode": "openFilesOnly",
             "diagnosticSeverityOverrides": {
               "reportMissingTypeStubs": "none"
             },
@@ -548,12 +536,7 @@
     "*": "allow"
   },
   "plugin": [
-    "@tarquinen/opencode-dcp@latest",
-    "opencode-mem",
-    "opencode-pty",
-    "opencode-antigravity-auth@beta",
-    "@nick-vi/opencode-type-inject",
-    "opencode-pilot",
+    "opencode-antigravity-auth@latest",
     "oh-my-opencode"
   ],
   "provider": {
@@ -605,7 +588,7 @@
           },
           "name": "Claude Sonnet 4.6 (Antigravity)"
         },
-        "antigravity-gemini-3.1-flash": {
+        "antigravity-gemini-3-flash": {
           "limit": {
             "context": 1048576,
             "output": 65536
@@ -620,7 +603,7 @@
               "text"
             ]
           },
-          "name": "Gemini 3.1 Flash (Antigravity)",
+          "name": "Gemini 3 Flash (Antigravity)",
           "variants": {
             "high": {
               "thinkingLevel": "high"
@@ -636,10 +619,35 @@
             }
           }
         },
+        "antigravity-gemini-3-pro": {
+          "limit": {
+            "context": 1048576,
+            "output": 65535
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "name": "Gemini 3 Pro (Antigravity)",
+          "variants": {
+            "high": {
+              "thinkingLevel": "high"
+            },
+            "low": {
+              "thinkingLevel": "low"
+            }
+          }
+        },
         "antigravity-gemini-3.1-pro": {
           "limit": {
             "context": 1048576,
-            "output": 65536
+            "output": 65535
           },
           "modalities": {
             "input": [
@@ -661,7 +669,7 @@
             }
           }
         },
-        "antigravity-gemini-3.1-pro-preview": {
+        "gemini-3-flash-preview": {
           "limit": {
             "context": 1048576,
             "output": 65536
@@ -676,20 +684,30 @@
               "text"
             ]
           },
-          "name": "Gemini 3.1 Pro Preview (Antigravity)"
+          "name": "Gemini 3 Flash Preview (Gemini CLI)"
+        },
+        "gemini-3.1-pro-preview": {
+          "limit": {
+            "context": 1048576,
+            "output": 65535
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "name": "Gemini 3.1 Pro Preview (Gemini CLI)"
         }
-      },
-      "options": {
-        "setCacheKey": true,
-        "timeout": 600000
       }
     }
   },
   "share": "manual",
-  "skills": {
-    "urls": []
-  },
-  "small_model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+  "small_model": "minimax-coding-plan/MiniMax-M2.7-highspeed",
   "snapshot": true,
   "theme": "tron",
   "tui": {
@@ -723,6 +741,14 @@
       "**/.ruff_cache/**",
       "**/.pytest_cache/**",
       "**/.turbo/**",
+      "**/.angular/**",
+      "**/.svelte-kit/**",
+      "**/.nuxt/**",
+      "**/.output/**",
+      "**/.parcel-cache/**",
+      "**/.vercel/**",
+      "**/target/**",
+      "**/.cargo/**",
       "**/*.log",
       "**/*.pyc",
       "**/*.db",
@@ -733,8 +759,7 @@
       "**/.DS_Store",
       "**/*.bak.*",
       "**/*.backup-*",
-      "antigravity-accounts.json",
-      "antigravity-signature-cache.json"
+      "**/*.tsbuildinfo"
     ]
   }
 }
