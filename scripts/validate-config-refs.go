@@ -76,8 +76,6 @@ func main() {
 		"config/lsp.jsonc",
 		"opencode.jsonc",
 		"oh-my-opencode.jsonc",
-		"antigravity.jsonc",
-		"dcp.jsonc",
 		"opencode-mem.jsonc",
 		"subtask2.jsonc",
 		"smart-title.jsonc",
@@ -111,30 +109,16 @@ func main() {
 	providerGoogleModels := extractGoogleModelKeys(parsed["config/providers.jsonc"])
 	modelRefs := collectModelRefs(parsed["oh-my-opencode.jsonc"], parsed["config/base.jsonc"])
 
-	uniqueModels := make(map[string]struct{})
 	for _, ref := range modelRefs {
 		if ref.Model == "" {
 			continue
 		}
-		uniqueModels[ref.Model] = struct{}{}
 		if !isValidModelReference(ref.Model, providerGoogleModels) {
 			if strings.HasPrefix(ref.Model, "google/") {
 				violations = append(violations, fmt.Sprintf("MODEL_REF     %s: %q not found in providers", ref.Path, ref.Model))
 			} else {
 				violations = append(violations, fmt.Sprintf("MODEL_REF     %s: %q has unsupported provider prefix", ref.Path, ref.Model))
 			}
-		}
-	}
-
-	dcpModelLimits := extractDCPModelLimitKeys(parsed["dcp.jsonc"])
-	models := make([]string, 0, len(uniqueModels))
-	for m := range uniqueModels {
-		models = append(models, m)
-	}
-	sort.Strings(models)
-	for _, m := range models {
-		if _, ok := dcpModelLimits[m]; !ok {
-			violations = append(violations, fmt.Sprintf("DCP_MISSING   model %q has no entry in dcp.jsonc modelLimits", m))
 		}
 	}
 
@@ -231,7 +215,7 @@ func collectModelRefs(ohMy map[string]interface{}, base map[string]interface{}) 
 }
 
 func isValidModelReference(model string, googleModels map[string]struct{}) bool {
-	if strings.HasPrefix(model, "openai/") || strings.HasPrefix(model, "minimax-coding-plan/") || strings.HasPrefix(model, "opencode-go/") {
+	if strings.HasPrefix(model, "anthropic/") || strings.HasPrefix(model, "openai/") || strings.HasPrefix(model, "minimax-coding-plan/") || strings.HasPrefix(model, "opencode-go/") {
 		return true
 	}
 	if strings.HasPrefix(model, "google/") {
@@ -240,17 +224,6 @@ func isValidModelReference(model string, googleModels map[string]struct{}) bool 
 		return ok
 	}
 	return false
-}
-
-func extractDCPModelLimitKeys(dcp map[string]interface{}) map[string]struct{} {
-	out := make(map[string]struct{})
-	tools := getMap(dcp, "tools")
-	settings := getMap(tools, "settings")
-	modelLimits := getMap(settings, "modelLimits")
-	for k := range modelLimits {
-		out[k] = struct{}{}
-	}
-	return out
 }
 
 func extractPackageDependencies(root string) map[string]struct{} {

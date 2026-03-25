@@ -1,162 +1,310 @@
+// AUTO-GENERATED — do not edit directly.
+// Source: config/omo.jsonc
+// Regenerate: go run scripts/gen-omo-config.go
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/dev/assets/oh-my-opencode.schema.json",
   "agents": {
-    "sisyphus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max",
-      "textVerbosity": "medium",
-      "fallback_models": [
-        "google/antigravity-claude-sonnet-4-6",
-        "openai/gpt-5.4",
-        "opencode-go/glm-5"
-      ],
-      "thinking": { "type": "enabled", "budgetTokens": 32768 }
-    },
-    "metis": {
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max",
-      "textVerbosity": "high",
-      "fallback_models": ["openai/gpt-5.4", "opencode-go/glm-5"],
-      "thinking": { "type": "enabled", "budgetTokens": 32768 }
-    },
-    "prometheus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max",
-      "textVerbosity": "high",
-      "fallback_models": [
-        "openai/gpt-5.4",
-        "opencode-go/glm-5",
-        "google/gemini-3.1-pro-preview"
-      ],
-      "thinking": { "type": "enabled", "budgetTokens": 32768 }
-    },
     "atlas": {
+      "description": "Context mapper — Claude Sonnet (dual-prompt)",
+      "fallback_models": [
+        "openai/gpt-5.4"
+      ],
       "model": "google/antigravity-claude-sonnet-4-6",
-      "textVerbosity": "medium",
-      "fallback_models": ["openai/gpt-5.4"]
-    },
-    "oracle": {
-      "model": "openai/gpt-5.4",
-      "reasoningEffort": "high",
-      "textVerbosity": "high",
-      "fallback_models": [
-        "google/gemini-3.1-pro-preview",
-        "google/antigravity-claude-opus-4-6-thinking",
-        "opencode-go/glm-5"
-      ]
-    },
-    "momus": {
-      "model": "openai/gpt-5.4",
-      "reasoningEffort": "xhigh",
-      "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
-        "google/gemini-3.1-pro-preview",
-        "opencode-go/glm-5"
-      ]
-    },
-    "librarian": {
-      "model": "minimax-coding-plan/MiniMax-M2.7",
-      "textVerbosity": "low",
-      "fallback_models": [
-        "minimax-coding-plan/MiniMax-M2.7-highspeed",
-        "anthropic/claude-haiku-4-5"
-      ]
+      "permission": {
+        "*": "allow"
+      },
+      "prompt_append": "Map context comprehensively.",
+      "textVerbosity": "medium"
     },
     "explore": {
-      "model": "minimax-coding-plan/MiniMax-M2.7-highspeed",
-      "textVerbosity": "low",
+      "description": "Fast codebase search — speed over intelligence",
       "fallback_models": [
         "minimax-coding-plan/MiniMax-M2.7",
         "anthropic/claude-haiku-4-5"
-      ]
+      ],
+      "model": "minimax-coding-plan/MiniMax-M2.7-highspeed",
+      "permission": {
+        "*": "allow"
+      },
+      "prompt_append": "Focus on file paths and patterns.",
+      "textVerbosity": "low"
     },
-    "multimodal-looker": {
+    "hephaestus": {
+      "description": "Autonomous code builder — GPT Codex (deep specialist)",
+      "fallback_models": [
+        "openai/gpt-5.4",
+        "google/antigravity-claude-opus-4-6-thinking"
+      ],
+      "model": "openai/gpt-5.3-codex",
+      "prompt_append": "Follow existing codebase patterns. Run lsp_diagnostics.",
+      "textVerbosity": "low"
+    },
+    "junior": {
+      "description": "Sisyphus-Junior — Claude Sonnet tier",
+      "fallback_models": [
+        "google/antigravity-claude-opus-4-6-thinking",
+        "openai/gpt-5.4"
+      ],
+      "model": "google/antigravity-claude-sonnet-4-6",
+      "textVerbosity": "low"
+    },
+    "librarian": {
+      "description": "Reference grep — fast utility model",
+      "fallback_models": [
+        "minimax-coding-plan/MiniMax-M2.7-highspeed",
+        "anthropic/claude-haiku-4-5"
+      ],
+      "model": "minimax-coding-plan/MiniMax-M2.7",
+      "permission": {
+        "*": "allow"
+      },
+      "prompt_append": "Search docs and references.",
+      "textVerbosity": "low"
+    },
+    "metis": {
+      "description": "Pre-planning analyst — Claude Opus (communicator)",
+      "fallback_models": [
+        "openai/gpt-5.4",
+        "opencode-go/glm-5"
+      ],
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "prompt_append": "Analyze hidden intentions and ambiguities.",
+      "textVerbosity": "high",
+      "thinking": {
+        "budgetTokens": 32768,
+        "type": "enabled"
+      },
+      "variant": "max"
+    },
+    "momus": {
+      "description": "Expert reviewer — GPT-5.4 xhigh (deep specialist)",
+      "fallback_models": [
+        "google/antigravity-claude-opus-4-6-thinking",
+        "google/antigravity-gemini-3.1-pro",
+        "opencode-go/glm-5"
+      ],
       "model": "openai/gpt-5.4",
-      "textVerbosity": "low",
+      "permission": {
+        "*": "allow"
+      },
+      "prompt_append": "Review for completeness and correctness.",
+      "reasoningEffort": "xhigh"
+    },
+    "oracle": {
+      "description": "Architecture consultant — GPT-5.4 (deep specialist)",
+      "fallback_models": [
+        "google/antigravity-gemini-3.1-pro",
+        "google/antigravity-claude-opus-4-6-thinking",
+        "opencode-go/glm-5"
+      ],
+      "model": "openai/gpt-5.4",
+      "permission": {
+        "*": "allow"
+      },
+      "prompt_append": "Provide structured advisory output.",
+      "reasoningEffort": "high",
+      "textVerbosity": "high"
+    },
+    "prometheus": {
+      "description": "Strategic planner — Claude Opus (dual-prompt)",
+      "fallback_models": [
+        "openai/gpt-5.4",
+        "opencode-go/glm-5",
+        "google/antigravity-gemini-3.1-pro"
+      ],
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "prompt_append": "Output structured implementation plan.",
+      "textVerbosity": "high",
+      "thinking": {
+        "budgetTokens": 32768,
+        "type": "enabled"
+      },
+      "variant": "max"
+    },
+    "ralph": {
+      "allow_non_gpt_model": true,
+      "description": "Deep autonomous worker — GPT Codex tier",
+      "fallback_models": [
+        "openai/gpt-5.4",
+        "google/antigravity-claude-opus-4-6-thinking"
+      ],
+      "model": "openai/gpt-5.3-codex",
+      "prompt_append": "Follow patterns. Run diagnostics.",
+      "variant": "medium"
+    },
+    "sisyphus": {
+      "description": "Primary orchestrator — Claude Opus (communicator)",
+      "fallback_models": [
+        "google/antigravity-claude-sonnet-4-6",
+        "openai/gpt-5.4",
+        "opencode-go/glm-5"
+      ],
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "textVerbosity": "medium",
+      "thinking": {
+        "budgetTokens": 32768,
+        "type": "enabled"
+      },
+      "variant": "max"
+    },
+    "vision": {
+      "description": "Vision specialist — GPT-5.4 multimodal",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
         "google/gemini-3-flash-preview"
-      ]
-    },
-    "hephaestus": {
-      "model": "openai/gpt-5.3-codex",
-      "textVerbosity": "low",
-      "fallback_models": [
-        "openai/gpt-5.4",
-        "google/antigravity-claude-opus-4-6-thinking"
-      ]
-    },
-    "ralph": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-      "allow_non_gpt_model": true,
-      "fallback_models": [
-        "openai/gpt-5.4",
-        "google/antigravity-claude-opus-4-6-thinking"
-      ]
+      ],
+      "model": "openai/gpt-5.4",
+      "permission": {
+        "*": "allow"
+      },
+      "textVerbosity": "low"
     }
   },
+  "auto_update": true,
+  "babysitting": {
+    "timeout_ms": 180000
+  },
+  "background_task": {
+    "defaultConcurrency": 99,
+    "messageStalenessTimeoutMs": 900000,
+    "modelConcurrency": {
+      "anthropic/claude-haiku-4-5": 20,
+      "google/antigravity-claude-opus-4-6-thinking": 5,
+      "google/antigravity-claude-sonnet-4-6": 10,
+      "google/gemini-3-flash-preview": 20,
+      "google/antigravity-gemini-3.1-pro": 10,
+      "minimax-coding-plan/MiniMax-M2.7-highspeed": 99,
+      "openai/gpt-5.3-codex": 99,
+      "openai/gpt-5.4": 99,
+      "opencode-go/glm-5": 99
+    },
+    "staleTimeoutMs": 300000
+  },
+  "browser_automation_engine": {
+    "provider": "playwright"
+  },
   "categories": {
+    "artistry": {
+      "description": "Creative approaches — Gemini Pro primary",
+      "fallback_models": [
+        "google/antigravity-claude-opus-4-6-thinking",
+        "openai/gpt-5.4"
+      ],
+      "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "high"
+    },
+    "deep": {
+      "description": "Deep coding — GPT Codex primary",
+      "fallback_models": [
+        "google/antigravity-claude-opus-4-6-thinking",
+        "google/antigravity-gemini-3.1-pro"
+      ],
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium"
+    },
+    "quick": {
+      "description": "Simple fast tasks — MiniMax highspeed",
+      "fallback_models": [
+        "anthropic/claude-haiku-4-5",
+        "google/gemini-3-flash-preview"
+      ],
+      "model": "minimax-coding-plan/MiniMax-M2.7-highspeed"
+    },
+    "ultrabrain": {
+      "description": "Maximum reasoning — GPT-5.4 primary",
+      "fallback_models": [
+        "google/antigravity-gemini-3.1-pro",
+        "google/antigravity-claude-opus-4-6-thinking",
+        "opencode-go/glm-5"
+      ],
+      "model": "openai/gpt-5.4",
+      "variant": "xhigh"
+    },
+    "unspecified-high": {
+      "description": "General complex — Opus tier",
+      "fallback_models": [
+        "openai/gpt-5.4",
+        "opencode-go/glm-5"
+      ],
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "max"
+    },
+    "unspecified-low": {
+      "description": "General standard — Sonnet tier",
+      "fallback_models": [
+        "openai/gpt-5.3-codex",
+        "google/gemini-3-flash-preview"
+      ],
+      "model": "google/antigravity-claude-sonnet-4-6"
+    },
     "visual-engineering": {
-      "model": "google/gemini-3.1-pro-preview",
-      "variant": "high",
-      "reasoningEffort": "high",
+      "description": "Frontend and UI — Gemini Pro primary",
       "fallback_models": [
         "opencode-go/glm-5",
         "google/antigravity-claude-opus-4-6-thinking",
         "google/antigravity-claude-sonnet-4-6"
-      ]
-    },
-    "ultrabrain": {
-      "model": "openai/gpt-5.4",
-      "variant": "xhigh",
-      "fallback_models": [
-        "google/gemini-3.1-pro-preview",
-        "google/antigravity-claude-opus-4-6-thinking",
-        "opencode-go/glm-5"
-      ]
-    },
-    "deep": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-      "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
-        "google/gemini-3.1-pro-preview"
-      ]
-    },
-    "artistry": {
-      "model": "google/gemini-3.1-pro-preview",
-      "variant": "high",
-      "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
-        "openai/gpt-5.4"
-      ]
-    },
-    "quick": {
-      "model": "minimax-coding-plan/MiniMax-M2.7-highspeed",
-      "fallback_models": [
-        "anthropic/claude-haiku-4-5",
-        "google/gemini-3-flash-preview"
-      ]
-    },
-    "unspecified-high": {
-      "model": "google/antigravity-claude-opus-4-6-thinking",
-      "variant": "max",
-      "fallback_models": ["openai/gpt-5.4", "opencode-go/glm-5"]
-    },
-    "unspecified-low": {
-      "model": "google/antigravity-claude-sonnet-4-6",
-      "fallback_models": [
-        "openai/gpt-5.3-codex",
-        "google/gemini-3-flash-preview"
-      ]
+      ],
+      "model": "google/antigravity-gemini-3.1-pro",
+      "reasoningEffort": "high",
+      "variant": "high"
     },
     "writing": {
-      "model": "google/gemini-3-flash-preview",
+      "description": "Documentation — Gemini Flash primary",
       "fallback_models": [
         "google/antigravity-claude-sonnet-4-6",
         "anthropic/claude-haiku-4-5"
-      ]
+      ],
+      "model": "google/gemini-3-flash-preview"
     }
+  },
+  "disabled_hooks": [
+    "startup-toast",
+    "tips_toggle"
+  ],
+  "experimental": {
+    "model_fallback_title": true,
+    "plugin_load_timeout_ms": 15000,
+    "safe_hook_creation": true
+  },
+  "git_master": {
+    "commit_footer": true,
+    "include_co_authored_by": true
+  },
+  "hashline_edit": true,
+  "model_fallback": true,
+  "new_task_system_enabled": true,
+  "notification": {
+    "force_enable": true
+  },
+  "ralph_loop": {
+    "default_max_iterations": 50,
+    "default_strategy": "continue",
+    "enabled": true
+  },
+  "runtime_fallback": {
+    "cooldown_seconds": 8,
+    "enabled": true,
+    "max_fallback_attempts": 3,
+    "notify_on_fallback": true,
+    "retry_on_errors": [
+      429,
+      503,
+      408,
+      502,
+      500,
+      529,
+      504,
+      522,
+      524
+    ],
+    "timeout_seconds": 25
+  },
+  "sisyphus_agent": {
+    "default_builder_enabled": true,
+    "planner_enabled": true,
+    "replace_plan": true
+  },
+  "websearch": {
+    "provider": "exa"
   }
 }
