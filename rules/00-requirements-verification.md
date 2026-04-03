@@ -15,7 +15,7 @@ specifications are always checked before work starts and verified after work com
    - `docs/` directory for specification or design documents.
    - `rules/` directory for applicable policy constraints.
    - Kratos project memory (`mcphub_kratos-memory_search` for prior decisions and task context).
-   - Cross-session memory (`memory(mode="search")` for prior decisions and context).
+   - Cross-session memory (`supermemory(mode="search")` for prior decisions and context).
    - Issue tracker (GitHub Issues / PR descriptions).
 2. If found, extract acceptance criteria and hard constraints before writing code.
 3. If not found, document the inferred requirements as assumptions in the task output.

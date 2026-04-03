@@ -7,34 +7,22 @@
   "username": "jclee",
   "logLevel": "INFO",
 
-  "model": "google/antigravity-claude-opus-4-6-thinking",
+  "model": "",
 
   "instructions": [
     // Tier 0 — Always-loaded baseline rules (explicit listing).
-    // Absolute paths for cross-project global referenceability.
-    // Explicit paths chosen over glob ("rules/*.md") for determinism:
-    //   - Prevents Tier 2/3 domain rules (ELK, Proxmox) from consuming
-    //     context tokens in unrelated sessions.
-    //   - AGENTS.md is loaded natively by OpenCode — not duplicated here.
-    //   - Tier 2/3 rules loaded from project-level opencode.jsonc when in scope.
-    "~/.config/opencode/rules/hard-autonomy-no-questions.md",
-    "~/.config/opencode/rules/archon-workflow.md",
-    "~/.config/opencode/rules/session-init.md",
-    "~/.config/opencode/rules/requirements-verification.md",
-    "~/.config/opencode/rules/monorepo-standards.md",
+    "~/.config/opencode/rules/00-hard-autonomy-no-questions.md",
+    "~/.config/opencode/rules/00-archon-workflow.md",
+    "~/.config/opencode/rules/00-session-init.md",
+    "~/.config/opencode/rules/00-requirements-verification.md",
+    "~/.config/opencode/rules/00-monorepo-standards.md",
+    "~/.config/opencode/rules/00-code-modularization.md",
   ],
 
   "plugin": [
-    "@tarquinen/opencode-dcp@latest",
-    "opencode-mem",
-    "opencode-pty",
-    "opencode-antigravity-auth@beta",
-    "@nick-vi/opencode-type-inject",
-    "opencode-pilot",
-    // OMO must be last:
-    "oh-my-opencode",
+    "opencode-claude-auth",
+    "oh-my-openagent"
   ],
-
   "mcp": {
     "mcphub": {
       "type": "remote",
@@ -62,34 +50,16 @@
     "reserved": 32000,
   },
 
-  "small_model": "minimax-coding-plan/MiniMax-M2.5-highspeed",
+  "small_model": "minimax-coding-plan/MiniMax-M2.7-highspeed",
 
   "formatter": {
     "oxfmt": {
       "command": ["oxfmt", "$FILE"],
       "extensions": [
-        ".ts",
-        ".tsx",
-        ".js",
-        ".mjs",
-        ".mts",
-        ".cjs",
-        ".cts",
-        ".jsx",
-        ".css",
-        ".scss",
-        ".less",
-        ".html",
-        ".vue",
-        ".json",
-        ".jsonc",
-        ".json5",
-        ".yaml",
-        ".yml",
-        ".md",
-        ".mdx",
-        ".graphql",
-        ".gql",
+        ".ts", ".tsx", ".js", ".mjs", ".mts", ".cjs", ".cts", ".jsx",
+        ".css", ".scss", ".less", ".html", ".vue",
+        ".json", ".jsonc", ".json5", ".yaml", ".yml",
+        ".md", ".mdx", ".graphql", ".gql",
       ],
     },
     "ruff": {
@@ -108,65 +78,25 @@
       "command": ["taplo", "fmt", "$FILE"],
       "extensions": [".toml"],
     },
-    "shfmt": {
-      "command": ["shfmt", "-w", "$FILE"],
-      "extensions": [".sh", ".bash", ".zsh", ".ksh"],
-    },
   },
 
   "watcher": {
     "ignore": [
-      "**/node_modules/**",
-      "**/.git/**",
-      "**/dist/**",
-      "**/.next/**",
-      "**/.venv/**",
-      "**/coverage/**",
-      "**/.terraform/**",
-      "**/terraform.tfstate*",
-      "**/.cache/**",
-      "**/.sisyphus/**",
-      "**/logs/**",
-      "**/log/**",
-      "**/data/**",
-      "**/profiles/**",
-      "**/tmp/**",
-      "**/build/**",
-      "**/__pycache__/**",
-      "**/.mypy_cache/**",
-      "**/.ruff_cache/**",
-      "**/.pytest_cache/**",
-      "**/.turbo/**",
-      "**/*.log",
-      "**/*.pyc",
-      "**/*.db",
-      "**/*.pid",
-      "**/*.tmp",
-      "**/*.swp",
-      "**/*~",
-      "**/.DS_Store",
-      "**/*.bak.*",
-      "**/*.backup-*",
-      "antigravity-accounts.json",
-      "antigravity-signature-cache.json",
+      "**/node_modules/**", "**/.git/**", "**/dist/**", "**/.next/**",
+      "**/.venv/**", "**/coverage/**", "**/.terraform/**", "**/terraform.tfstate*",
+      "**/.cache/**", "**/.sisyphus/**", "**/logs/**", "**/log/**",
+      "**/data/**", "**/profiles/**", "**/tmp/**", "**/build/**",
+      "**/__pycache__/**", "**/.mypy_cache/**", "**/.ruff_cache/**",
+      "**/.pytest_cache/**", "**/.turbo/**",
+      "**/.angular/**", "**/.svelte-kit/**", "**/.nuxt/**", "**/.output/**",
+      "**/.parcel-cache/**", "**/.vercel/**", "**/target/**", "**/.cargo/**",
+      "**/*.log", "**/*.pyc", "**/*.db", "**/*.pid",
+      "**/*.tmp", "**/*.swp", "**/*~", "**/.DS_Store",
+      "**/*.bak.*", "**/*.backup-*",
+      "**/*.tsbuildinfo",
     ],
   },
 
-  "tui": {
-    "scroll_speed": 3,
-    "scroll_acceleration": { "enabled": true },
-    "diff_style": "auto",
-  },
-
-  "skills": {
-    // Auto-discovery finds ~/.config/opencode/skills/ by default.
-    // Explicit paths listing removed to eliminate duplicate skill warnings.
-    "urls": [],
-  },
-
-  "command": {},
-
-  "autoupdate": "notify",
   "snapshot": true,
   "share": "manual",
 }

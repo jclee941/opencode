@@ -93,9 +93,10 @@ The placeholder `<cwd>` always refers to the **project directory the user opened
    - Record the latest run status in startup notes before proceeding.
    - If any condition is not met: skip this step and continue initialization.
 
-### Step 2: Context retrieval (parallel direct calls — NOT batch)
+### Step 2: Context retrieval (parallel)
 
-Fire these as parallel direct tool calls in a single response. Do not use the `batch` tool.
+Use parallel direct tool calls. Non-MCP tools may also use the `batch` tool when
+there is no ordering dependency.
 
 4. Search Supermemory for prior decisions and project knowledge.
    - `supermemory(mode="search", query=<project_name or task keywords>, scope="project")`
@@ -108,7 +109,8 @@ Fire these as parallel direct tool calls in a single response. Do not use the `b
 ### Failure policy
 
 - Each MCP step is independent. If one MCP server is unreachable, skip that step and proceed.
-- Do not retry failed MCP connections — report the skip in task output and continue.
+- Retry only one deterministic case: unknown Kratos project (auto-create then one retry).
+- For all other MCP failures, do not retry — report the skip in task output and continue.
 - Never block session initialization waiting for MCP responses.
 
 ### Context persistence

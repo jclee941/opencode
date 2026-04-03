@@ -3,7 +3,7 @@
 Apply this policy when creating, reviewing, or modifying code files.
 This is the canonical source for file size governance and modularization verification.
 
-Priority: Tier 1 baseline. Loaded globally via `opencode.jsonc` instructions.
+Priority: Tier 0 baseline. Globally loaded — applies to all file operations.
 
 For detailed split strategies, language-specific guidance, and examples, see `docs/code-modularization-reference.md`.
 
@@ -86,7 +86,10 @@ Never reverse the direction.
 
 ## Reference composition
 
-1. Loaded as Tier 1 baseline rule via `opencode.jsonc`.
-2. Defers to `hard-autonomy-no-questions.md` on execution posture.
-3. Defers to `monorepo-standards.md` on naming conventions.
+1. Loaded as Tier 0 baseline rule (globally loaded via `opencode.jsonc`).
+2. Defers to `00-hard-autonomy-no-questions.md` on execution posture.
+3. Defers to `00-monorepo-standards.md` on naming conventions.
+4. Detailed strategies and language guidance: `docs/code-modularization-reference.md`.
+2. Defers to `00-hard-autonomy-no-questions.md` on execution posture.
+3. Defers to `00-monorepo-standards.md` on naming conventions.
 4. Detailed strategies and language guidance: `docs/code-modularization-reference.md`.

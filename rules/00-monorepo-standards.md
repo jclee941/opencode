@@ -56,7 +56,7 @@ see `docs/monorepo-structure-and-naming.md`.
 2. When touching OR working in a directory containing a shell operational script,
    migrate it to a Go entrypoint in the same change.
    - **Priority override**: this migration obligation takes precedence over the
-     "smallest safe change" principle in `session-init.md`. The migration IS the
+     "smallest safe change" principle in `00-session-init.md`. The migration IS the
      smallest safe change when a shell operational script is involved.
 3. After migration, update direct references in docs/config/scripts and remove
    the superseded shell script.
@@ -104,5 +104,5 @@ When migrating a `.sh` script to Go, follow this sequence in a single change:
 ## Reference composition
 
 1. Loaded as Tier 0 rule via `opencode.jsonc`.
-2. Defers to `hard-autonomy-no-questions.md` on execution posture.
+2. Defers to `00-hard-autonomy-no-questions.md` on execution posture.
 3. Detailed structure guidance and Bazel profile: `docs/monorepo-structure-and-naming.md`.

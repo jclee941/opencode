@@ -4,7 +4,7 @@ Apply this policy to all task management and project knowledge operations.
 Archon MCP server is the primary system for task tracking, project organization,
 and knowledge base access.
 
-Priority: Tier 1 baseline. Loaded globally via `opencode.jsonc` instructions.
+Priority: Tier 0 baseline. Loaded globally via `opencode.jsonc` instructions.
 
 ## Core rule
 
@@ -163,6 +163,6 @@ Sources are managed via the Archon UI (`archon.jclee.me` / `192.168.50.108:3737`
 
 ## Reference composition
 
-1. Loaded as Tier 1 baseline rule via `opencode.jsonc`.
-2. Defers to `hard-autonomy-no-questions.md` on execution posture.
-3. Defers to `session-init.md` for MCP bootstrap sequence.
+1. Loaded as Tier 0 baseline rule via `opencode.jsonc`.
+2. Defers to `00-hard-autonomy-no-questions.md` on execution posture.
+3. Defers to `00-session-init.md` for MCP bootstrap sequence.

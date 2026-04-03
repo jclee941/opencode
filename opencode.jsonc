@@ -3,7 +3,6 @@
 // Regenerate: go run scripts/gen-opencode-config.go
 {
   "$schema": "https://opencode.ai/config.json",
-  "autoupdate": "notify",
   "compaction": {
     "auto": true,
     "prune": true,
@@ -98,11 +97,12 @@
     }
   },
   "instructions": [
-    "~/.config/opencode/rules/hard-autonomy-no-questions.md",
-    "~/.config/opencode/rules/archon-workflow.md",
-    "~/.config/opencode/rules/session-init.md",
-    "~/.config/opencode/rules/requirements-verification.md",
-    "~/.config/opencode/rules/monorepo-standards.md"
+    "~/.config/opencode/rules/00-hard-autonomy-no-questions.md",
+    "~/.config/opencode/rules/00-archon-workflow.md",
+    "~/.config/opencode/rules/00-session-init.md",
+    "~/.config/opencode/rules/00-requirements-verification.md",
+    "~/.config/opencode/rules/00-monorepo-standards.md",
+    "~/.config/opencode/rules/00-code-modularization.md"
   ],
   "logLevel": "INFO",
   "lsp": {
@@ -531,192 +531,19 @@
       "url": "http://192.168.50.112:3000/mcp"
     }
   },
-  "model": "google/antigravity-claude-opus-4-6-thinking",
+  "model": "",
   "permission": {
     "*": "allow"
   },
   "plugin": [
-    "opencode-antigravity-auth@latest",
-    "oh-my-opencode"
+    "opencode-claude-auth",
+    "oh-my-openagent"
   ],
-  "provider": {
-    "google": {
-      "models": {
-        "antigravity-claude-opus-4-6-thinking": {
-          "limit": {
-            "context": 200000,
-            "output": 64000
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Claude Opus 4.6 Thinking (Antigravity)",
-          "variants": {
-            "low": {
-              "thinkingConfig": {
-                "thinkingBudget": 8192
-              }
-            },
-            "max": {
-              "thinkingConfig": {
-                "thinkingBudget": 32768
-              }
-            }
-          }
-        },
-        "antigravity-claude-sonnet-4-6": {
-          "limit": {
-            "context": 200000,
-            "output": 64000
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Claude Sonnet 4.6 (Antigravity)"
-        },
-        "antigravity-gemini-3-flash": {
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3 Flash (Antigravity)",
-          "variants": {
-            "high": {
-              "thinkingLevel": "high"
-            },
-            "low": {
-              "thinkingLevel": "low"
-            },
-            "medium": {
-              "thinkingLevel": "medium"
-            },
-            "minimal": {
-              "thinkingLevel": "minimal"
-            }
-          }
-        },
-        "antigravity-gemini-3-pro": {
-          "limit": {
-            "context": 1048576,
-            "output": 65535
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3 Pro (Antigravity)",
-          "variants": {
-            "high": {
-              "thinkingLevel": "high"
-            },
-            "low": {
-              "thinkingLevel": "low"
-            }
-          }
-        },
-        "antigravity-gemini-3.1-pro": {
-          "limit": {
-            "context": 1048576,
-            "output": 65535
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3.1 Pro (Antigravity)",
-          "variants": {
-            "high": {
-              "thinkingLevel": "high"
-            },
-            "low": {
-              "thinkingLevel": "low"
-            }
-          }
-        },
-        "gemini-3-flash-preview": {
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3 Flash Preview (Gemini CLI)"
-        },
-        "gemini-3.1-pro-preview": {
-          "limit": {
-            "context": 1048576,
-            "output": 65535
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Gemini 3.1 Pro Preview (Gemini CLI)"
-        }
-      }
-    }
-  },
+  "provider": {},
   "share": "manual",
   "small_model": "minimax-coding-plan/MiniMax-M2.7-highspeed",
   "snapshot": true,
   "theme": "tron",
-  "tui": {
-    "diff_style": "auto",
-    "scroll_acceleration": {
-      "enabled": true
-    },
-    "scroll_speed": 3
-  },
   "username": "jclee",
   "watcher": {
     "ignore": [
