@@ -5,11 +5,11 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "atlas": {
-      "description": "Context mapper — Claude Sonnet (dual-prompt)",
+      "description": "Kimi K2.5 (rate limit bypass)",
       "fallback_models": [
         "openai/gpt-5.4"
       ],
-      "model": "google/antigravity-claude-sonnet-4-6",
+      "model": "kimi-for-coding/k2p5",
       "permission": {
         "*": "allow"
       },
@@ -33,7 +33,7 @@
       "description": "Autonomous code builder — GPT Codex (deep specialist)",
       "fallback_models": [
         "openai/gpt-5.4",
-        "google/antigravity-claude-opus-4-6-thinking"
+        "kimi-for-coding/k2p5"
       ],
       "model": "openai/gpt-5.3-codex",
       "prompt_append": "Follow existing codebase patterns. Run lsp_diagnostics.",
@@ -42,10 +42,10 @@
     "junior": {
       "description": "Sisyphus-Junior — Claude Sonnet tier",
       "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
+        "kimi-for-coding/k2p5",
         "openai/gpt-5.4"
       ],
-      "model": "google/antigravity-claude-sonnet-4-6",
+      "model": "kimi-for-coding/k2p5",
       "textVerbosity": "low"
     },
     "librarian": {
@@ -62,25 +62,21 @@
       "textVerbosity": "low"
     },
     "metis": {
-      "description": "Pre-planning analyst — Claude Opus (communicator)",
+      "description": "Kimi K2.5 (rate limit bypass)",
       "fallback_models": [
         "openai/gpt-5.4",
         "opencode-go/glm-5"
       ],
-      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "model": "kimi-for-coding/k2p5",
       "prompt_append": "Analyze hidden intentions and ambiguities.",
       "textVerbosity": "high",
-      "thinking": {
-        "budgetTokens": 32768,
-        "type": "enabled"
-      },
       "variant": "max"
     },
     "momus": {
       "description": "Expert reviewer — GPT-5.4 xhigh (deep specialist)",
       "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
-        "google/antigravity-gemini-3.1-pro",
+        "kimi-for-coding/k2p5",
+        "minimax-coding-plan/MiniMax-M2.7",
         "opencode-go/glm-5"
       ],
       "model": "openai/gpt-5.4",
@@ -93,8 +89,8 @@
     "oracle": {
       "description": "Architecture consultant — GPT-5.4 (deep specialist)",
       "fallback_models": [
-        "google/antigravity-gemini-3.1-pro",
-        "google/antigravity-claude-opus-4-6-thinking",
+        "minimax-coding-plan/MiniMax-M2.7",
+        "kimi-for-coding/k2p5",
         "opencode-go/glm-5"
       ],
       "model": "openai/gpt-5.4",
@@ -106,19 +102,15 @@
       "textVerbosity": "high"
     },
     "prometheus": {
-      "description": "Strategic planner — Claude Opus (dual-prompt)",
+      "description": "Kimi K2.5 (rate limit bypass)",
       "fallback_models": [
         "openai/gpt-5.4",
         "opencode-go/glm-5",
-        "google/antigravity-gemini-3.1-pro"
+        "minimax-coding-plan/MiniMax-M2.7"
       ],
-      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "model": "kimi-for-coding/k2p5",
       "prompt_append": "Output structured implementation plan.",
       "textVerbosity": "high",
-      "thinking": {
-        "budgetTokens": 32768,
-        "type": "enabled"
-      },
       "variant": "max"
     },
     "ralph": {
@@ -126,32 +118,28 @@
       "description": "Deep autonomous worker — GPT Codex tier",
       "fallback_models": [
         "openai/gpt-5.4",
-        "google/antigravity-claude-opus-4-6-thinking"
+        "kimi-for-coding/k2p5"
       ],
       "model": "openai/gpt-5.3-codex",
       "prompt_append": "Follow patterns. Run diagnostics.",
       "variant": "medium"
     },
     "sisyphus": {
-      "description": "Primary orchestrator — Claude Opus (communicator)",
+      "description": "Kimi K2.5 (rate limit bypass)",
       "fallback_models": [
-        "google/antigravity-claude-sonnet-4-6",
+        "kimi-for-coding/k2p5",
         "openai/gpt-5.4",
         "opencode-go/glm-5"
       ],
-      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "model": "kimi-for-coding/k2p5",
       "textVerbosity": "medium",
-      "thinking": {
-        "budgetTokens": 32768,
-        "type": "enabled"
-      },
       "variant": "max"
     },
     "vision": {
       "description": "Vision specialist — GPT-5.4 multimodal",
       "fallback_models": [
-        "google/antigravity-claude-sonnet-4-6",
-        "google/gemini-3-flash-preview"
+        "kimi-for-coding/k2p5",
+        "minimax-coding-plan/MiniMax-M2.7-highspeed"
       ],
       "model": "openai/gpt-5.4",
       "permission": {
@@ -169,10 +157,10 @@
     "messageStalenessTimeoutMs": 900000,
     "modelConcurrency": {
       "anthropic/claude-haiku-4-5": 20,
-      "google/antigravity-claude-opus-4-6-thinking": 5,
-      "google/antigravity-claude-sonnet-4-6": 10,
-      "google/gemini-3-flash-preview": 20,
-      "google/antigravity-gemini-3.1-pro": 10,
+      "kimi-for-coding/k2p5": 5,
+      "kimi-for-coding/k2p5": 10,
+      "minimax-coding-plan/MiniMax-M2.7-highspeed": 20,
+      "minimax-coding-plan/MiniMax-M2.7": 10,
       "minimax-coding-plan/MiniMax-M2.7-highspeed": 99,
       "openai/gpt-5.3-codex": 99,
       "openai/gpt-5.4": 99,
@@ -187,17 +175,17 @@
     "artistry": {
       "description": "Creative approaches — Gemini Pro primary",
       "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
+        "kimi-for-coding/k2p5",
         "openai/gpt-5.4"
       ],
-      "model": "google/antigravity-gemini-3.1-pro",
+      "model": "minimax-coding-plan/MiniMax-M2.7",
       "variant": "high"
     },
     "deep": {
       "description": "Deep coding — GPT Codex primary",
       "fallback_models": [
-        "google/antigravity-claude-opus-4-6-thinking",
-        "google/antigravity-gemini-3.1-pro"
+        "kimi-for-coding/k2p5",
+        "minimax-coding-plan/MiniMax-M2.7"
       ],
       "model": "openai/gpt-5.3-codex",
       "variant": "medium"
@@ -206,15 +194,15 @@
       "description": "Simple fast tasks — MiniMax highspeed",
       "fallback_models": [
         "anthropic/claude-haiku-4-5",
-        "google/gemini-3-flash-preview"
+        "minimax-coding-plan/MiniMax-M2.7-highspeed"
       ],
       "model": "minimax-coding-plan/MiniMax-M2.7-highspeed"
     },
     "ultrabrain": {
       "description": "Maximum reasoning — GPT-5.4 primary",
       "fallback_models": [
-        "google/antigravity-gemini-3.1-pro",
-        "google/antigravity-claude-opus-4-6-thinking",
+        "minimax-coding-plan/MiniMax-M2.7",
+        "kimi-for-coding/k2p5",
         "opencode-go/glm-5"
       ],
       "model": "openai/gpt-5.4",
@@ -226,35 +214,35 @@
         "openai/gpt-5.4",
         "opencode-go/glm-5"
       ],
-      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "model": "kimi-for-coding/k2p5",
       "variant": "max"
     },
     "unspecified-low": {
       "description": "General standard — Sonnet tier",
       "fallback_models": [
         "openai/gpt-5.3-codex",
-        "google/gemini-3-flash-preview"
+        "minimax-coding-plan/MiniMax-M2.7-highspeed"
       ],
-      "model": "google/antigravity-claude-sonnet-4-6"
+      "model": "kimi-for-coding/k2p5"
     },
     "visual-engineering": {
       "description": "Frontend and UI — Gemini Pro primary",
       "fallback_models": [
         "opencode-go/glm-5",
-        "google/antigravity-claude-opus-4-6-thinking",
-        "google/antigravity-claude-sonnet-4-6"
+        "kimi-for-coding/k2p5",
+        "kimi-for-coding/k2p5"
       ],
-      "model": "google/antigravity-gemini-3.1-pro",
+      "model": "minimax-coding-plan/MiniMax-M2.7",
       "reasoningEffort": "high",
       "variant": "high"
     },
     "writing": {
       "description": "Documentation — Gemini Flash primary",
       "fallback_models": [
-        "google/antigravity-claude-sonnet-4-6",
+        "kimi-for-coding/k2p5",
         "anthropic/claude-haiku-4-5"
       ],
-      "model": "google/gemini-3-flash-preview"
+      "model": "minimax-coding-plan/MiniMax-M2.7-highspeed"
     }
   },
   "disabled_hooks": [

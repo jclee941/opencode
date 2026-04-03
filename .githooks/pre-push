@@ -1,2 +1,4 @@
 #!/usr/bin/env sh
-npm run prepush:check
+# Pre-push hook for OpenCode config repository
+
+go run scripts/pre-push.go
