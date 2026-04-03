@@ -1,0 +1,22 @@
+{
+  "plugins": [
+    "@openspoon/subtask2",
+    "@plannotator/opencode",
+    "micode",
+    "octto",
+    "opencode-convodump",
+    "opencode-daytona",
+    "opencode-devcontainers",
+    "opencode-helicone-session",
+    "opencode-morph-fast-apply",
+    "opencode-notify",
+    "opencode-openai-codex-auth",
+    "opencode-scheduler",
+    "opencode-smart-title",
+    "opencode-supermemory",
+    "opencode-wakatime",
+    "opencode-websearch-cited",
+    "opencode-worktree",
+    "opencode-zellij-namer"
+  ]
+}
