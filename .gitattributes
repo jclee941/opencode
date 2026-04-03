@@ -1,0 +1,4 @@
+# Generated files - GitHub Linguist and diff handling
+# opencode.jsonc is auto-generated from config/*.jsonc
+
+opencode.jsonc linguist-generated=true diff=generated

@@ -1,0 +1,27 @@
+# Dependabot Configuration
+# Automates dependency update PRs for npm ecosystem.
+# Auto-merge handles dependabot[bot] PRs via auto-merge.yml.
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    reviewers:
+      - qws941
+    labels:
+      - dependencies
+    groups:
+      opencode-plugins:
+        patterns:
+          - "oh-my-opencode"
+          - "opencode-*"
+          - "@opencode-ai/*"
+      dev-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"

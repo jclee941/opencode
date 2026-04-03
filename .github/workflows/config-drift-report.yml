@@ -1,0 +1,44 @@
+name: Config Drift Report
+
+on:
+  pull_request:
+    paths:
+      - 'config/**/*.jsonc'
+      - 'scripts/gen-opencode-config.go'
+      - 'opencode.jsonc'
+      - 'package.json'
+
+concurrency:
+  group: config-drift-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Setup Go
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00
+        with:
+          go-version: '1.22.2'
+
+      - name: Verify generated config is fresh
+        id: config_check
+        continue-on-error: true
+        run: go run scripts/gen-opencode-config.go --check
+
+      - name: Print generated config diff
+        if: steps.config_check.outcome == 'failure'
+        run: go run scripts/gen-opencode-config.go --dry-run
+
+      - name: Fail on config drift
+        if: steps.config_check.outcome == 'failure'
+        run: |
+          echo 'Generated config drift detected. Run npm run gen:config and commit the refreshed opencode.jsonc.'
+          exit 1

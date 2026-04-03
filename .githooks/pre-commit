@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Pre-commit hook for OpenCode config repository
+# Blocks direct edits to auto-generated opencode.jsonc
+
+go run scripts/pre-commit.go

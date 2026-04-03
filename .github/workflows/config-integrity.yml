@@ -1,0 +1,52 @@
+name: Config Integrity
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify generated config is up-to-date
+        run: |
+          # Generate fresh config from sources
+          go run scripts/gen-opencode-config.go
+          
+          # Check that the generated file matches what's committed
+          if ! git diff --quiet opencode.jsonc; then
+            echo "❌ FAIL: opencode.jsonc is out of sync with config/*.jsonc sources"
+            echo ""
+            echo "The following changes would be generated:"
+            git diff opencode.jsonc
+            echo ""
+            echo "To fix:"
+            echo "  1. Edit config/base.jsonc, config/providers.jsonc, or config/lsp.jsonc"
+            echo "  2. Run: npm run gen:config"
+            echo "  3. Commit both the source changes AND the regenerated opencode.jsonc"
+            exit 1
+          fi
+          echo "✓ opencode.jsonc is in sync with sources"
+
+      - name: Validate config cross-references
+        run: go run scripts/validate-config-refs.go
+
+      - name: Validate naming conventions
+        run: node scripts/validate-monorepo-naming.mjs
