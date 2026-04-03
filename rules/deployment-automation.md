@@ -70,5 +70,5 @@ For platform-specific strategies and detailed patterns, see `docs/deployment-pla
 
 ## Reference composition
 
-1. Loaded as Tier 1 baseline rule via `opencode.jsonc`.
+1. Loaded as Tier 1 on-demand rule (not pre-loaded via `opencode.jsonc`).
 2. Platform strategies and release patterns: `docs/deployment-platform-strategies.md`.
