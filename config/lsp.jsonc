@@ -60,7 +60,7 @@
           "format": { "enable": false },
           "quiet": false,
           "validate": "on",
-          "run": "onType",
+          "run": "onSave",
         },
       },
     },
@@ -70,7 +70,7 @@
       "initialization": {
         "basedpyright": {
           "analysis": {
-            "diagnosticMode": "workspace",
+            "diagnosticMode": "openFilesOnly",
             "typeCheckingMode": "recommended",
             "autoImportCompletions": true,
             "inlayHints": {
@@ -102,6 +102,8 @@
           "directoryFilters": ["-node_modules", "-.git", "-.cache", "-tmp"],
           "analyses": {
             "unusedparams": true,
+            "unusedwrite": true,
+            "useany": true,
             "nilness": true,
             "shadow": true,
           },
@@ -195,7 +197,7 @@
       "command": ["vscode-json-language-server", "--stdio"],
       "extensions": [".json", ".jsonc"],
       "initialization": {
-        "provideFormatter": true,
+        "provideFormatter": false,
         "json": {
           "validate": { "enable": true },
           "schemas": [

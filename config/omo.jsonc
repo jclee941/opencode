@@ -6,11 +6,11 @@
   // Model variables — change a model string in one place, all references update.
   // Resolved by: go run scripts/gen-omo-config.go → oh-my-opencode.jsonc
   "$models": {
-    "$CLAUDE_OPUS": "google/antigravity-claude-opus-4-6-thinking",
-    "$CLAUDE_SONNET": "google/antigravity-claude-sonnet-4-6",
+    "$CLAUDE_OPUS": "kimi-for-coding/k2p5",
+    "$CLAUDE_SONNET": "kimi-for-coding/k2p5",
     "$CLAUDE_HAIKU": "anthropic/claude-haiku-4-5",
-    "$GEMINI_PRO": "google/antigravity-gemini-3.1-pro",
-    "$GEMINI_FLASH": "google/gemini-3-flash-preview"
+    "$GEMINI_PRO": "minimax-coding-plan/MiniMax-M2.7",
+    "$GEMINI_FLASH": "minimax-coding-plan/MiniMax-M2.7-highspeed"
   },
 
   "background_task": {
@@ -142,19 +142,15 @@
   },
   "agents": {
     "sisyphus": {
-      "description": "Primary orchestrator — Claude Opus (communicator)",
-      "model": "$CLAUDE_OPUS",
+      "description": "Kimi K2.5 (rate limit bypass)",
+      "model": "kimi-for-coding/k2p5",
       "variant": "max",
       "textVerbosity": "medium",
       "fallback_models": [
         "$CLAUDE_SONNET",
         "openai/gpt-5.4",
         "opencode-go/glm-5"
-      ],
-      "thinking": {
-        "type": "enabled",
-        "budgetTokens": 32768
-      }
+      ]
     },
     "junior": {
       "description": "Sisyphus-Junior — Claude Sonnet tier",
@@ -176,8 +172,8 @@
       "prompt_append": "Follow existing codebase patterns. Run lsp_diagnostics."
     },
     "prometheus": {
-      "description": "Strategic planner — Claude Opus (dual-prompt)",
-      "model": "$CLAUDE_OPUS",
+      "description": "Kimi K2.5 (rate limit bypass)",
+      "model": "kimi-for-coding/k2p5",
       "variant": "max",
       "textVerbosity": "high",
       "fallback_models": [
@@ -185,25 +181,17 @@
         "opencode-go/glm-5",
         "$GEMINI_PRO"
       ],
-      "thinking": {
-        "type": "enabled",
-        "budgetTokens": 32768
-      },
       "prompt_append": "Output structured implementation plan."
     },
     "metis": {
-      "description": "Pre-planning analyst — Claude Opus (communicator)",
-      "model": "$CLAUDE_OPUS",
+      "description": "Kimi K2.5 (rate limit bypass)",
+      "model": "kimi-for-coding/k2p5",
       "variant": "max",
       "textVerbosity": "high",
       "fallback_models": [
         "openai/gpt-5.4",
         "opencode-go/glm-5"
       ],
-      "thinking": {
-        "type": "enabled",
-        "budgetTokens": 32768
-      },
       "prompt_append": "Analyze hidden intentions and ambiguities."
     },
     "explore": {
@@ -285,8 +273,8 @@
       "prompt_append": "Follow patterns. Run diagnostics."
     },
     "atlas": {
-      "description": "Context mapper — Claude Sonnet (dual-prompt)",
-      "model": "$CLAUDE_SONNET",
+      "description": "Kimi K2.5 (rate limit bypass)",
+      "model": "kimi-for-coding/k2p5",
       "textVerbosity": "medium",
       "fallback_models": [
         "openai/gpt-5.4"

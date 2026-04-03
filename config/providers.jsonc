@@ -1,71 +1,15 @@
 // Provider and model definitions.
 // Merged into opencode.jsonc by: go run scripts/gen-opencode-config.go
-{
-  "provider": {
-    "google": {
-      "options": {
-        "timeout": 600000,
-        "setCacheKey": true,
-      },
-      "models": {
-        // -- Antigravity models (Google Auth proxy) --
-        "antigravity-gemini-3.1-pro": {
-          "name": "Gemini 3.1 Pro (Antigravity)",
-          "limit": { "context": 1048576, "output": 65536 },
-          "modalities": {
-            "input": ["text", "image", "pdf"],
-            "output": ["text"],
-          },
-          "variants": {
-            "low": { "thinkingLevel": "low" },
-            "high": { "thinkingLevel": "high" },
-          },
-        },
-        "antigravity-gemini-3.1-flash": {
-          "name": "Gemini 3.1 Flash (Antigravity)",
-          "limit": { "context": 1048576, "output": 65536 },
-          "modalities": {
-            "input": ["text", "image", "pdf"],
-            "output": ["text"],
-          },
-          "variants": {
-            "minimal": { "thinkingLevel": "minimal" },
-            "low": { "thinkingLevel": "low" },
-            "medium": { "thinkingLevel": "medium" },
-            "high": { "thinkingLevel": "high" },
-          },
-        },
-        "antigravity-claude-sonnet-4-6": {
-          "name": "Claude Sonnet 4.6 (Antigravity)",
-          "limit": { "context": 200000, "output": 64000 },
-          "modalities": {
-            "input": ["text", "image", "pdf"],
-            "output": ["text"],
-          },
-        },
-        "antigravity-claude-opus-4-6-thinking": {
-          "name": "Claude Opus 4.6 Thinking (Antigravity)",
-          "limit": { "context": 200000, "output": 64000 },
-          "modalities": {
-            "input": ["text", "image", "pdf"],
-            "output": ["text"],
-          },
-          "variants": {
-            "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
-            "max": { "thinkingConfig": { "thinkingBudget": 32768 } },
-          },
-        },
+//
+// Provider inventory:
+// - anthropic: Claude models via local proxy (Meridian at :3456)
+// - minimax-coding-plan: Built-in MiniMax models (fast/cheap)
+// - kimi-for-coding: Built-in Moonshot Kimi models  
+// - opencode-go: Built-in GLM models
+//
+// NOTE: anthropic provider is explicitly defined here.
+// Other providers (minimax-coding-plan, kimi-for-coding, opencode-go) use built-in definitions.
 
-        // -- Gemini CLI models (direct Google AI) --
-        "antigravity-gemini-3.1-pro-preview": {
-          "name": "Gemini 3.1 Pro Preview (Antigravity)",
-          "limit": { "context": 1048576, "output": 65536 },
-          "modalities": {
-            "input": ["text", "image", "pdf"],
-            "output": ["text"],
-          },
-        },
-      },
-    },
-  },
+{
+  "provider": {}
 }
