@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "grep-app": {
+      "type": "remote",
+      "url": "http://localhost:3001/sse",
+      "enabled": false
+    }
+  }
+}
