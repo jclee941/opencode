@@ -215,7 +215,7 @@ func collectModelRefs(ohMy map[string]interface{}, base map[string]interface{}) 
 }
 
 func isValidModelReference(model string, googleModels map[string]struct{}) bool {
-	if strings.HasPrefix(model, "anthropic/") || strings.HasPrefix(model, "openai/") || strings.HasPrefix(model, "minimax-coding-plan/") || strings.HasPrefix(model, "opencode-go/") {
+	if strings.HasPrefix(model, "anthropic/") || strings.HasPrefix(model, "openai/") || strings.HasPrefix(model, "minimax-coding-plan/") || strings.HasPrefix(model, "opencode-go/") || strings.HasPrefix(model, "kimi-for-coding/") {
 		return true
 	}
 	if strings.HasPrefix(model, "google/") {

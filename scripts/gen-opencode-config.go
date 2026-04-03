@@ -92,38 +92,36 @@ func deepMerge(dst, src map[string]interface{}) map[string]interface{} {
 // oh-my-opencode due to OpenCode's ESM plugin resolution bug.
 // See: compressed session b2 — toggle test results.
 var omoConflicts = map[string]bool{
-	"opencode-morph-fast-apply": true,
-	"opencode-smart-title":      true,
-	"opencode-convodump":        true,
-	"octto":                     true,
-	"opencode-supermemory":      true,
-	"opencode-scheduler":        true,
-	"micode":                    true,
-	"opencode-notify":           true,
-	"opencode-websearch-cited":  true,
-	"opencode-wakatime":         true,
-	"@plannotator/opencode":     true,
-	"@openspoon/subtask2":       true,
-	"opencode-worktree":                true,
-	"opencode-zellij-namer":            true,
-	"opencode-devcontainers":           true,
-	"opencode-daytona":                 true,
-	"opencode-helicone-session":        true,
-	"opencode-openai-codex-auth":       true,
-	"opencode-gemini-auth":             true,
-
+	"opencode-morph-fast-apply":  true,
+	"opencode-smart-title":       true,
+	"opencode-convodump":         true,
+	"octto":                      true,
+	"opencode-supermemory":       true,
+	"opencode-scheduler":         true,
+	"micode":                     true,
+	"opencode-notify":            true,
+	"opencode-websearch-cited":   true,
+	"opencode-wakatime":          true,
+	"@plannotator/opencode":      true,
+	"@openspoon/subtask2":        true,
+	"opencode-worktree":          true,
+	"opencode-zellij-namer":      true,
+	"opencode-devcontainers":     true,
+	"opencode-daytona":           true,
+	"opencode-helicone-session":  true,
+	"opencode-openai-codex-auth": true,
+	"opencode-gemini-auth":       true,
 }
 
-// resolvePluginConflicts removes plugins that conflict with oh-my-opencode.
-// If OMO is not in the list, all plugins are kept as-is.
-func resolvePluginConflicts(merged map[string]interface{}) {
+// resolvePluginConflicts validates that no conflicting plugins are present when oh-my-opencode is loaded.
+func resolvePluginConflicts(merged map[string]interface{}) error {
 	raw, ok := merged["plugin"]
 	if !ok {
-		return
+		return nil
 	}
 	plugins, ok := raw.([]interface{})
 	if !ok {
-		return
+		return nil
 	}
 
 	// Check if OMO is present.
@@ -135,16 +133,14 @@ func resolvePluginConflicts(merged map[string]interface{}) {
 		}
 	}
 	if !hasOMO {
-		return
+		return nil
 	}
 
-	// Filter out conflicting plugins.
-	var kept []interface{}
-	var removed []string
+	// Check for conflicting plugins and fail fast.
+	var conflicts []string
 	for _, p := range plugins {
 		s, ok := p.(string)
 		if !ok {
-			kept = append(kept, p)
 			continue
 		}
 		// Strip version suffix (e.g., "micode@latest" → "micode")
@@ -153,15 +149,20 @@ func resolvePluginConflicts(merged map[string]interface{}) {
 			name = s[:idx]
 		}
 		if omoConflicts[name] {
-			removed = append(removed, s)
-			continue
+			conflicts = append(conflicts, s)
 		}
-		kept = append(kept, p)
 	}
-	if len(removed) > 0 {
-		merged["plugin"] = kept
-		fmt.Fprintf(os.Stderr, "OMO conflict resolver: removed %v (ESM resolution conflict)\n", removed)
+	if len(conflicts) > 0 {
+		return fmt.Errorf(`OMO plugin conflict detected!
+
+The following plugins conflict with oh-my-opencode due to ESM resolution bugs:
+  %v
+
+To fix this, remove these plugins from config/base.jsonc.
+
+See: scripts/omo-conflicts.json for the full conflict list.`, conflicts)
 	}
+	return nil
 }
 
 func main() {
@@ -200,6 +201,10 @@ func main() {
 	}
 
 	// Resolve OMO plugin conflicts before output.
+	if err := resolvePluginConflicts(merged); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
 	resolvePluginConflicts(merged)
 
 	out, err := json.MarshalIndent(merged, "", "  ")
