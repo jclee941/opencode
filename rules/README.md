@@ -4,21 +4,21 @@ How rule files in `rules/` are composed, resolved, and loaded.
 
 ## Priority order
 
-Conflict resolution priority (1 = highest). Priority is independent of tier:
+Conflict resolution priority (1 = highest). Priority is independent of tier.
+Files not listed in this table are treated as domain add-ons and resolved by
+specificity after Tier 0 baseline rules.
 
 | # | File | Tier | Domain |
 |---|------|------|--------|
-| 1 | `hard-autonomy-no-questions.md` | 0 | Execution posture, blocked-step handling |
-| 2 | `archon-workflow.md` | 0 | Archon task management, RAG workflow |
-| 3 | `requirements-verification.md` | 0 | Requirements check before/after implementation |
-| 4 | Domain rules (`elk-troubleshooting.md`) | 2 | Domain-specific |
-| 5 | `session-init.md` | 0 | Session bootstrap, MCP schema hygiene |
-| 6 | `deployment-automation.md` | 1 | CI/CD policy |
-| 7 | `monorepo-standards.md` | 0 | Structure, naming |
-| 8 | `code-modularization.md` | 1 | File size governance |
-| 9 | `bmad-integration.md` | 1 | BMAD artifact consumption |
-| 10 | `auto-build-pipeline.md` | 1 | Spec-to-PR pipeline |
-| 11 | `mcp-schema-hygiene.md` | 1 | MCP tool call schema validation |
+| 1 | `00-hard-autonomy-no-questions.md` | 0 | Execution posture, blocked-step handling |
+| 2 | `00-archon-workflow.md` | 0 | Archon task management, RAG workflow |
+| 3 | `00-requirements-verification.md` | 0 | Requirements check before/after implementation |
+| 4 | `00-session-init.md` | 0 | Session bootstrap, MCP schema hygiene |
+| 5 | `00-monorepo-standards.md` | 0 | Structure, naming |
+| 6 | **`00-code-modularization.md`** | **0** | **File size governance (200 LOC)** |
+| 7 | `deployment-automation.md` | 1 | CI/CD policy |
+| 8 | `01-auto-build-pipeline.md` | 1 | Spec-to-PR pipeline (overview) |
+| 9 | `mcp-schema-hygiene.md` | 1 | MCP tool call schema validation |
 
 ## Tier model
 
@@ -26,33 +26,57 @@ Conflict resolution priority (1 = highest). Priority is independent of tier:
 
 Minimal set loaded every session (~1,500 tokens total):
 
-- `hard-autonomy-no-questions.md` — execution posture, zero-question policy
-- `archon-workflow.md` — Archon task management, RAG workflow
-- `session-init.md` — session bootstrap + MCP schema hygiene (merged)
-- `requirements-verification.md` — requirements check gate
-- `monorepo-standards.md` — structure and naming
+- `00-hard-autonomy-no-questions.md` — execution posture, zero-question policy
+- `00-archon-workflow.md` — Archon task management, RAG workflow
+- `00-session-init.md` — session bootstrap + MCP schema hygiene (merged)
+- `00-requirements-verification.md` — requirements check gate
+- `00-monorepo-standards.md` — structure and naming
+- **`00-code-modularization.md` — file size governance (200 LOC limit)**
 
 ### Tier 1 — On-demand (agent reads when task domain matches)
 
 Files remain in `rules/` but are NOT in the instructions array:
 
 - `deployment-automation.md` — read when: deploy/CI task
-- `code-modularization.md` — read when: refactor/split, or file >300 LOC touched
-- `bmad-integration.md` — read when: `_bmad-output/` detected
-- `auto-build-pipeline.md` — read when: `/start-work` or auto-build triggered
+- `01-auto-build-pipeline.md` — read when: `/start-work` or auto-build triggered
+  - `02-auto-build-pipeline-execution.md` — execution phase
+  - `03-auto-build-pipeline-completion.md` — completion phase
 - `mcp-schema-hygiene.md` — read when: MCP -32602 errors or new MCP tool integration
+- `01-onepassword-integration.md` — read when: secrets/credentials/`op://` handling
+  - `02-onepassword-integration-patterns.md` — implementation patterns
+  - `03-onepassword-integration-reference.md` — reference map
+- `01-onepassword-secrets-naming.md` — read when: 1Password schema/name audits
+  - `02-onepassword-secrets-naming-examples.md` — examples
+  - `03-onepassword-secrets-naming-operations.md` — operations
+- `msa-refactoring.md` — read when: monolith decomposition/service boundary work
 
 ### Tier 2 — Domain-specific (loaded when domain in scope)
 
-- `elk-troubleshooting.md` — ELK troubleshooting (all domains)
+- `01-elk-troubleshooting.md` — ELK troubleshooting (overview)
+  - `02-elk-troubleshooting-opencode.md` — OpenCode domain
+  - `03-elk-troubleshooting-proxmox.md` — Proxmox domain
 
-## Deleted / merged files
+## File numbering convention (200 LOC compliance)
 
-- `AGENTS.md` (rules/) → deleted (duplicate of root AGENTS.md)
+All rule files follow the 200 LOC modularization limit:
+
+- **00-***: Main/overview files (entry point, <200 LOC)
+- **02-***: Execution/pattern files (implementation details, <200 LOC)
+- **03-***: Completion/reference files (reference material, <200 LOC)
+
+Example: `auto-build-pipeline` is split into:
+- `01-auto-build-pipeline.md` (92 lines) — overview
+- `02-auto-build-pipeline-execution.md` (69 lines) — build + QA phases
+- `03-auto-build-pipeline-completion.md` (83 lines) — merge + PR phases
+
+## Metadata files in `rules/`
+
+- `AGENTS.md` in this directory is a local knowledge index for the `rules/`
+  subtree. It is documentation metadata, not a loadable runtime rule.
 
 ## Conflict resolution
 
-1. `hard-autonomy-no-questions.md` overrides all.
+1. `00-hard-autonomy-no-questions.md` overrides all.
 2. Prefer stricter safety constraints.
 3. One canonical source per rule — no duplication.
 4. Format: `applied: <base>, overridden by: <exception>, scope: <bounded>`
@@ -63,3 +87,12 @@ Files remain in `rules/` but are NOT in the instructions array:
 2. Root `AGENTS.md` loaded natively by OpenCode — never in instructions array.
 3. Tier 1 rules read on-demand, not pre-loaded.
 4. Reduces baseline from ~35K to ~2K tokens.
+
+## Consistency invariants
+
+To prevent rule drift and contradictory guidance:
+
+1. Any file declaring `Priority` or `Tier` must match this README.
+2. `config/base.jsonc` instructions must contain only Tier 0 files.
+3. If a rule file is added/removed/renamed, update this README and
+   `rules/AGENTS.md` in the same change.

@@ -20,9 +20,11 @@ MCP server integration, and plugin management for all `qws941` projects.
 │   ├── monorepo-standards.md           # Tier 0: structure and naming
 │   ├── deployment-automation.md        # Tier 1: CI/CD policy (on-demand)
 │   ├── code-modularization.md          # Tier 1: file size governance (on-demand)
-│   ├── bmad-integration.md             # Tier 1: BMAD artifacts (on-demand)
 │   ├── auto-build-pipeline.md          # Tier 1: autonomous pipeline (on-demand)
 │   ├── mcp-schema-hygiene.md          # Tier 1: MCP schema validation (on-demand)
+│   ├── onepassword-integration.md      # Tier 1: 1Password integration (on-demand)
+│   ├── onepassword-secrets-naming.md   # Tier 1: 1Password naming spec (on-demand)
+│   ├── msa-refactoring.md              # Tier 1: MSA refactoring guidance (on-demand)
 │   └── elk-troubleshooting.md          # Tier 2: ELK troubleshooting (on-demand)
 ├── docs/                       # Reference documents (never auto-loaded)
 ├── skills/                     # OpenCode skills (auto-discovered)
@@ -32,8 +34,9 @@ MCP server integration, and plugin management for all `qws941` projects.
 │   ├── validate-monorepo-naming.mjs    # Naming convention validator
 │   ├── lint-assistant-phrasing.mjs     # Assistant phrasing linter
 │   ├── claude-hook-autonomy-guard.mjs  # Autonomy guard git hook
-│   └── validate-config-refs.go         # Config cross-reference validator
-│   ├── antigravity-telegram-bot.go     # Telegram bot for antigravity account management
+│   ├── validate-config-refs.go         # Config cross-reference validator
+│   └── omo-auto-update.go              # OMO auto-update cron (git pull + npm install)
+│   └── omo-auto-update.go              # OMO auto-update cron (git pull + npm install)
 ├── .githooks/                  # Git hook scripts (commitlint, pre-push)
 ├── .github/                    # GitHub Actions workflows
 ├── tests/                      # Vitest test suites (ELK integration)
@@ -56,13 +59,13 @@ MCP server integration, and plugin management for all `qws941` projects.
 | LLM providers and models    | `config/providers.jsonc`                        |
 | LSP server configs          | `config/lsp.jsonc`                              |
 | Regenerate opencode.jsonc   | `go run scripts/gen-opencode-config.go`         |
-| Plugin configurations       | Root `*.jsonc` files (antigravity, dcp, etc.)  |
+| Plugin configurations       | Root `*.jsonc` files (dcp, etc.)               |
 | GitHub Actions workflows    | `.github/workflows/`                           |
 | Naming convention validator | `scripts/validate-monorepo-naming.mjs`         |
 | ELK integration tests       | `tests/`                                       |
 | Slash commands              | `command/`                                     |
 | Config cross-ref validator  | `scripts/validate-config-refs.go`              |
-| Antigravity Telegram bot  | `scripts/antigravity-telegram-bot.go`              |
+| OMO auto-update (cron)    | `scripts/omo-auto-update.go`                       |
 
 ## COMMANDS
 
@@ -76,7 +79,9 @@ npm run hooks:install           # install git hooks from .githooks/
 npm run prepush:check           # pre-push gate (config + naming + config-refs)
 npm run lint:config-refs        # validate config cross-references
 npm run kratos:sync             # sync Kratos project memory
-npm run telegram:bot             # run antigravity Telegram auth bot
+npm run omo:update               # pull latest + npm install (manual)
+npm run omo:update               # pull latest + npm install (manual)
+npm run omo:update:dry            # preview what omo:update would do
 ```
 
 ## CONVENTIONS
@@ -96,3 +101,44 @@ npm run telegram:bot             # run antigravity Telegram auth bot
 - Never suppress type errors (`as any`, `@ts-ignore`).
 - Never duplicate normative text across rule files.
 - Never batch MCP tool calls (`mcphub_*`) — call each directly.
+## CONFIGURATION WORKFLOW
+
+opencode.jsonc is **AUTO-GENERATED** from source files in `config/`. Direct edits will be **LOST**.
+
+### Source Files (Edit These)
+
+| File | Purpose |
+|------|---------|
+| `config/base.jsonc` | Core config: instructions, plugins, MCP, permissions, formatters, watcher |
+| `config/providers.jsonc` | LLM provider and model definitions |
+| `config/lsp.jsonc` | Language server configurations |
+
+### Workflow
+
+1. **Edit source files** in `config/*.jsonc`
+2. **Regenerate** with: `npm run gen:config`
+3. **Stage changes**: `git add config/ opencode.jsonc`
+4. **Commit**: `git commit -m "feat: update config"`
+
+### Recovery (If You Edited opencode.jsonc Directly)
+
+If you accidentally edited `opencode.jsonc` directly:
+
+```bash
+# Check what changes you made
+go run scripts/config-recover.go
+
+# Migrate changes to source files (manual review required)
+go run scripts/config-recover.go --apply
+
+# Or discard changes and regenerate
+go run scripts/config-recover.go --reset
+```
+
+### Protection
+
+- **Pre-commit hook**: Blocks commits with direct edits to `opencode.jsonc`
+- **Pre-push hook**: Validates config is up-to-date before pushing
+- **Git attributes**: Marks `opencode.jsonc` as generated (suppresses diff noise)
+
+Install hooks: `npm run hooks:install`
