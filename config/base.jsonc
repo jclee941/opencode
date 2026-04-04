@@ -30,6 +30,12 @@
       "timeout": 30000,
       "enabled": true,
     },
+    "archon": {
+      "type": "remote",
+      "url": "http://192.168.50.108:8051/mcp",
+      "timeout": 30000,
+      "enabled": true,
+    },
   },
 
   "permission": {

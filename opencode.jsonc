@@ -524,6 +524,12 @@
     }
   },
   "mcp": {
+    "archon": {
+      "enabled": true,
+      "timeout": 30000,
+      "type": "remote",
+      "url": "http://192.168.50.108:8051/mcp"
+    },
     "mcphub": {
       "enabled": true,
       "timeout": 30000,

@@ -3,5 +3,20 @@
     "opencode-claude-auth": "latest",
     "oh-my-openagent": "latest",
     "@opencode-ai/plugin": "1.3.13"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "gen:config": "go run scripts/gen-opencode-config.go",
+    "gen:runtime-inventory": "go run scripts/gen-runtime-inventory.go",
+    "gen:config:check": "go run scripts/gen-opencode-config.go --check",
+    "lint:naming": "node scripts/validate-monorepo-naming.mjs",
+    "lint:assistant-phrasing": "node scripts/lint-assistant-phrasing.mjs",
+    "hooks:install": "git config core.hooksPath .githooks",
+    "prepush:check": "npm run gen:config:check && npm run lint:naming && npm run lint:config-refs",
+    "lint:config-refs": "go run scripts/validate-config-refs.go",
+    "kratos:sync": "go run scripts/kratos-project-sync.go",
+    "omo:update": "go run scripts/omo-auto-update.go",
+    "omo:update:dry": "go run scripts/omo-auto-update.go --dry-run",
+    "lint:modularization": "go run scripts/validate-modularization.go ."
   }
 }
