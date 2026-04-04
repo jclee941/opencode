@@ -76,20 +76,32 @@ Never reverse the direction.
 | 6   | All external imports updated        | Grep for old paths returns 0       |
 | 7   | File names follow naming convention | `npm run lint:naming`              |
 
-## Anti-patterns
-
-- **Premature splitting**: Splitting <200 LOC files or during prototyping.
-- **Shotgun splitting**: Every function in its own file regardless of cohesion.
-- **False modularity**: Split files still share state via globals or circular deps.
-- **Over-abstraction**: Abstract base classes or DI frameworks just to justify a split.
 - **Catch-all names**: `helpers.ts`, `utils.ts`, `misc.ts` as dumps.
+
+## Rollback procedure
+
+If a split makes code worse (increased coupling, harder navigation, test failures):
+
+1. **Revert via git**: `git revert <split-commit-hash>` or `git reset --hard` if not pushed.
+2. **Alternative split**: Try a different boundary using `docs/code-modularization-reference.md` strategies.
+3. **Accept temporary large file**: Some units are inherently cohesive; document the exception in a file-level comment.
+4. **Merge criteria**: Re-merge if split files have >50% shared imports or developers frequently open both to understand one.
+
+## Barrel file governance
+
+Barrel files (index.ts, index.js) are exempt from LOC limits but require:
+
+1. **No side effects**: Only re-exports; no initialization, config loading, or module augmentation.
+2. **Re-export limit**: Maximum 25 explicit exports per barrel. Split domain if exceeded.
+3. **No nested barrels**: Do not import from barrel files in sibling barrels.
+4. **Naming**: Use `index.{ext}` for barrels; avoid `mod.ts`, `main.ts`, `all.ts`.
+5. **Prefer explicit imports**: Only use barrel imports for public API; internal code should import from source files.
+
+> **Anti-pattern**: A barrel file that imports from another barrel, creating deep resolution chains.
 
 ## Reference composition
 
 1. Loaded as Tier 0 baseline rule (globally loaded via `opencode.jsonc`).
-2. Defers to `00-hard-autonomy-no-questions.md` on execution posture.
-3. Defers to `00-monorepo-standards.md` on naming conventions.
-4. Detailed strategies and language guidance: `docs/code-modularization-reference.md`.
 2. Defers to `00-hard-autonomy-no-questions.md` on execution posture.
 3. Defers to `00-monorepo-standards.md` on naming conventions.
 4. Detailed strategies and language guidance: `docs/code-modularization-reference.md`.
