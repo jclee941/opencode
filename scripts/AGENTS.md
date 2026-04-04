@@ -27,7 +27,8 @@ scripts/
 ├── omo-auto-update.go                   # cron: git pull + npm install for Dependabot merges
 ├── validate-monorepo-naming.mjs         # kebab-case + no-.sh enforcement
 ├── lint-assistant-phrasing.mjs          # denylist phrasing scan for markdown/session exports
-└── claude-hook-autonomy-guard.mjs       # runtime guard for assistant output
+├── claude-hook-autonomy-guard.mjs       # runtime guard for assistant output
+└── validate-modularization.go           # LOC/complexity thresholds per 00-code-modularization.md
 ```
 
 ## WHERE TO LOOK
@@ -46,6 +47,7 @@ scripts/
 | Manage per-tmux-window servers | `opencode-tmux-server.go` | start/stop/attach/status/cleanup lifecycle |
 | Switch primary model preset | `switch-model.go` | updates base.jsonc + oh-my-opencode.jsonc |
 | Auto-update OMO from Dependabot | `omo-auto-update.go` | cron: git pull --ff-only + npm install + config regen |
+| Validate modularization limits | `validate-modularization.go` | LOC/complexity per 00-code-modularization.md |
 
 ## CONVENTIONS
 

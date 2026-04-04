@@ -18,9 +18,9 @@ import (
 // Designed to run as a cron job. Safe to run frequently:
 //   - Skips if working tree is dirty (uncommitted changes)
 //   - Skips if already up-to-date
-//   - Only runs bun install when package.json actually changed
+//   - Only runs npm install when package.json actually changed
 //   - Only regenerates config when config sources changed
-//   - Updates opencode CLI via bun
+//   - Updates opencode CLI via npm
 //
 // Usage:
 //   go run scripts/omo-auto-update.go           # normal mode
@@ -80,7 +80,7 @@ func main() {
 	changedFiles := strings.Split(strings.TrimSpace(diffFiles), "\n")
 	pkgChanged := contains(changedFiles, "package.json")
 	configChanged := anyPrefix(changedFiles, "config/")
-	bunChanged := contains(changedFiles, "bun.lock")
+	npmChanged := contains(changedFiles, "package-lock.json") || contains(changedFiles, "npm-shrinkwrap.json")
 
 	log.Printf("%s UPDATE: %s -> %s (%d files changed)", ts, localHead[:8], remoteHead[:8], len(changedFiles))
 	for _, f := range changedFiles {
@@ -88,7 +88,7 @@ func main() {
 	}
 
 	if dryRun {
-		log.Printf("%s DRY-RUN: would pull, bun_install=%v, gen_config=%v", ts, pkgChanged || bunChanged, configChanged)
+		log.Printf("%s DRY-RUN: would pull, npm_install=%v, gen_config=%v", ts, pkgChanged || npmChanged, configChanged)
 		os.Exit(0)
 	}
 
@@ -98,13 +98,13 @@ func main() {
 	}
 	log.Printf("%s PULLED: %s", ts, strings.TrimSpace(pullOut))
 
-	if pkgChanged || bunChanged {
-		log.Printf("%s INSTALLING: bun install (package.json changed)", ts)
-		out, err := bunCmd("install")
+	if pkgChanged || npmChanged {
+		log.Printf("%s INSTALLING: npm install (package.json changed)", ts)
+		out, err := npmCmd("install")
 		if err != nil {
-			log.Printf("%s ERROR: bun install failed: %v\n%s", ts, err, out)
+			log.Printf("%s ERROR: npm install failed: %v\n%s", ts, err, out)
 		} else {
-			log.Printf("%s INSTALLED: bun dependencies updated", ts)
+			log.Printf("%s INSTALLED: npm dependencies updated", ts)
 		}
 	}
 
@@ -118,9 +118,9 @@ func main() {
 		}
 	}
 
-	// Update opencode CLI via bun
-	log.Printf("%s UPDATING: opencode CLI via bun", ts)
-	out, err := bunCmd("install", "-g", "opencode-ai@latest")
+	// Update opencode CLI via npm
+	log.Printf("%s UPDATING: opencode CLI via npm", ts)
+	out, err := npmCmd("install", "-g", "opencode-ai@latest")
 	if err != nil {
 		log.Printf("%s ERROR: opencode update failed: %v\n%s", ts, err, out)
 	} else {
@@ -134,8 +134,8 @@ func gitCmd(args ...string) (string, error) {
 	return runCmd("git", args...)
 }
 
-func bunCmd(args ...string) (string, error) {
-	return runCmd("bun", args...)
+func npmCmd(args ...string) (string, error) {
+	return runCmd("npm", args...)
 }
 
 func runCmd(name string, args ...string) (string, error) {
