@@ -80,8 +80,8 @@ npm run prepush:check           # pre-push gate (config + naming + config-refs)
 npm run lint:config-refs        # validate config cross-references
 npm run kratos:sync             # sync Kratos project memory
 npm run omo:update               # pull latest + npm install (manual)
-npm run omo:update               # pull latest + npm install (manual)
-npm run omo:update:dry            # preview what omo:update would do
+npm run omo:update:dry          # preview what omo:update would do
+npm run lint:modularization     # validate LOC/complexity thresholds
 ```
 
 ## CONVENTIONS
