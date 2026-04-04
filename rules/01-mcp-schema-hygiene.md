@@ -71,6 +71,28 @@ When a -32602 error occurs:
 | Empty args        | `arguments: []` for no-arg tool                                      | Omit `arguments` or send `{}`                                             |
 | Nested extra keys | Adding `_meta` inside a structured object param                      | Send only declared properties                                             |
 
+### 7. Capability negotiation
+
+MCP servers and clients must declare capabilities during the `initialize` handshake:
+
+1. **Client capabilities** — Client must declare if it supports:
+   - `sampling` — Server can request LLM sampling/completions
+   - `elicitation` — Server can request additional input from user
+   - Other protocol features
+
+2. **Server capabilities** — Server declares what it offers:
+   - Available tools and their schemas
+   - Resource providers
+   - Prompt handlers
+
+3. **-32602 from capability mismatch**:
+   - If server sends sampling/elicitation requests but client didn't declare support → -32602
+   - If client requests tools from server that aren't in server's capability list → -32602
+
+4. **Prevention**:
+   - Always check server's capability list before calling tools
+   - Verify client declared required capabilities in initialization
+   - Handle `ClientCapabilityMissing` errors gracefully
 ## Verification
 
 After fixing a -32602 error:
