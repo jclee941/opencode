@@ -146,7 +146,7 @@ Sources are managed via the Archon UI (`archon.jclee.me` / `192.168.50.108:3737`
 | Archon Agents | `192.168.50.108:8052` | Agent execution |
 | Ollama | `192.168.50.109:11434` | LLM + embedding inference |
 | Supabase | `supabase.jclee.me` | Vector storage + settings |
-| MCPhub | `192.168.50.112:3000` | MCP server aggregation |
+| MCPhub | See `config/base.jsonc` | MCP server aggregation |
 
 ### Known limitations
 

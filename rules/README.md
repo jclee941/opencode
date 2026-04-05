@@ -18,7 +18,19 @@ specificity after Tier 0 baseline rules.
 | 6 | **`00-code-modularization.md`** | **0** | **File size governance (200 LOC)** |
 | 7 | `deployment-automation.md` | 1 | CI/CD policy |
 | 8 | `01-auto-build-pipeline.md` | 1 | Spec-to-PR pipeline (overview) |
-| 9 | `mcp-schema-hygiene.md` | 1 | MCP tool call schema validation |
+| 9 | `02-auto-build-pipeline-execution.md` | 1 | Spec-to-PR pipeline (build + QA phases) |
+| 11 | `03-auto-build-pipeline-completion.md` | 1 | Spec-to-PR pipeline (merge + PR phases) |
+| 12 | `01-mcp-schema-hygiene.md` | 1 | MCP tool call schema validation |
+| 13 | `01-onepassword-integration.md` | 1 | 1Password integration policy |
+| 14 | `02-onepassword-integration-patterns.md` | 1 | 1Password implementation patterns |
+| 15 | `03-onepassword-integration-reference.md` | 1 | 1Password reference map |
+| 16 | `01-onepassword-secrets-naming.md` | 1 | 1Password naming specification |
+| 17 | `02-onepassword-secrets-naming-examples.md` | 1 | 1Password naming examples |
+| 18 | `03-onepassword-secrets-naming-operations.md` | 1 | 1Password naming operations |
+| 19 | `01-msa-refactoring.md` | 1 | Monolith → MSA migration guidance |
+| 20 | `01-elk-troubleshooting.md` | 2 | ELK troubleshooting (overview) |
+| 21 | `02-elk-troubleshooting-opencode.md` | 2 | ELK OpenCode domain |
+| 22 | `03-elk-troubleshooting-proxmox.md` | 2 | ELK Proxmox domain |
 
 ## Tier model
 
@@ -41,14 +53,14 @@ Files remain in `rules/` but are NOT in the instructions array:
 - `01-auto-build-pipeline.md` — read when: `/start-work` or auto-build triggered
   - `02-auto-build-pipeline-execution.md` — execution phase
   - `03-auto-build-pipeline-completion.md` — completion phase
-- `mcp-schema-hygiene.md` — read when: MCP -32602 errors or new MCP tool integration
+- `01-mcp-schema-hygiene.md` — read when: MCP -32602 errors or new MCP tool integration
 - `01-onepassword-integration.md` — read when: secrets/credentials/`op://` handling
   - `02-onepassword-integration-patterns.md` — implementation patterns
   - `03-onepassword-integration-reference.md` — reference map
 - `01-onepassword-secrets-naming.md` — read when: 1Password schema/name audits
   - `02-onepassword-secrets-naming-examples.md` — examples
   - `03-onepassword-secrets-naming-operations.md` — operations
-- `msa-refactoring.md` — read when: monolith decomposition/service boundary work
+- `01-msa-refactoring.md` — read when: monolith decomposition/service boundary work
 
 ### Tier 2 — Domain-specific (loaded when domain in scope)
 
@@ -68,6 +80,13 @@ Example: `auto-build-pipeline` is split into:
 - `01-auto-build-pipeline.md` (92 lines) — overview
 - `02-auto-build-pipeline-execution.md` (69 lines) — build + QA phases
 - `03-auto-build-pipeline-completion.md` (83 lines) — merge + PR phases
+
+### Tier 2 domain numbering
+
+Domain-specific rule series (e.g., `elk-troubleshooting`) use their own `01-`/`02-`/`03-` numbering within the domain. The prefix indicates position within the series, not the tier:
+- `01-elk-troubleshooting.md` — ELK overview (entry point)
+- `02-elk-troubleshooting-opencode.md` — OpenCode domain specifics
+- `03-elk-troubleshooting-proxmox.md` — Proxmox domain specifics
 
 ## Metadata files in `rules/`
 

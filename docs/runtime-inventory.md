@@ -38,20 +38,17 @@ This report stays intentionally narrow: it shows load-time plugin and MCP visibi
 - This artifact is additive and does not change runtime plugin or MCP behavior.
 - Remove the generator, generated doc, and npm script wiring together to revert this feature.
 
-- Active plugins: 5
+- Active plugins: 2
 - Configured MCP servers: 1
-- Capability surfaces tracked: 11
+- Capability surfaces tracked: 10
 - OMO conflict watchlist entries: 18
 
 ## Active Plugins
 
 | Order | Plugin | Requested entry | Dependency version | Config surface | Notes |
 |---|---|---|---|---|---|
-| 1 | `opencode-pty` | `opencode-pty@latest` | `-` | `-` | Interactive PTY support for long-running shell sessions. |
-| 2 | `@nick-vi/opencode-type-inject` | `@nick-vi/opencode-type-inject@latest` | `-` | `-` | Type/tool augmentation plugin loaded from npm dependency entry. |
-| 3 | `opencode-pilot` | `opencode-pilot@latest` | `-` | `pilot/config.yaml` | Active queue/polling plugin with pilot/config.yaml. |
-| 4 | `@tarquinen/opencode-dcp` | `@tarquinen/opencode-dcp@latest` | `-` | `dcp.jsonc` | Active dynamic context pruning plugin with dedicated root config. |
-| 5 | `oh-my-opencode` | `oh-my-opencode@latest` | `-` | `oh-my-opencode.jsonc` | Must remain last in config/base.jsonc; activates OMO conflict filtering. |
+| 1 | `opencode-claude-auth` | `opencode-claude-auth` | `latest` | `-` | - |
+| 2 | `oh-my-openagent` | `oh-my-openagent` | `latest` | `-` | - |
 
 ## Configured MCP Servers
 
@@ -63,17 +60,16 @@ This report stays intentionally narrow: it shows load-time plugin and MCP visibi
 
 | Path | Kind | Status | Backing | Schema | Notes |
 |---|---|---|---|---|---|
-| `dcp.jsonc` | `plugin-config` | `active` | `@tarquinen/opencode-dcp` | `https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json` | Dynamic context pruning policy and protected tool settings. |
-| `oh-my-opencode.jsonc` | `plugin-config` | `active` | `oh-my-opencode` | `https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/master/assets/oh-my-opencode.schema.json` | Primary orchestration, routing, fallback, browser, and search settings. |
-| `pilot/config.yaml` | `plugin-config` | `active` | `opencode-pilot` | `-` | GitHub work polling and session defaults. |
+| `oh-my-opencode.jsonc` | `plugin-config` | `present, inactive` | `oh-my-opencode` | `-` | Primary orchestration, routing, fallback, browser, and search settings. |
+| `pilot/config.yaml` | `plugin-config` | `present, inactive` | `opencode-pilot` | `-` | GitHub work polling and session defaults. |
 | `skills/agent-browser/SKILL.md` | `skill` | `available` | `agent-browser` | `-` | Policy or capability skill surface. |
 | `skills/debugging-expert/SKILL.md` | `skill` | `available` | `debugging-expert` | `-` | Policy or capability skill surface. |
 | `skills/dev-browser/SKILL.md` | `skill` | `available` | `dev-browser` | `-` | Standalone executable browser automation skill package. |
 | `skills/frontend-ui-ux/SKILL.md` | `skill` | `available` | `frontend-ui-ux` | `-` | Policy or capability skill surface. |
 | `skills/git-master/SKILL.md` | `skill` | `available` | `git-master` | `-` | Policy or capability skill surface. |
-| `smart-title.jsonc` | `plugin-config` | `present, blocked with OMO` | `opencode-smart-title` | `-` | Config file exists locally even though the plugin is not active. |
-| `snippet/config.jsonc` | `supporting-config` | `supporting` | `-` | `https://raw.githubusercontent.com/JosXa/opencode-snippets/main/schema/config.schema.json` | Snippet output and skill rendering settings. |
-| `subtask2.jsonc` | `plugin-config` | `present, blocked with OMO` | `@openspoon/subtask2` | `-` | Config file exists locally even though the plugin is not active. |
+| `smart-title.jsonc` | `plugin-config` | `present, inactive` | `opencode-smart-title` | `-` | Config file exists locally even though the plugin is not active. |
+| `snippet/config.jsonc` | `supporting-config` | `supporting` | `-` | `-` | Snippet output and skill rendering settings. |
+| `subtask2.jsonc` | `plugin-config` | `present, inactive` | `@openspoon/subtask2` | `-` | Config file exists locally even though the plugin is not active. |
 
 ## OMO Conflict Watchlist
 

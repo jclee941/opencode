@@ -25,14 +25,14 @@ rules/
 ├── 01-auto-build-pipeline.md            # Tier 1 on-demand: spec-to-PR pipeline (overview)
 ├── 02-auto-build-pipeline-execution.md  # Tier 1 on-demand: build pipeline (execution)
 ├── 03-auto-build-pipeline-completion.md # Tier 1 on-demand: build pipeline (completion)
-├── mcp-schema-hygiene.md             # Tier 1 on-demand: MCP schema correctness
+├── 01-mcp-schema-hygiene.md             # Tier 1 on-demand: MCP schema correctness
 ├── 01-onepassword-integration.md        # Tier 1 on-demand: 1Password integration policy
 ├── 02-onepassword-integration-patterns.md   # Tier 1 on-demand: 1Password patterns
 ├── 03-onepassword-integration-reference.md  # Tier 1 on-demand: 1Password reference
 ├── 01-onepassword-secrets-naming.md     # Tier 1 on-demand: 1Password naming specification
 ├── 02-onepassword-secrets-naming-examples.md  # Tier 1 on-demand: naming examples
 ├── 03-onepassword-secrets-naming-operations.md # Tier 1 on-demand: naming operations
-├── msa-refactoring.md                # Tier 1 on-demand: monolith → MSA migration guidance
+├── 01-msa-refactoring.md                # Tier 1 on-demand: monolith → MSA migration guidance
 ├── 01-elk-troubleshooting.md            # Tier 2: ELK troubleshooting (overview)
 ├── 02-elk-troubleshooting-opencode.md   # Tier 2: ELK OpenCode domain
 └── 03-elk-troubleshooting-proxmox.md    # Tier 2: ELK Proxmox domain
@@ -51,10 +51,10 @@ rules/
 | **File modularization limits (200 LOC)** | **`00-code-modularization.md`** |
 | CI/CD deploy controls | `deployment-automation.md` |
 | Autonomous spec-to-PR pipeline | `01-auto-build-pipeline.md` + `02-*` + `03-*` |
-| MCP -32602 prevention | `mcp-schema-hygiene.md` |
+| MCP -32602 prevention | `01-mcp-schema-hygiene.md` |
 | Secret integration and `op://` usage | `01-onepassword-integration.md` |
 | 1Password item/field naming schema | `01-onepassword-secrets-naming.md` |
-| Microservice decomposition guidance | `msa-refactoring.md` |
+| Microservice decomposition guidance | `01-msa-refactoring.md` |
 | ELK troubleshooting runbook | `01-elk-troubleshooting.md` |
 
 ## 200 LOC MODULARIZATION RULE

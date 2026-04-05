@@ -38,7 +38,7 @@ Run these steps at session start to establish project context before any task wo
 
 ### MCP server inventory
 
-All MCP servers are accessed via `mcphub` (remote at `192.168.50.112:3000`).
+All MCP servers are accessed via `mcphub`. See `config/base.jsonc` for the current endpoint configuration.
 
 | Server       | Init Required     | Init Tool                        | Purpose                              |
 | ------------ | ----------------- | -------------------------------- | ------------------------------------ |
@@ -71,10 +71,10 @@ The placeholder `<cwd>` always refers to the **project directory the user opened
 1. Switch Kratos to current working directory.
    - `mcphub_kratos-project_switch(project_path=<cwd>)`
    - Activates project-scoped memory for all subsequent `memory_search`/`memory_save` calls.
-   - On failure (unknown project): **auto-create** the project, then retry:
-     1. Run `mcphub_kratos-memory_save(summary="Project initialized: <project_name>", text="Auto-created project entry for <cwd>. CWD: <cwd>", tags=["project-init"])`
+   - On failure (unknown project): **skip Kratos for this session** and proceed. Report: "Kratos project not found for <cwd> — proceeding with session-level memory only. Project can be registered manually via Archon UI if needed."
+     1. Run `mcphub_kratos-memory_save(summary="Project initialized: <project_name>", text="Auto-created project entry for <cwd>. CWD: <cwd>. Project name derived from directory basename.", tags=["project-init", "auto-created"])`
      2. Retry `mcphub_kratos-project_switch(project_path=<cwd>)`
-     3. If retry also fails: proceed without Kratos — do not block session.
+     3. If retry also fails: proceed without Kratos — do not block session. Report: "Kratos project auto-create failed for <cwd> — proceeding with session-level memory only."
 
 2. Set Git working directory for the session.
    - `mcphub_git-git_set_working_dir(path=<cwd>, validateGitRepo=true)`
@@ -109,7 +109,9 @@ there is no ordering dependency.
 ### Failure policy
 
 - Each MCP step is independent. If one MCP server is unreachable, skip that step and proceed.
-- Retry only one deterministic case: unknown Kratos project (auto-create then one retry).
+- For transient failures (timeout, connection reset, DNS failure, HTTP 5xx), retry up to 2 times with exponential backoff (1s, then 2s).
+- For schema errors (-32602), authentication errors (401/403), and "not found" errors (404), do not retry — these are deterministic failures.
+- Report the skip in task output and continue.
 - For all other MCP failures, do not retry — report the skip in task output and continue.
 - Never block session initialization waiting for MCP responses.
 
