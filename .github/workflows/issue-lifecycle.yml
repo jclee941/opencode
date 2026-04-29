@@ -1,26 +1,14 @@
-# Issue Lifecycle
-# SSoT: qws941/.github — synced to all repos
-# Synced via: .github/sync.yml
-# Template: _issue-lifecycle.yml
-
+# Source: jclee941/.github/.github/workflows/_issue-lifecycle.yml
 name: Issue Lifecycle
-
 on:
-  pull_request:
-    types: [opened, edited, closed]
   issues:
-    types: [opened, closed]
-
+    types: [opened, labeled, unlabeled, assigned, unassigned, closed, reopened]
+  issue_comment:
+    types: [created]
 permissions:
   contents: read
   issues: write
-  pull-requests: write
-
-concurrency:
-  group: issue-lifecycle-${{ github.event.pull_request.number || github.event.issue.number }}
-  cancel-in-progress: true
-
+  pull-requests: read
 jobs:
-  issue-lifecycle:
-    uses: qws941/.github/.github/workflows/_issue-lifecycle.yml@master
-    secrets: inherit
+  lifecycle:
+    uses: jclee941/.github/.github/workflows/_issue-lifecycle.yml@master
